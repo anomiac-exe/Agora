@@ -36,6 +36,8 @@ OFFICIAL KNOWLEDGE BASE:
   - "Just stay tuned, we won't spoil!" (Restez connectés, on ne va pas vous spoiler ! / ترقبوا فقط، لن نحرق المفاجأة!).
 - Governance:
   - President & Coordinator of Noûs: @anomiac.exe.
+  - Vice president & Coordinatrice of Muse : @onyssaa
+  - Coordinatrice of Lyréa : @deartyyn
   - Contact channels: Official Instagram.
 
 If you don't know an answer, do NOT guess. Tell them to contact the Executive Bureau directly via the Instagram links in the footer.
