@@ -147,6 +147,46 @@
         .animate-wing-flash {
             animation: wingFlashPulse 0.88s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
+        /* Hermes Concierge Widget Animations */
+        @keyframes hermesLauncherPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(216, 184, 200, 0.45), 0 10px 28px -4px rgba(20, 17, 30, 0.85);
+            }
+            50% {
+                box-shadow: 0 0 22px 6px rgba(216, 184, 200, 0.35), 0 12px 32px -4px rgba(233, 217, 183, 0.35);
+            }
+        }
+        .hermes-launcher-glow {
+            background-color: #34304A;
+            border: 2px solid #E9D9B7;
+            animation: hermesLauncherPulse 3s infinite ease-in-out;
+        }
+        .hermes-launcher-glow:hover {
+            border-color: #FAF6F0;
+            box-shadow: 0 0 28px 8px rgba(216, 184, 200, 0.5), 0 0 16px 2px rgba(233, 217, 183, 0.6);
+        }
+        @keyframes hermesDotBounce {
+            0%, 80%, 100% { transform: scale(0.65); opacity: 0.45; }
+            40% { transform: scale(1.15); opacity: 1; }
+        }
+        .hermes-typing-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 9999px;
+            background-color: #E9D9B7;
+            display: inline-block;
+            animation: hermesDotBounce 1.3s infinite ease-in-out both;
+        }
+        .hermes-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .hermes-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .hermes-typing-dot:nth-child(3) { animation-delay: 0s; }
+        .hermes-modal-enter {
+            transform-origin: bottom right;
+            transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        html[dir="rtl"] .hermes-modal-enter {
+            transform-origin: bottom left;
+        }
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -1134,6 +1174,78 @@
         </div>
     </footer>
 
+    <!-- ============================================================================ -->
+    <!-- HERMES: OFFICIAL AI VIRTUAL CONCIERGE WIDGET (LAUNCHER + CHAT MODAL)         -->
+    <!-- ============================================================================ -->
+    <div id="hermesWidgetRoot" class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+        <!-- Interactive Chat Modal Interface -->
+        <div id="hermesChatModal" dir="ltr" class="hidden opacity-0 scale-95 hermes-modal-enter mb-4 w-80 sm:w-96 h-[490px] max-h-[85vh] rounded-2xl shadow-2xl bg-[#242134] border border-[#E9D9B7]/45 flex flex-col overflow-hidden">
+            
+            <!-- Chat Window Header (Velvet Plum #34304A) -->
+            <div class="bg-[#34304A] border-b border-[#D8B8C8]/30 px-4 py-3 flex items-center justify-between gap-2 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="relative w-11 h-11 rounded-full border-2 border-[#E9D9B7] bg-[#241122] overflow-hidden shrink-0 shadow-md">
+                        <div id="hermesHeaderAvatar" class="w-full h-full"></div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="font-serif text-lg font-bold text-[#FAF6F0] leading-none">Hermes</h4>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] font-mono text-emerald-300">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span id="hermesStatusLabel">En ligne</span>
+                            </span>
+                        </div>
+                        <span id="hermesSubLabel" class="block font-mono text-[10px] text-[#D8B8C8] tracking-wide mt-1">
+                            Concierge Officiel • Agora ENS
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Header Actions: Clear/Reset & Close -->
+                <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="resetHermesChat()" title="Réinitialiser la conversation" class="w-8 h-8 rounded-lg bg-[#242134]/70 hover:bg-[#433E5E] border border-[#D8B8C8]/25 text-[#E9D9B7] flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fa-solid fa-rotate-right text-xs"></i>
+                    </button>
+                    <button type="button" onclick="toggleHermesChat(false)" title="Fermer" class="w-8 h-8 rounded-lg bg-[#242134]/70 hover:bg-[#433E5E] border border-[#D8B8C8]/25 text-[#E9D9B7] flex items-center justify-center transition-colors cursor-pointer font-mono text-xs">
+                        ✕
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scrollable Messages & Welcome Container -->
+            <div id="hermesMessagesContainer" class="flex-1 overflow-y-auto p-4 space-y-3.5 bg-gradient-to-b from-[#242134] via-[#28243A] to-[#242134]">
+                <!-- Dynamic Welcome Banner & Suggestion Chips + Chat History rendered via JS -->
+            </div>
+
+            <!-- Input Bar -->
+            <form id="hermesChatForm" onsubmit="handleHermesSubmit(event)" class="p-3 bg-[#34304A] border-t border-[#D8B8C8]/25 flex items-center gap-2 shrink-0">
+                <input type="text" id="hermesUserInput" autocomplete="off" placeholder="Posez votre question à Hermes..."
+                    class="flex-1 px-3.5 py-2.5 rounded-xl bg-[#242134] border border-[#D8B8C8]/30 focus:border-[#E9D9B7] focus:outline-none text-xs sm:text-sm text-[#FAF6F0] placeholder-[#E9D9B7]/45">
+                <button type="submit" id="hermesSendBtn" class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#E9D9B7] to-[#D8B8C8] text-[#242134] hover:brightness-105 flex items-center justify-center shadow-md transition-all cursor-pointer shrink-0" aria-label="Envoyer">
+                    <i class="fa-solid fa-paper-plane text-xs rtl:-scale-x-100"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Floating Launcher Button -->
+        <button type="button" id="hermesLauncherBtn" onclick="toggleHermesChat()" aria-label="Ouvrir le concierge virtuel Hermes"
+            class="relative w-16 h-16 rounded-full hermes-launcher-glow flex items-center justify-center transition-transform duration-300 hover:scale-105 cursor-pointer group">
+            <!-- Soft #D8B8C8 Aura -->
+            <span class="absolute -inset-1.5 rounded-full bg-[#D8B8C8]/20 blur-md pointer-events-none group-hover:bg-[#E9D9B7]/30 transition-all"></span>
+            <!-- Circular Hermes Avatar -->
+            <div id="hermesLauncherAvatar" class="w-full h-full rounded-full overflow-hidden relative z-10 bg-[#241122]"></div>
+            <!-- Subtle Sparkle / Chat Badge Icon -->
+            <span class="absolute -bottom-1 -left-1 z-20 w-6 h-6 rounded-full bg-[#34304A] border border-[#E9D9B7] text-[#E9D9B7] flex items-center justify-center text-[10px] shadow-md">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </span>
+            <!-- Unread Notification Dot on Initial Load -->
+            <span id="hermesUnreadDot" class="absolute -top-0.5 -right-0.5 z-20 flex h-4 w-4">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E9D9B7] opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-400 border-2 border-[#242134]"></span>
+            </span>
+        </button>
+    </div>
+
     <!-- Modal 1: Full Official Charter (Statut Constitutif & Règlement Intérieur - 12 Complete Articles + PDF Export) -->
     <div id="charterModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-midnight border border-champagne/50 rounded-2xl max-w-4xl w-full max-h-[88vh] flex flex-col shadow-2xl">
@@ -1309,11 +1421,62 @@
         // 0. AGORA & WINGS OFFICIAL LOGOS CONFIGURATION + BESPOKE CELESTIAL SVG FALLBACKS
         // ============================================================================
         const AGORA_LOGOS = {
-            main: './logo-main.jpg',
-            lyrea: './logo-lyrea.jpg',
-            nous: './logo-nous.jpg',
-            muse: './logo-muse.jpg'
+            main: 'Logo.jpg',
+            lyrea: 'Logo_Lyréa.jpg',
+            nous: 'Logo_Noûs.jpg',
+            muse: 'Logo_Muse.jpg'
         };
+
+        // Hermes AI Concierge Avatar Path & Celestial Winged-Helmet SVG Fallback
+        const HERMES_AVATAR = './hermes.png';
+
+        function getHermesSvgFallback() {
+            return `<svg viewBox="0 0 240 240" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="hermesGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FAF6F0"/>
+                        <stop offset="50%" stop-color="#E9D9B7"/>
+                        <stop offset="100%" stop-color="#D8B8C8"/>
+                    </linearGradient>
+                    <linearGradient id="hermesWing" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#D8B8C8"/>
+                        <stop offset="50%" stop-color="#FAF6F0"/>
+                        <stop offset="100%" stop-color="#E9D9B7"/>
+                    </linearGradient>
+                </defs>
+                <rect width="240" height="240" rx="120" fill="#211226"/>
+                <circle cx="120" cy="120" r="96" stroke="url(#hermesGold)" stroke-width="2" opacity="0.35"/>
+                <ellipse cx="120" cy="126" rx="88" ry="30" transform="rotate(-18 120 126)" stroke="url(#hermesGold)" stroke-width="3.5" fill="none" opacity="0.85"/>
+                <!-- Left Wing -->
+                <path d="M68 96 C40 72, 34 42, 54 32 C62 48, 72 62, 84 78 Z" fill="url(#hermesWing)"/>
+                <path d="M62 104 C36 90, 28 66, 44 54 C54 68, 66 80, 78 90 Z" fill="url(#hermesGold)" opacity="0.9"/>
+                <!-- Right Wing -->
+                <path d="M172 96 C200 72, 206 42, 186 32 C178 48, 168 62, 156 78 Z" fill="url(#hermesWing)"/>
+                <path d="M178 104 C204 90, 212 66, 196 54 C186 68, 174 80, 162 90 Z" fill="url(#hermesGold)" opacity="0.9"/>
+                <!-- Winged Helmet Dome -->
+                <path d="M74 106 C74 72, 166 72, 166 106 Z" fill="url(#hermesGold)" stroke="#FAF6F0" stroke-width="2"/>
+                <path d="M64 106 Q120 94 176 106" stroke="#FAF6F0" stroke-width="4" stroke-linecap="round"/>
+                <!-- Chibi Face & Eyes -->
+                <circle cx="120" cy="130" r="34" fill="#F5DEC9" stroke="#E9D9B7" stroke-width="1.5"/>
+                <circle cx="106" cy="128" r="6.5" fill="#34304A"/>
+                <circle cx="134" cy="128" r="6.5" fill="#34304A"/>
+                <circle cx="104" cy="126" r="2.2" fill="#FAF6F0"/>
+                <circle cx="132" cy="126" r="2.2" fill="#FAF6F0"/>
+                <path d="M112 143 Q120 149 128 143" stroke="#34304A" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                <!-- Tunic & Caduceus Staff -->
+                <path d="M92 164 L148 164 L156 202 L84 202 Z" fill="#433E5E" stroke="#E9D9B7" stroke-width="2"/>
+                <line x1="176" y1="118" x2="156" y2="196" stroke="#E9D9B7" stroke-width="3.2" stroke-linecap="round"/>
+                <circle cx="178" cy="115" r="4.5" fill="#FAF6F0"/>
+                <!-- Celestial Stars -->
+                <path d="M44 140 L46 146 L52 148 L46 150 L44 156 L42 150 L36 148 L42 146 Z" fill="#E9D9B7"/>
+                <path d="M196 144 L198 150 L204 152 L198 154 L196 160 L194 154 L188 152 L194 150 Z" fill="#E9D9B7"/>
+            </svg>`;
+        }
+
+        function renderHermesAvatarImg(extraClasses = 'w-full h-full object-cover') {
+            const encodedFallback = encodeURIComponent(getHermesSvgFallback());
+            return `<img src="${HERMES_AVATAR}" alt="Hermes Concierge AGORA" class="${extraClasses}" onerror="if(!this.dataset.triedAlt){this.dataset.triedAlt='1';this.src='hermes.png';}else{this.onerror=null;this.src='data:image/svg+xml;utf8,${encodedFallback}';}">`;
+        }
 
         // High-precision celestial SVG emblems matching the exact uploaded Logo.jpg, Logo_Lyréa.jpg, Logo_Noûs.jpg, and Logo_Muse.jpg
         function getCelestialSvgFallback(key) {
@@ -2364,6 +2527,7 @@
             if (spaceModal && !spaceModal.classList.contains('hidden')) {
                 renderDedicatedWingModal(activeWing);
             }
+            updateHermesLanguageUI();
         }
 
         function toggleMobileMenu() {
@@ -2467,7 +2631,7 @@
         }
 
         // ============================================================================
-        // 8. DIAGNOSTIC QUIZ ("FIND YOUR WING" -> LYRÉA, NOÛS, MUSE) 
+        // 8. DIAGNOSTIC QUIZ ("FIND YOUR WING" -> LYRÉA, NOÛS, MUSE)
         // ============================================================================
         function selectQuizAnswer(qNum, rawKey, btnEl) {
             const wingKey = normalizeWingKey(rawKey);
@@ -3026,10 +3190,333 @@
         }
 
         // ============================================================================
-        // 13. INITIALIZE PORTAL ON LOAD
+        // 13. HERMES AI VIRTUAL CONCIERGE ENGINE (UI, /api/chat & FALLBACK LOGIC)
+        // ============================================================================
+        let hermesIsOpen = false;
+        let hermesHistory = [];
+
+        const hermesI18n = {
+            fr: {
+                subLabel: "Concierge Officiel • Agora ENS",
+                status: "En ligne",
+                welcome: "Bonjour ! Je suis Hermes, le concierge virtuel de l'Agora. Posez-moi vos questions sur le club, nos 3 pôles ou votre adhésion.",
+                placeholder: "Posez votre question à Hermes...",
+                chips: [
+                    "Comment s'inscrire ?",
+                    "C'est quoi le pôle Noûs ?",
+                    "Quels sont les événements ?",
+                    "Qui gère le club ?"
+                ]
+            },
+            en: {
+                subLabel: "Official Concierge • Agora ENS",
+                status: "Online",
+                welcome: "Hello! I am Hermes, the virtual concierge of Agora. Ask me anything about the club, our 3 wings, or your membership.",
+                placeholder: "Ask Hermes a question...",
+                chips: [
+                    "How do I join?",
+                    "What is the Noûs wing?",
+                    "What are the events?",
+                    "Who runs the club?"
+                ]
+            },
+            ar: {
+                subLabel: "المساعد الرسمي • أغورا المدرسة العليا",
+                status: "متصل الآن",
+                welcome: "مرحباً! أنا هيرميس (Hermes)، المساعد الافتراضي لنادي أغورا. اطرح عليّ أسئلتك حول النادي، أقطابنا الثلاثة أو كيفية الانخراط.",
+                placeholder: "اطرح سؤالك على هيرميس...",
+                chips: [
+                    "كيف أسجل في النادي؟",
+                    "ما هو قطب Noûs؟",
+                    "ما هي الفعاليات القادمة؟",
+                    "من يدير النادي؟"
+                ]
+            }
+        };
+
+        function initHermesConcierge() {
+            const launcherAvatar = document.getElementById('hermesLauncherAvatar');
+            if (launcherAvatar) launcherAvatar.innerHTML = renderHermesAvatarImg('w-full h-full object-cover');
+
+            const headerAvatar = document.getElementById('hermesHeaderAvatar');
+            if (headerAvatar) headerAvatar.innerHTML = renderHermesAvatarImg('w-full h-full object-cover');
+
+            updateHermesLanguageUI();
+            renderHermesConversation();
+        }
+
+        function updateHermesLanguageUI() {
+            const cfg = hermesI18n[currentLang] || hermesI18n.fr;
+            const modal = document.getElementById('hermesChatModal');
+            if (modal) {
+                modal.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            }
+
+            const subLbl = document.getElementById('hermesSubLabel');
+            if (subLbl) subLbl.textContent = cfg.subLabel;
+
+            const statusLbl = document.getElementById('hermesStatusLabel');
+            if (statusLbl) statusLbl.textContent = cfg.status;
+
+            const inputEl = document.getElementById('hermesUserInput');
+            if (inputEl) inputEl.placeholder = cfg.placeholder;
+
+            renderHermesConversation();
+        }
+
+        function toggleHermesChat(forceState) {
+            const modal = document.getElementById('hermesChatModal');
+            const unreadDot = document.getElementById('hermesUnreadDot');
+            if (!modal) return;
+
+            const nextState = typeof forceState === 'boolean' ? forceState : !hermesIsOpen;
+            hermesIsOpen = nextState;
+
+            if (hermesIsOpen) {
+                if (unreadDot) unreadDot.classList.add('hidden');
+                modal.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    modal.classList.remove('opacity-0', 'scale-95');
+                    modal.classList.add('opacity-100', 'scale-100');
+                });
+                scrollToHermesBottom();
+                setTimeout(() => {
+                    document.getElementById('hermesUserInput')?.focus();
+                }, 180);
+            } else {
+                modal.classList.remove('opacity-100', 'scale-100');
+                modal.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    if (!hermesIsOpen) modal.classList.add('hidden');
+                }, 260);
+            }
+        }
+
+        function resetHermesChat() {
+            hermesHistory = [];
+            renderHermesConversation();
+        }
+
+        function escapeHermesHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function renderHermesConversation() {
+            const container = document.getElementById('hermesMessagesContainer');
+            if (!container) return;
+
+            const cfg = hermesI18n[currentLang] || hermesI18n.fr;
+
+            const chipsHtml = cfg.chips.map(chip => {
+                const safeChip = chip.replace(/'/g, "\\'");
+                return `<button type="button" onclick="sendHermesChip('${safeChip}')" class="px-3 py-1.5 rounded-xl bg-[#34304A] hover:bg-[#433E5E] border border-[#D8B8C8]/35 hover:border-[#E9D9B7] text-[#E9D9B7] text-[11px] font-medium transition-all cursor-pointer text-left rtl:text-right shadow-sm">
+                    ✦ ${escapeHermesHtml(chip)}
+                </button>`;
+            }).join('');
+
+            const messagesHtml = hermesHistory.map(msg => {
+                if (msg.role === 'user') {
+                    return `
+                        <div class="flex justify-end">
+                            <div class="max-w-[82%] px-3.5 py-2.5 rounded-2xl rounded-br-sm rtl:rounded-br-2xl rtl:rounded-bl-sm bg-[#E9D9B7] text-[#242134] text-xs sm:text-sm font-medium shadow-md leading-relaxed">
+                                ${escapeHermesHtml(msg.content)}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="flex items-start gap-2.5">
+                            <div class="w-7 h-7 rounded-full border border-[#E9D9B7] bg-[#241122] overflow-hidden shrink-0 mt-0.5">
+                                ${renderHermesAvatarImg('w-full h-full object-cover')}
+                            </div>
+                            <div class="max-w-[84%] px-3.5 py-2.5 rounded-2xl rounded-tl-sm rtl:rounded-tl-2xl rtl:rounded-tr-sm bg-[#28243A] border border-[#D8B8C8]/30 text-[#FAF6F0] text-xs sm:text-sm shadow-md leading-relaxed">
+                                ${escapeHermesHtml(msg.content)}
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            container.innerHTML = `
+                <!-- Welcome Banner -->
+                <div class="p-3.5 rounded-2xl bg-[#28243A] border border-[#D8B8C8]/30 shadow-md space-y-2.5">
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-8 h-8 rounded-full border border-[#E9D9B7] bg-[#241122] overflow-hidden shrink-0 mt-0.5">
+                            ${renderHermesAvatarImg('w-full h-full object-cover')}
+                        </div>
+                        <p class="text-xs sm:text-sm text-[#FAF6F0] leading-relaxed">
+                            ${escapeHermesHtml(cfg.welcome)}
+                        </p>
+                    </div>
+                    <!-- Quick Suggestion Chips -->
+                    <div class="pt-1 flex flex-wrap gap-1.5">
+                        ${chipsHtml}
+                    </div>
+                </div>
+                ${messagesHtml}
+            `;
+
+            scrollToHermesBottom();
+        }
+
+        function appendHermesTypingIndicator() {
+            const container = document.getElementById('hermesMessagesContainer');
+            if (!container) return;
+            removeHermesTypingIndicator();
+
+            const typingEl = document.createElement('div');
+            typingEl.id = 'hermesTypingRow';
+            typingEl.className = 'flex items-center gap-2.5';
+            typingEl.innerHTML = `
+                <div class="w-7 h-7 rounded-full border border-[#E9D9B7] bg-[#241122] overflow-hidden shrink-0">
+                    ${renderHermesAvatarImg('w-full h-full object-cover')}
+                </div>
+                <div class="px-4 py-3 rounded-2xl bg-[#28243A] border border-[#D8B8C8]/30 flex items-center gap-1.5 shadow-md">
+                    <span class="hermes-typing-dot"></span>
+                    <span class="hermes-typing-dot"></span>
+                    <span class="hermes-typing-dot"></span>
+                </div>
+            `;
+            container.appendChild(typingEl);
+            scrollToHermesBottom();
+        }
+
+        function removeHermesTypingIndicator() {
+            const existing = document.getElementById('hermesTypingRow');
+            if (existing) existing.remove();
+        }
+
+        function scrollToHermesBottom() {
+            const container = document.getElementById('hermesMessagesContainer');
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+
+        function sendHermesChip(questionText) {
+            const inputEl = document.getElementById('hermesUserInput');
+            if (inputEl) inputEl.value = questionText;
+            processHermesMessage(questionText);
+        }
+
+        function handleHermesSubmit(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById('hermesUserInput');
+            if (!inputEl) return;
+            const text = inputEl.value.trim();
+            if (!text) return;
+            inputEl.value = '';
+            processHermesMessage(text);
+        }
+
+        // Client-Side Knowledge Base Fallback Engine (Strict adherence to AGORA rules)
+        function getHermesFallbackReply(userText) {
+            const q = (userText || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const raw = (userText || '').toLowerCase();
+
+            const declineMsg = "Je suis l'assistant dédié exclusivement au club AGORA de l'ENS Tizi Ouzou. Je ne peux répondre qu'aux questions concernant le club, nos 3 pôles et l'adhésion. Et cela coûtera beaucoup de temps, d'argent et d'efforts pour créer ce genre d'IA";
+
+            // 1. Check explicit off-topic queries (math, coding scripts, recipes, weather, general trivia)
+            const offTopicPatterns = [
+                /\b\d+\s*[\+\-\*\/]\s*\d+\b/,
+                /\b(recette|cuisine|meteo|weather|football|messi|ronaldo|capitale|python|javascript|html|css|equation|integrale|derivee|traduis|translate|blague|joke|horoscope|film|cinema)\b/,
+                /(طبخ|وصفة|طقس|كرة القدم|معادلة|برمجة)/
+            ];
+            const isExplicitOffTopic = offTopicPatterns.some(rx => rx.test(q) || rx.test(raw));
+            const hasAgoraContext = /(agora|ens|club|lyrea|nous|muse|pole|inscri|adhes|membre|carte|pass|evenement|event|presiden|bureau|anomiac|رحب|نادي|أغورا|اغورا|ليريا|نوس|ميوز|قطب|أقطاب|تسجيل|انخراط|انضمام|عضو|فعاليات|حدث|رئيس|مكتب)/.test(q) || /(أغورا|ليريا|نوس|ميوز|تسجيل|النادي|الفعاليات|الرئيس)/.test(raw);
+
+            if (isExplicitOffTopic && !hasAgoraContext) {
+                return declineMsg;
+            }
+
+            // 2. Events / Calendar / Program
+            if (/(evenement|event|programme|calendrier|gala|date|quand|activite|festival|prochain|spoiler)/.test(q) || /(فعاليات|أحداث|احداث|برنامج|متى|نشاط|حفل)/.test(raw)) {
+                return "Just stay tuned, we won't spoil! Restez connectés sur notre Instagram, de grandes choses arrivent !";
+            }
+
+            // 3. Governance / President / Who runs the club
+            if (/(qui gere|president|vice|bureau|fondateur|dirige|responsable|anomiac|contact|instagram|qui est le chef|who runs|leader|board)/.test(q) || /(من يدير|رئيس|المكتب|المسؤول|انستغرام|تواصل)/.test(raw)) {
+                return "Le Président du club et Coordinateur du pôle Noûs est @anomiac.exe. Vous pouvez contacter le Bureau sur notre Instagram officiel.";
+            }
+
+            // 4. Joining / Registration / Membership Pass
+            if (/(inscri|adhes|rejoindre|membre|carte|pass|gratuit|postuler|comment faire partie|join|register|apply|membership)/.test(q) || /(تسجيل|أسجل|اسجل|انضمام|انخراط|عضوية|بطاقة|مجاني|كيف انضم)/.test(raw)) {
+                return "L'adhésion est 100% gratuite pour tous les étudiants de l'ENS. Remplissez simplement le formulaire dans la section Adhésion pour générer votre pass digital !";
+            }
+
+            // 5. Specific Wings or All 3 Wings (Lyréa, Noûs, Muse)
+            const asksNous = /(nous|ia\b|intelligence artificielle|cyber|architect|trading|invest|freelanc|business|argent en ligne|branding|it\b)/.test(q) || /(نوس|ذكاء|سيبراني|تداول|استثمار)/.test(raw);
+            const asksLyrea = /(lyrea|ecriture|poesie|slam|oratoire|eloquence|debat|cercle litteraire|roman|livre)/.test(q) || /(ليريا|كتابة|شعر|سلام|خطابة|مناظرة|أدب)/.test(raw);
+            const asksMuse = /(muse|arts plastiques|dessin|peinture|musique|instrument|chant|theatre|scene)/.test(q) || /(ميوز|رسم|فنون|موسيقى|غناء|مسرح)/.test(raw);
+
+            if (asksNous && !asksLyrea && !asksMuse) {
+                return "Le pôle NOÛS (Pôle 02) est dédié à l'IA, la cybersécurité (« The Architect's Key ») & l'IT, l'investissement et le trading, le freelancing, le business en ligne et le personal branding.";
+            }
+            if (asksLyrea && !asksNous && !asksMuse) {
+                return "Le pôle LYRÉA (Pôle 01) rassemble l'écriture créative (poèmes, romans, lettres, textes), la poésie & le slam, l'art oratoire en public, le cercle littéraire et les débats trilingues (FR/EN/AR).";
+            }
+            if (asksMuse && !asksNous && !asksLyrea) {
+                return "Le pôle MUSE (Pôle 03) est le foyer artistique d'AGORA : arts plastiques (dessin, peinture, expositions), musique (tous les instruments et chant) et théâtre universitaire.";
+            }
+            if (/(pole|wing|departement|specialite|c'est quoi agora|qu'est-ce que agora|what is agora|presentation|club|agora)/.test(q) || /(قطب|أقطاب|اقطاب|ما هو|أغورا|اغورا|نادي)/.test(raw)) {
+                return "AGORA (ENS Tizi Ouzou) s'articule autour de 3 pôles : 1) LYRÉA (écriture, poésie & slam, art oratoire, cercle littéraire, débats), 2) NOÛS (IA, cybersécurité, IT, trading, freelancing & business en ligne), et 3) MUSE (arts plastiques, musique & théâtre).";
+            }
+
+            // 6. Polite greetings
+            if (/^(bonjour|salut|bonsoir|hello|hi|hey|salam|coucou|merci|thanks)\b/.test(q) || /^(مرحبا|سلام|السلام عليكم|أهلا|شكرا)/.test(raw)) {
+                return "Bonjour ! Je suis Hermes, le concierge virtuel du club AGORA à l'ENS Tizi Ouzou. Je peux vous renseigner sur nos 3 pôles (Lyréa, Noûs, Muse), notre Bureau (@anomiac.exe / @agora.ens) ou votre adhésion gratuite !";
+            }
+
+            // 7. Everything else -> Strict Decline Message
+            return declineMsg;
+        }
+
+        async function processHermesMessage(userInput) {
+            hermesHistory.push({ role: 'user', content: userInput });
+            renderHermesConversation();
+            appendHermesTypingIndicator();
+
+            const sendBtn = document.getElementById('hermesSendBtn');
+            if (sendBtn) sendBtn.disabled = true;
+
+            let botReply = null;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: userInput }]
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    botReply = data.reply || data.message || data.content || (data.choices && data.choices[0]?.message?.content) || null;
+                }
+            } catch (err) {
+                // Backend /api/chat not reachable in standalone preview; fall back gracefully
+            }
+
+            if (!botReply || typeof botReply !== 'string' || !botReply.trim()) {
+                await new Promise(r => setTimeout(r, 520));
+                botReply = getHermesFallbackReply(userInput);
+            }
+
+            removeHermesTypingIndicator();
+            hermesHistory.push({ role: 'assistant', content: botReply.trim() });
+            if (sendBtn) sendBtn.disabled = false;
+            renderHermesConversation();
+        }
+
+        // ============================================================================
+        // 14. INITIALIZE PORTAL ON LOAD
         // ============================================================================
         window.addEventListener('DOMContentLoaded', () => {
             initBrandLogos();
+            initHermesConcierge();
             loadLocalMembers();
             renderWingContent('lyrea');
             renderCharterContent();
