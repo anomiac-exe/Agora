@@ -2754,7 +2754,35 @@
                 if (errEl) errEl.classList.remove('hidden');
                 return;
             }
+// Check if member already exists in local cache or database by Email or Full Name
+            loadLocalMembers();
+            const existingMember = membersCache.find(m => {
+                const sameEmail = email && m.email && m.email.toLowerCase() === email.toLowerCase();
+                const sameName = full_name && m.full_name && m.full_name.toLowerCase() === full_name.toLowerCase();
+                return sameEmail || sameName;
+            });
 
+            if (existingMember) {
+                // If they already registered, retrieve their existing card instead of creating a duplicate
+                currentMemberCode = existingMember.member_code;
+                document.getElementById('passIdBadge').textContent = `#${currentMemberCode}`;
+                
+                const statusInd = document.getElementById('passStatusIndicator');
+                if (statusInd) {
+                    statusInd.textContent = currentLang === 'ar' ? '● عضو مسجل مسبقاً (تم استرجاع البطاقة)' : '● Déjà inscrit (Carte récupérée)';
+                }
+
+                const successBox = document.getElementById('passSuccessActions');
+                if (successBox) successBox.classList.remove('hidden');
+
+                const descMsg = document.getElementById('passDatabaseStatusMsg');
+                if (descMsg) {
+                    descMsg.textContent = `Vous êtes déjà enregistré(e) sous le code #${currentMemberCode}. Voici votre carte officielle.`;
+                }
+
+                downloadMembershipCardPDF();
+                return; // STOP EXECUTION: Do not insert a duplicate into the database!
+            }
             currentMemberCode = generateUniqueMemberCode();
             document.getElementById('passIdBadge').textContent = `#${currentMemberCode}`;
 
@@ -2797,8 +2825,10 @@
                 }
             }
 
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = origHtml;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Adhésion Confirmée !</span>`;
+            submitBtn.classList.remove('hover:brightness-105', 'cursor-pointer');
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
             const successBox = document.getElementById('passSuccessActions');
             if (successBox) successBox.classList.remove('hidden');
