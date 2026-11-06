@@ -1447,27 +1447,21 @@
                 <rect width="240" height="240" rx="120" fill="#211226"/>
                 <circle cx="120" cy="120" r="96" stroke="url(#hermesGold)" stroke-width="2" opacity="0.35"/>
                 <ellipse cx="120" cy="126" rx="88" ry="30" transform="rotate(-18 120 126)" stroke="url(#hermesGold)" stroke-width="3.5" fill="none" opacity="0.85"/>
-                <!-- Left Wing -->
                 <path d="M68 96 C40 72, 34 42, 54 32 C62 48, 72 62, 84 78 Z" fill="url(#hermesWing)"/>
                 <path d="M62 104 C36 90, 28 66, 44 54 C54 68, 66 80, 78 90 Z" fill="url(#hermesGold)" opacity="0.9"/>
-                <!-- Right Wing -->
                 <path d="M172 96 C200 72, 206 42, 186 32 C178 48, 168 62, 156 78 Z" fill="url(#hermesWing)"/>
                 <path d="M178 104 C204 90, 212 66, 196 54 C186 68, 174 80, 162 90 Z" fill="url(#hermesGold)" opacity="0.9"/>
-                <!-- Winged Helmet Dome -->
                 <path d="M74 106 C74 72, 166 72, 166 106 Z" fill="url(#hermesGold)" stroke="#FAF6F0" stroke-width="2"/>
                 <path d="M64 106 Q120 94 176 106" stroke="#FAF6F0" stroke-width="4" stroke-linecap="round"/>
-                <!-- Chibi Face & Eyes -->
                 <circle cx="120" cy="130" r="34" fill="#F5DEC9" stroke="#E9D9B7" stroke-width="1.5"/>
                 <circle cx="106" cy="128" r="6.5" fill="#34304A"/>
                 <circle cx="134" cy="128" r="6.5" fill="#34304A"/>
                 <circle cx="104" cy="126" r="2.2" fill="#FAF6F0"/>
                 <circle cx="132" cy="126" r="2.2" fill="#FAF6F0"/>
                 <path d="M112 143 Q120 149 128 143" stroke="#34304A" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-                <!-- Tunic & Caduceus Staff -->
                 <path d="M92 164 L148 164 L156 202 L84 202 Z" fill="#433E5E" stroke="#E9D9B7" stroke-width="2"/>
                 <line x1="176" y1="118" x2="156" y2="196" stroke="#E9D9B7" stroke-width="3.2" stroke-linecap="round"/>
                 <circle cx="178" cy="115" r="4.5" fill="#FAF6F0"/>
-                <!-- Celestial Stars -->
                 <path d="M44 140 L46 146 L52 148 L46 150 L44 156 L42 150 L36 148 L42 146 Z" fill="#E9D9B7"/>
                 <path d="M196 144 L198 150 L204 152 L198 154 L196 160 L194 154 L188 152 L194 150 Z" fill="#E9D9B7"/>
             </svg>`;
@@ -1478,7 +1472,6 @@
             return `<img src="${HERMES_AVATAR}" alt="Hermes Concierge AGORA" class="${extraClasses}" onerror="if(!this.dataset.triedAlt){this.dataset.triedAlt='1';this.src='hermes.png';}else{this.onerror=null;this.src='data:image/svg+xml;utf8,${encodedFallback}';}">`;
         }
 
-        // High-precision celestial SVG emblems matching the exact uploaded Logo.jpg, Logo_Lyréa.jpg, Logo_Noûs.jpg, and Logo_Muse.jpg
         function getCelestialSvgFallback(key) {
             const defs = `
                 <defs>
@@ -2176,7 +2169,7 @@
         };
 
         // ============================================================================
-        // 4. OFFICIAL 12-ARTICLE CHARTER DATA (FR / EN / AR) — UPDATED FOR AGORA (LYRÉA, NOÛS, MUSE)
+        // 4. OFFICIAL 12-ARTICLE CHARTER DATA (FR / EN / AR)
         // ============================================================================
         const charterData = {
             fr: `
@@ -2346,7 +2339,6 @@
             return map[wingKey] || 'lyrea';
         }
 
-        // Trigger Wing Logo Flash + Open Dedicated Wing Space
         function openWingSpace(rawKey, skipFlash = false) {
             const wingKey = normalizeWingKey(rawKey);
             activeWing = wingKey;
@@ -2408,7 +2400,6 @@
             `).join('');
 
             container.innerHTML = `
-                <!-- Dedicated Space Top Navigation -->
                 <div class="sticky top-0 z-20 glass-nav px-4 sm:px-8 py-4">
                     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
                         <button type="button" onclick="closeWingSpace()" class="px-4 py-2 rounded-xl bg-[#242134] border border-[#E9D9B7]/40 hover:border-[#E9D9B7] text-[#E9D9B7] font-mono text-xs font-semibold transition-all cursor-pointer">
@@ -2423,7 +2414,6 @@
                     </div>
                 </div>
 
-                <!-- Dedicated Wing Hero Banner -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-8 py-12 flex-1">
                     <div class="bg-gradient-to-br from-[#433E5E] via-[#34304A] to-[#242134] gold-border-glow rounded-3xl p-6 sm:p-12 mb-12">
                         <div class="grid lg:grid-cols-12 gap-8 items-center">
@@ -2448,7 +2438,6 @@
                         </div>
                     </div>
 
-                    <!-- Specialties Breakdown -->
                     <div class="mb-10">
                         <h3 class="font-serif text-2xl sm:text-4xl font-bold text-[#FAF6F0] mb-6 text-center">${specsHeading}</h3>
                         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2456,7 +2445,6 @@
                         </div>
                     </div>
 
-                    <!-- Schedule & Deliverable Footer Banner -->
                     <div class="p-6 sm:p-8 rounded-2xl bg-[#433E5E]/90 border border-[#E9D9B7]/40 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div class="space-y-1">
                             <div class="font-mono text-xs uppercase text-[#D8B8C8]">${data.schedule}</div>
@@ -2486,7 +2474,6 @@
             if (!i18n[lang]) return;
             currentLang = lang;
 
-            // Handle RTL / LTR automatically
             if (lang === 'ar') {
                 document.documentElement.lang = 'ar';
                 document.documentElement.dir = 'rtl';
@@ -2495,7 +2482,6 @@
                 document.documentElement.dir = 'ltr';
             }
 
-            // Update active language button styling
             ['fr', 'en', 'ar'].forEach(code => {
                 const btn = document.getElementById(`langBtn-${code}`);
                 if (btn) {
@@ -2507,7 +2493,6 @@
                 }
             });
 
-            // Translate all [data-i18n] nodes
             const dict = i18n[lang];
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -2516,7 +2501,6 @@
                 }
             });
 
-            // Re-render dynamic panels
             renderWingContent(activeWing);
             renderCharterContent();
             updateLivePassPreview();
@@ -2765,7 +2749,6 @@
             const leadership_pitch = document.getElementById('leadershipPitch').value.trim();
             const motivation_note = document.getElementById('memberMotivation').value.trim();
 
-            // Require at least 1 contact channel
             if (!email && !telegram && !instagram) {
                 const errEl = document.getElementById('contactValidationError');
                 if (errEl) errEl.classList.remove('hidden');
@@ -2797,12 +2780,10 @@
                 created_at: new Date().toISOString()
             };
 
-            // Save to local cache immediately
             loadLocalMembers();
             membersCache.unshift(newRecord);
             saveLocalMembers(membersCache);
 
-            // Save to Supabase database table `agora_members`
             const submitBtn = document.getElementById('submitMemberBtn');
             const origHtml = submitBtn.innerHTML;
             submitBtn.disabled = true;
@@ -2822,29 +2803,179 @@
             const successBox = document.getElementById('passSuccessActions');
             if (successBox) successBox.classList.remove('hidden');
 
-            // Automatically trigger PDF download of the Member Card
             downloadMembershipCardPDF();
         }
 
         // ============================================================================
-        // 10. PDF GENERATION (MEMBERSHIP CARD & 12-ARTICLE CHARTER) + RECEIPT COPY
+        // 10. PDF GENERATION (OFF-SCREEN INLINE CARD BUILDER & CHARTER) + RECEIPT COPY
         // ============================================================================
-        function downloadMembershipCardPDF() {
-            const cardEl = document.getElementById('passPreviewCard');
-            if (!cardEl || typeof html2pdf === 'undefined') return;
+        function escapePdfHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str == null ? '' : String(str);
+            return div.innerHTML;
+        }
 
-            const rawName = document.getElementById('memberName')?.value.trim() || 'Membre_AGORA';
+        function downloadMembershipCardPDF() {
+            if (typeof html2pdf === 'undefined') return;
+
+            const rawName = document.getElementById('memberName')?.value.trim() || (currentLang === 'ar' ? 'عضو أغورا' : 'Membre AGORA');
+            const emailVal = document.getElementById('memberEmail')?.value.trim() || '';
+            const tgVal = document.getElementById('memberTelegram')?.value.trim() || '';
+            const igVal = document.getElementById('memberInstagram')?.value.trim() || '';
+            const contactLine = [
+                emailVal,
+                tgVal ? `TG: ${tgVal}` : '',
+                igVal ? `IG: ${igVal}` : ''
+            ].filter(Boolean).join('  •  ') || '@agora.ens';
+
+            const deptVal = document.getElementById('memberDept')?.value || 'Langue & Littérature Françaises';
+            const yearVal = document.getElementById('memberYear')?.value || '2ème Année';
+            const wingVal = document.getElementById('memberWing')?.value || 'LYRÉA (Écriture, Slam, Éloquence, Cercle Littéraire & Débats)';
+            const wantsLeader = document.getElementById('wantsHigherRank')?.checked || false;
+            const codeBadge = `#${currentMemberCode || 'AGORA-2026'}`;
+            const isRtl = currentLang === 'ar';
+
+            const holderLbl = isRtl ? 'حامل البطاقة / العضو' : (currentLang === 'en' ? 'CARDHOLDER / MEMBER' : 'TITULAIRE / MEMBER');
+            const deptLbl = isRtl ? 'التخصص / القسم' : (currentLang === 'en' ? 'DEPARTMENT' : 'FILIÈRE (ENS)');
+            const yearLbl = isRtl ? 'السنة الدراسية' : (currentLang === 'en' ? 'STUDY YEAR' : 'PROMOTION');
+            const wingLbl = isRtl ? 'القطب الرئيسي للانتماء' : (currentLang === 'en' ? 'PRIMARY AFFILIATED WING' : 'PÔLE D\'AFFILIATION PRINCIPAL');
+            const roleLbl = isRtl ? 'الصفة: عضو فاعل (Membre Actif)' : (currentLang === 'en' ? 'Status: Active Member (Membre Actif)' : 'Statut : Membre Actif');
+            const leaderBadgeText = isRtl ? '★ مترشح لمنصب مسؤولية' : (currentLang === 'en' ? '★ Leadership Applicant' : '★ Candidat(e) Bureau / Pôle');
+
+            const existingTemp = document.getElementById('agoraPdfExportWrapper');
+            if (existingTemp) existingTemp.remove();
+
+            const offscreenWrapper = document.createElement('div');
+            offscreenWrapper.id = 'agoraPdfExportWrapper';
+            offscreenWrapper.style.cssText = 'position: fixed; left: -9999px; top: -9999px; width: 650px; height: 380px; z-index: -1; pointer-events: none;';
+
+            const cardContainer = document.createElement('div');
+            cardContainer.id = 'agoraPdfExportCard';
+            cardContainer.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+            cardContainer.style.cssText = [
+                'width: 650px',
+                'height: 380px',
+                'background-color: #28233A',
+                'border: 2px solid #E9D9B7',
+                'border-radius: 18px',
+                'padding: 24px 28px',
+                'box-sizing: border-box',
+                'color: #FAF6F0',
+                'font-family: Inter, Cairo, Arial, sans-serif',
+                'display: flex',
+                'flex-direction: column',
+                'justify-content: space-between'
+            ].join('; ');
+
+            cardContainer.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #D8B8C8; padding-bottom: 14px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 44px; height: 44px; border-radius: 10px; background-color: #241628; border: 1.5px solid #E9D9B7; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; font-weight: 700; color: #E9D9B7;">
+                            A
+                        </div>
+                        <div>
+                            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; font-weight: 700; letter-spacing: 3px; color: #FAF6F0; line-height: 1.1;">
+                                AGORA
+                            </div>
+                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: #D8B8C8; text-transform: uppercase; margin-top: 3px;">
+                                AGORA - ENS TIZI OUZOU • CARTE OFFICIELLE
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 6px 12px; border-radius: 8px; background-color: #1D192B; border: 1px solid #E9D9B7; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #E9D9B7;">
+                        ${escapePdfHtml(codeBadge)}
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; margin: 10px 0;">
+                    <div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #D8B8C8;">
+                            ${escapePdfHtml(holderLbl)}
+                        </div>
+                        <div style="font-family: 'Cormorant Garamond', 'Amiri', Georgia, serif; font-size: 28px; font-weight: 700; color: #FAF6F0; line-height: 1.15; margin-top: 2px;">
+                            ${escapePdfHtml(rawName)}
+                        </div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #E9D9B7; margin-top: 3px;">
+                            ${escapePdfHtml(contactLine)}
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <div style="flex: 1; padding: 10px 14px; border-radius: 10px; background-color: #1D192B; border: 1px solid #D8B8C8;">
+                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; color: #D8B8C8;">
+                                ${escapePdfHtml(deptLbl)}
+                            </div>
+                            <div style="font-size: 12px; font-weight: 600; color: #FAF6F0; margin-top: 3px;">
+                                ${escapePdfHtml(deptVal)}
+                            </div>
+                        </div>
+                        <div style="width: 170px; padding: 10px 14px; border-radius: 10px; background-color: #1D192B; border: 1px solid #D8B8C8;">
+                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; color: #D8B8C8;">
+                                ${escapePdfHtml(yearLbl)}
+                            </div>
+                            <div style="font-size: 12px; font-weight: 600; color: #FAF6F0; margin-top: 3px;">
+                                ${escapePdfHtml(yearVal)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 12px 16px; border-radius: 12px; background-color: #1D192B; border: 1.5px solid #E9D9B7;">
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.2px; color: #D8B8C8;">
+                            ${escapePdfHtml(wingLbl)}
+                        </div>
+                        <div style="font-family: 'Cormorant Garamond', 'Amiri', Georgia, serif; font-size: 18px; font-weight: 700; color: #E9D9B7; margin-top: 2px;">
+                            ${escapePdfHtml(wingVal)}
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 5px;">
+                            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #FAF6F0;">
+                                ${escapePdfHtml(roleLbl)}
+                            </span>
+                            ${wantsLeader ? `<span style="padding: 2px 8px; border-radius: 6px; background-color: #34304A; border: 1px solid #E9D9B7; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #E9D9B7;">${escapePdfHtml(leaderBadgeText)}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #D8B8C8; padding-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #E9D9B7;">
+                    <span>✦ LYRÉA • NOÛS • MUSE</span>
+                    <span>● AGORA ENS TIZI OUZOU — @agora.ens</span>
+                </div>
+            `;
+
+            offscreenWrapper.appendChild(cardContainer);
+            document.body.appendChild(offscreenWrapper);
+
             const safeName = rawName.replace(/[^a-zA-Z0-9\u0600-\u06FF_-]/g, '_');
 
             const opt = {
-                margin: [10, 10, 10, 10],
+                margin: [8, 8, 8, 8],
                 filename: `Carte_Membre_AGORA_ENS_${safeName}_${currentMemberCode}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#34304A' },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#28233A',
+                    width: 650,
+                    height: 380,
+                    scrollX: 0,
+                    scrollY: 0,
+                    onclone: function(clonedDoc) {
+                        const clonedWrapper = clonedDoc.getElementById('agoraPdfExportWrapper');
+                        if (clonedWrapper) {
+                            clonedWrapper.style.position = 'static';
+                            clonedWrapper.style.left = '0';
+                            clonedWrapper.style.top = '0';
+                        }
+                    }
+                },
                 jsPDF: { unit: 'mm', format: 'a5', orientation: 'landscape' }
             };
 
-            html2pdf().set(opt).from(cardEl).save();
+            html2pdf().set(opt).from(cardContainer).save().then(() => {
+                offscreenWrapper.remove();
+            }).catch((err) => {
+                console.warn('PDF generation error:', err);
+                offscreenWrapper.remove();
+            });
         }
 
         function copyMembershipReceipt() {
@@ -2942,7 +3073,6 @@
             document.getElementById('adminModal').classList.remove('hidden');
             document.getElementById('adminLoginError').classList.add('hidden');
 
-            // Strictly verify if an active Supabase Auth session exists
             if (supabaseClient) {
                 try {
                     const { data: { session } } = await supabaseClient.auth.getSession();
@@ -2953,7 +3083,6 @@
                 } catch (e) {}
             }
 
-            // Ensure dashboard remains locked if not authenticated
             document.getElementById('adminDashboardView').classList.add('hidden');
             document.getElementById('adminLoginView').classList.remove('hidden');
             document.getElementById('adminLogoutBtn').classList.add('hidden');
@@ -3340,7 +3469,6 @@
             }).join('');
 
             container.innerHTML = `
-                <!-- Welcome Banner -->
                 <div class="p-3.5 rounded-2xl bg-[#28243A] border border-[#D8B8C8]/30 shadow-md space-y-2.5">
                     <div class="flex items-start gap-2.5">
                         <div class="w-8 h-8 rounded-full border border-[#E9D9B7] bg-[#241122] overflow-hidden shrink-0 mt-0.5">
@@ -3350,7 +3478,6 @@
                             ${escapeHermesHtml(cfg.welcome)}
                         </p>
                     </div>
-                    <!-- Quick Suggestion Chips -->
                     <div class="pt-1 flex flex-wrap gap-1.5">
                         ${chipsHtml}
                     </div>
@@ -3411,14 +3538,12 @@
             processHermesMessage(text);
         }
 
-        // Client-Side Knowledge Base Fallback Engine (Strict adherence to AGORA rules)
         function getHermesFallbackReply(userText) {
             const q = (userText || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             const raw = (userText || '').toLowerCase();
 
             const declineMsg = "Je suis l'assistant dédié exclusivement au club AGORA de l'ENS Tizi Ouzou. Je ne peux répondre qu'aux questions concernant le club, nos 3 pôles et l'adhésion.";
 
-            // 1. Check explicit off-topic queries (math, coding scripts, recipes, weather, general trivia)
             const offTopicPatterns = [
                 /\b\d+\s*[\+\-\*\/]\s*\d+\b/,
                 /\b(recette|cuisine|meteo|weather|football|messi|ronaldo|capitale|python|javascript|html|css|equation|integrale|derivee|traduis|translate|blague|joke|horoscope|film|cinema)\b/,
@@ -3431,22 +3556,18 @@
                 return declineMsg;
             }
 
-            // 2. Events / Calendar / Program
             if (/(evenement|event|programme|calendrier|gala|date|quand|activite|festival|prochain|spoiler)/.test(q) || /(فعاليات|أحداث|احداث|برنامج|متى|نشاط|حفل)/.test(raw)) {
                 return "Just stay tuned, we won't spoil! Restez connectés sur notre Instagram, de grandes choses arrivent !";
             }
 
-            // 3. Governance / President / Who runs the club
             if (/(qui gere|president|vice|bureau|fondateur|dirige|responsable|anomiac|contact|instagram|qui est le chef|who runs|leader|board)/.test(q) || /(من يدير|رئيس|المكتب|المسؤول|انستغرام|تواصل)/.test(raw)) {
                 return "Le Président du club et Coordinateur du pôle Noûs est @anomiac.exe. La Vice-Présidente et Coordinatrice du pôle Muse est : @onyssaa. La Coordinatrice de lyréa est : @deartyyn. Vous pouvez contacter le Bureau sur notre Instagram officiel.";
             }
 
-            // 4. Joining / Registration / Membership Pass
             if (/(inscri|adhes|rejoindre|membre|carte|pass|gratuit|postuler|comment faire partie|join|register|apply|membership)/.test(q) || /(تسجيل|أسجل|اسجل|انضمام|انخراط|عضوية|بطاقة|مجاني|كيف انضم)/.test(raw)) {
                 return "L'adhésion est 100% gratuite pour tous les étudiants de l'ENS. Remplissez simplement le formulaire dans la section Adhésion pour générer votre pass digital !";
             }
 
-            // 5. Specific Wings or All 3 Wings (Lyréa, Noûs, Muse)
             const asksNous = /(nous|ia\b|intelligence artificielle|cyber|architect|trading|invest|freelanc|business|argent en ligne|branding|it\b)/.test(q) || /(نوس|ذكاء|سيبراني|تداول|استثمار)/.test(raw);
             const asksLyrea = /(lyrea|ecriture|poesie|slam|oratoire|eloquence|debat|cercle litteraire|roman|livre)/.test(q) || /(ليريا|كتابة|شعر|سلام|خطابة|مناظرة|أدب)/.test(raw);
             const asksMuse = /(muse|arts plastiques|dessin|peinture|musique|instrument|chant|theatre|scene)/.test(q) || /(ميوز|رسم|فنون|موسيقى|غناء|مسرح)/.test(raw);
@@ -3464,12 +3585,10 @@
                 return "AGORA (ENS Tizi Ouzou) s'articule autour de 3 pôles : 1) LYRÉA (écriture, poésie & slam, art oratoire, cercle littéraire, débats), 2) NOÛS (IA, cybersécurité, IT, trading, freelancing & business en ligne), et 3) MUSE (arts plastiques, musique & théâtre).";
             }
 
-            // 6. Polite greetings
             if (/^(bonjour|salut|bonsoir|hello|hi|hey|salam|coucou|merci|thanks)\b/.test(q) || /^(مرحبا|سلام|السلام عليكم|أهلا|شكرا)/.test(raw)) {
                 return "Bonjour ! Je suis Hermes, le concierge virtuel du club AGORA à l'ENS Tizi Ouzou. Je peux vous renseigner sur nos 3 pôles (Lyréa, Noûs, Muse), notre Bureau (@anomiac.exe / @agora.ens) ou votre adhésion gratuite !";
             }
 
-            // 7. Everything else -> Strict Decline Message
             return declineMsg;
         }
 
@@ -3522,7 +3641,6 @@
             renderCharterContent();
             updateLivePassPreview();
 
-            // Automatically fade out the entry logo flash after 1.65s
             setTimeout(() => {
                 skipEntrySplash();
             }, 1650);
