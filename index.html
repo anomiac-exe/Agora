@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#242134">
     <title>AGORA — ENS Tizi Ouzou | Lyréa • Noûs • Muse | أغورا المدرسة العليا للأساتذة</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -77,6 +78,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .agora-metallic-title {
+            background: linear-gradient(135deg, #FAF6F0 0%, #E9D9B7 45%, #D8B8C8 85%, #FAF6F0 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 12px 35px rgba(20, 17, 30, 0.55);
+        }
         .gold-border-glow {
             border: 1px solid rgba(216, 184, 200, 0.35);
             box-shadow: 0 12px 35px -10px rgba(20, 17, 30, 0.75), 0 0 24px -5px rgba(216, 184, 200, 0.18);
@@ -85,11 +93,88 @@
             border-color: rgba(233, 217, 183, 0.75);
             box-shadow: 0 16px 42px -10px rgba(20, 17, 30, 0.88), 0 0 30px -3px rgba(216, 184, 200, 0.32);
         }
-        .glass-nav {
-            background: rgba(52, 48, 74, 0.90);
+        .kinetic-wing-card {
+            background: linear-gradient(145deg, rgba(36, 33, 52, 0.88), rgba(52, 48, 74, 0.72));
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(233, 217, 183, 0.28);
+            box-shadow: 0 10px 28px -8px rgba(15, 12, 24, 0.7), inset 0 1px 0 0 rgba(250, 246, 240, 0.12);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .kinetic-wing-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(233, 217, 183, 0.82);
+            box-shadow: 0 18px 38px -8px rgba(15, 12, 24, 0.88), 0 0 26px -4px rgba(216, 184, 200, 0.35), inset 0 1px 0 0 rgba(233, 217, 183, 0.28);
+        }
+        .glass-topbar {
+            background: rgba(36, 33, 52, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(216, 184, 200, 0.25);
+            border-bottom: 1px solid rgba(216, 184, 200, 0.22);
+        }
+        .glass-nav {
+            background: rgba(52, 48, 74, 0.86);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            border-bottom: 1px solid rgba(233, 217, 183, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(20, 17, 30, 0.65);
+        }
+        /* Ambient Hero Cursor & Breathing Light */
+        @keyframes mobileAuraBreathe {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(0.92);
+                opacity: 0.45;
+            }
+            50% {
+                transform: translate(-46%, -54%) scale(1.12);
+                opacity: 0.75;
+            }
+        }
+        .hero-ambient-orb {
+            background: radial-gradient(circle, rgba(233, 217, 183, 0.24) 0%, rgba(216, 184, 200, 0.18) 42%, rgba(52, 48, 74, 0) 72%);
+            filter: blur(75px);
+            pointer-events: none;
+            will-change: transform, left, top;
+            transition: left 0.25s cubic-bezier(0.22, 1, 0.36, 1), top 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+        }
+        @media (max-width: 1023px) {
+            .hero-ambient-orb {
+                animation: mobileAuraBreathe 7s ease-in-out infinite;
+            }
+        }
+        /* 3D Luxury Pass Tilt & Specular Glare */
+        #passPreviewCard {
+            transform-style: preserve-3d;
+            transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+            will-change: transform;
+        }
+        .pass-specular-glare {
+            background: linear-gradient(125deg, rgba(250, 246, 240, 0) 20%, rgba(233, 217, 183, 0.18) 48%, rgba(216, 184, 200, 0.22) 52%, rgba(250, 246, 240, 0) 80%);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+        #passPreviewCard:hover .pass-specular-glare {
+            opacity: 1;
+        }
+        /* Scroll-Triggered Reveal Animations */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-on-scroll {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
         }
         .wing-tab-active {
             background: linear-gradient(135deg, rgba(216, 184, 200, 0.28), rgba(67, 62, 94, 0.95));
@@ -233,7 +318,7 @@
     </div>
 
     <!-- Institutional Top Bar -->
-    <div class="bg-obsidian/95 border-b border-gold/20 py-2 px-4 text-xs font-mono tracking-wider text-parchment/85">
+    <div class="glass-topbar py-2.5 px-4 text-xs font-mono tracking-wider text-parchment/90">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-2">
                 <span class="inline-block w-2 h-2 rounded-full bg-[#D8B8C8] animate-pulse"></span>
@@ -245,11 +330,11 @@
                     <span>@agora.ens</span>
                 </a>
                 <span class="hidden sm:inline text-parchment/30">|</span>
-                <button onclick="openCharterModal()" class="underline hover:text-ivory transition-colors cursor-pointer" data-i18n="topbar_charter">
+                <button onclick="openCharterModal()" class="underline hover:text-ivory transition-colors cursor-pointer py-1" data-i18n="topbar_charter">
                     Statut & Agrément Officiel
                 </button>
                 <span class="text-parchment/30">|</span>
-                <button onclick="openAdminModal()" class="px-2.5 py-1 rounded bg-gold/15 border border-gold/40 text-champagne hover:bg-champagne hover:text-obsidian font-semibold transition-all flex items-center gap-1.5 cursor-pointer">
+                <button onclick="openAdminModal()" class="px-3 py-1.5 rounded-xl bg-gold/15 border border-gold/40 text-champagne hover:bg-champagne hover:text-obsidian font-semibold transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98]">
                     <i class="fa-solid fa-user-shield text-[10px]"></i>
                     <span data-i18n="topbar_admin">Accès Bureau</span>
                 </button>
@@ -262,11 +347,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2">
             <!-- Brand Crest & Title -->
             <a href="#" onclick="replayEntrySplash(event)" class="flex items-center gap-3 group shrink-0" title="AGORA - ENS Tizi Ouzou">
-                <div id="navMainLogoThumb" class="w-12 h-12 rounded-xl bg-[#241628] border border-champagne/50 flex items-center justify-center shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
+                <div id="navMainLogoThumb" class="w-12 h-12 rounded-2xl bg-[#241628] border border-champagne/50 flex items-center justify-center shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
                     <!-- Populated by JS with AGORA_LOGOS.main -->
                 </div>
                 <div>
-                    <span class="block font-serif text-xl sm:text-3xl font-bold tracking-[0.14em] text-ivory leading-none" data-i18n="nav_brand">
+                    <span class="block font-serif text-xl sm:text-3xl font-bold tracking-[0.22em] agora-metallic-title leading-none" data-i18n="nav_brand">
                         AGORA
                     </span>
                     <span class="block font-mono text-[10px] tracking-[0.16em] text-dustyRose uppercase mt-1" data-i18n="nav_subtitle">
@@ -279,9 +364,9 @@
             <nav class="hidden xl:flex items-center gap-6 text-sm font-medium text-parchment/90">
                 <a href="#manifesto" class="hover:text-ivory transition-colors" data-i18n="nav_manifesto">Le Manifeste</a>
                 <a href="#wings" class="hover:text-ivory transition-colors" data-i18n="nav_wings">Les 3 Pôles</a>
-                <button type="button" onclick="openWingSpace('lyrea')" class="text-xs font-mono px-2.5 py-1 rounded-md bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer">✦ LYRÉA</button>
-                <button type="button" onclick="openWingSpace('nous')" class="text-xs font-mono px-2.5 py-1 rounded-md bg-obsidian/70 border border-champagne/30 hover:border-champagne text-champagne hover:text-ivory transition-all cursor-pointer">✦ NOÛS</button>
-                <button type="button" onclick="openWingSpace('muse')" class="text-xs font-mono px-2.5 py-1 rounded-md bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer">✦ MUSE</button>
+                <button type="button" onclick="openWingSpace('lyrea')" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ LYRÉA</button>
+                <button type="button" onclick="openWingSpace('nous')" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-obsidian/70 border border-champagne/30 hover:border-champagne text-champagne hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ NOÛS</button>
+                <button type="button" onclick="openWingSpace('muse')" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ MUSE</button>
                 <a href="#quiz" class="hover:text-ivory transition-colors" data-i18n="nav_diagnostic">Orientation</a>
                 <a href="#roadmap" class="hover:text-ivory transition-colors" data-i18n="nav_events">Programme</a>
                 <a href="#governance" class="hover:text-ivory transition-colors" data-i18n="nav_governance">Gouvernance</a>
@@ -289,63 +374,93 @@
 
             <!-- Action Controls: Trilingual Switcher (FR / EN / AR) & Join CTA -->
             <div class="flex items-center gap-2.5">
-                <div class="inline-flex items-center rounded-lg border border-champagne/35 bg-obsidian/90 p-0.5 text-xs font-mono" role="group" aria-label="Language selector">
-                    <button type="button" id="langBtn-fr" onclick="setLanguage('fr')" class="px-2.5 py-1 rounded-md text-champagne transition-all lang-btn-active">FR</button>
-                    <button type="button" id="langBtn-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-md text-champagne hover:text-ivory transition-all">EN</button>
-                    <button type="button" id="langBtn-ar" onclick="setLanguage('ar')" class="px-2.5 py-1 rounded-md text-champagne hover:text-ivory transition-all font-arabic">عربي</button>
+                <div class="inline-flex items-center rounded-2xl border border-champagne/35 bg-obsidian/90 p-1 text-xs font-mono min-h-[48px]" role="group" aria-label="Language selector">
+                    <button type="button" id="langBtn-fr" onclick="setLanguage('fr')" class="px-3 py-2 rounded-xl text-champagne transition-all lang-btn-active">FR</button>
+                    <button type="button" id="langBtn-en" onclick="setLanguage('en')" class="px-3 py-2 rounded-xl text-champagne hover:text-ivory transition-all">EN</button>
+                    <button type="button" id="langBtn-ar" onclick="setLanguage('ar')" class="px-3 py-2 rounded-xl text-champagne hover:text-ivory transition-all font-arabic">عربي</button>
                 </div>
 
-                <a href="#join" class="hidden sm:inline-flex px-4 sm:px-5 py-2.5 rounded-lg bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm tracking-wide shadow-md hover:brightness-105 transition-all items-center gap-2">
+                <a href="#join" class="hidden sm:inline-flex min-h-[48px] px-5 py-2.5 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm tracking-wide shadow-md hover:brightness-105 active:scale-[0.98] transition-all items-center gap-2">
                     <span data-i18n="nav_cta">Rejoindre l'Agora</span>
                     <i class="fa-solid fa-arrow-right text-xs rtl:rotate-180"></i>
                 </a>
 
                 <!-- Mobile Menu Trigger -->
-                <button onclick="toggleMobileMenu()" class="xl:hidden p-2 rounded-lg border border-gold/30 text-parchment hover:text-ivory" aria-label="Menu">
+                <button onclick="toggleMobileMenu()" class="xl:hidden min-h-[48px] min-w-[48px] flex items-center justify-center rounded-2xl border border-gold/30 text-parchment hover:text-ivory active:scale-[0.98]" aria-label="Menu">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Dropdown Navigation -->
-        <div id="mobileMenu" class="hidden xl:hidden bg-obsidian border-b border-gold/25 px-6 py-4 space-y-3">
-            <a href="#manifesto" onclick="toggleMobileMenu()" class="block py-2 text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_manifesto">Le Manifeste</a>
-            <a href="#wings" onclick="toggleMobileMenu()" class="block py-2 text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_wings">Les 3 Pôles (Lyréa, Noûs, Muse)</a>
-            <div class="grid grid-cols-3 gap-2 py-1">
-                <button type="button" onclick="toggleMobileMenu(); openWingSpace('lyrea');" class="py-2 px-2 rounded-lg bg-slateCard border border-dustyRose/40 text-xs font-serif font-bold text-ivory">✦ LYRÉA</button>
-                <button type="button" onclick="toggleMobileMenu(); openWingSpace('nous');" class="py-2 px-2 rounded-lg bg-slateCard border border-champagne/40 text-xs font-serif font-bold text-ivory">✦ NOÛS</button>
-                <button type="button" onclick="toggleMobileMenu(); openWingSpace('muse');" class="py-2 px-2 rounded-lg bg-slateCard border border-dustyRose/40 text-xs font-serif font-bold text-ivory">✦ MUSE</button>
+        <div id="mobileMenu" class="hidden xl:hidden bg-obsidian/95 backdrop-blur-xl border-b border-gold/25 px-6 py-5 space-y-3">
+            <a href="#manifesto" onclick="toggleMobileMenu()" class="flex items-center min-h-[48px] text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_manifesto">Le Manifeste</a>
+            <a href="#wings" onclick="toggleMobileMenu()" class="flex items-center min-h-[48px] text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_wings">Les 3 Pôles (Lyréa, Noûs, Muse)</a>
+            <div class="grid grid-cols-3 gap-2.5 py-1">
+                <button type="button" onclick="toggleMobileMenu(); openWingSpace('lyrea');" class="min-h-[48px] px-2 rounded-2xl bg-slateCard border border-dustyRose/40 text-xs font-serif font-bold text-ivory active:scale-[0.98]">✦ LYRÉA</button>
+                <button type="button" onclick="toggleMobileMenu(); openWingSpace('nous');" class="min-h-[48px] px-2 rounded-2xl bg-slateCard border border-champagne/40 text-xs font-serif font-bold text-ivory active:scale-[0.98]">✦ NOÛS</button>
+                <button type="button" onclick="toggleMobileMenu(); openWingSpace('muse');" class="min-h-[48px] px-2 rounded-2xl bg-slateCard border border-dustyRose/40 text-xs font-serif font-bold text-ivory active:scale-[0.98]">✦ MUSE</button>
             </div>
-            <a href="#quiz" onclick="toggleMobileMenu()" class="block py-2 text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_diagnostic">Diagnostic d'Orientation</a>
-            <a href="#roadmap" onclick="toggleMobileMenu()" class="block py-2 text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_events">Programme & Événements</a>
-            <a href="#governance" onclick="toggleMobileMenu()" class="block py-2 text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_governance">Gouvernance & Statut</a>
+            <a href="#quiz" onclick="toggleMobileMenu()" class="flex items-center min-h-[48px] text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_diagnostic">Diagnostic d'Orientation</a>
+            <a href="#roadmap" onclick="toggleMobileMenu()" class="flex items-center min-h-[48px] text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_events">Programme & Événements</a>
+            <a href="#governance" onclick="toggleMobileMenu()" class="flex items-center min-h-[48px] text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_governance">Gouvernance & Statut</a>
             <div class="pt-2 flex items-center justify-between">
-                <a href="#join" onclick="toggleMobileMenu()" class="text-sm font-semibold text-champagne" data-i18n="nav_cta">Rejoindre l'Agora →</a>
-                <button onclick="toggleMobileMenu(); openAdminModal();" class="text-xs font-mono text-parchment/75 underline hover:text-ivory" data-i18n="topbar_admin">Accès Bureau</button>
+                <a href="#join" onclick="toggleMobileMenu()" class="min-h-[48px] inline-flex items-center text-sm font-semibold text-champagne" data-i18n="nav_cta">Rejoindre l'Agora →</a>
+                <button onclick="toggleMobileMenu(); openAdminModal();" class="min-h-[48px] px-3 text-xs font-mono text-parchment/75 underline hover:text-ivory" data-i18n="topbar_admin">Accès Bureau</button>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="relative bg-grid-pattern pt-12 pb-20 lg:py-24 border-b border-gold/20 overflow-hidden">
-        <!-- Ambient Radial Glows (#D8B8C8 & #E9D9B7) -->
-        <div class="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[360px] bg-dustyRose/15 blur-[130px] rounded-full pointer-events-none"></div>
-        <div class="absolute bottom-10 right-1/4 w-[480px] h-[300px] bg-champagne/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <section id="heroSection" class="relative bg-grid-pattern pt-12 pb-20 lg:py-24 border-b border-gold/20 overflow-hidden">
+        <!-- Interactive Pointer-Tracking / Breathing Ambient Glow -->
+        <div id="heroAmbientLight" class="hero-ambient-orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] sm:w-[740px] sm:h-[740px] rounded-full pointer-events-none z-0"></div>
+        <!-- Secondary Ambient Radial Glows (#D8B8C8 & #E9D9B7) -->
+        <div class="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[360px] bg-dustyRose/15 blur-[130px] rounded-full pointer-events-none z-0"></div>
+        <div class="absolute bottom-10 right-1/4 w-[480px] h-[300px] bg-champagne/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid lg:grid-cols-12 gap-12 items-center">
                 
                 <!-- Left Column: Grand Editorial Pitch -->
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-obsidian/80 border border-dustyRose/40 text-champagne text-xs font-mono uppercase tracking-widest">
+                <div class="lg:col-span-7 space-y-6 reveal-on-scroll in-view">
+                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-obsidian/85 border border-dustyRose/45 text-champagne text-xs font-mono uppercase tracking-widest shadow-lg">
                         <i class="fa-solid fa-sparkles text-dustyRose"></i>
                         <span data-i18n="hero_badge">Agora - ENS Tizi Ouzou • Société Universitaire Phare</span>
                     </div>
 
-                    <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight">
-                        <span class="block text-ivory" data-i18n="hero_title_1">L'Éclat des Lettres & des Arts.</span>
-                        <span class="block gold-gradient-text italic" data-i18n="hero_title_2">L'Esprit des Systèmes & du Futur.</span>
-                    </h1>
+                    <!-- Monumental Classical Metallic Title + Headline -->
+                    <div class="space-y-3">
+                        <div class="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold tracking-[0.22em] agora-metallic-title leading-none select-none">
+                            AGORA
+                        </div>
+                        <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight pt-1">
+                            <span class="block text-ivory" data-i18n="hero_title_1">L'Éclat des Lettres & des Arts.</span>
+                            <span class="block gold-gradient-text italic" data-i18n="hero_title_2">L'Esprit des Systèmes & du Futur.</span>
+                        </h1>
+                    </div>
+
+                    <!-- Sleek Constellation Accent Line Linking Lyréa (Quill), Noûs (Terminal/Spark), and Muse (Masks) -->
+                    <div class="flex items-center gap-3 py-1 max-w-xl" aria-hidden="true">
+                        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-obsidian/80 border border-dustyRose/40 text-dustyRose text-[11px] font-mono shadow-sm">
+                            <i class="fa-solid fa-feather-pointed text-champagne"></i>
+                            <span>LYRÉA</span>
+                        </div>
+                        <div class="flex-1 h-[1px] bg-gradient-to-r from-dustyRose/60 via-champagne/80 to-dustyRose/60 relative">
+                            <span class="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 rounded-full bg-champagne shadow-[0_0_10px_#E9D9B7]"></span>
+                        </div>
+                        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-obsidian/80 border border-champagne/45 text-champagne text-[11px] font-mono shadow-sm">
+                            <i class="fa-solid fa-terminal text-dustyRose"></i>
+                            <span>NOÛS</span>
+                        </div>
+                        <div class="flex-1 h-[1px] bg-gradient-to-r from-champagne/80 via-dustyRose/60 to-champagne/60 relative">
+                            <span class="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 rounded-full bg-dustyRose shadow-[0_0_10px_#D8B8C8]"></span>
+                        </div>
+                        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-obsidian/80 border border-dustyRose/40 text-dustyRose text-[11px] font-mono shadow-sm">
+                            <i class="fa-solid fa-masks-theater text-champagne"></i>
+                            <span>MUSE</span>
+                        </div>
+                    </div>
 
                     <p class="text-base sm:text-lg text-parchment/90 leading-relaxed max-w-2xl" data-i18n="hero_desc">
                         Bienvenue à <strong class="text-ivory font-semibold">AGORA</strong> (<em class="text-dustyRose">Agora - ENS Tizi Ouzou</em>). Notre organisation fédère trois univers complémentaires : <strong class="text-champagne">LYRÉA</strong> (écriture, poésie & slam, art oratoire, cercle littéraire et débats), <strong class="text-champagne">NOÛS</strong> (IA, cybersécurité, IT, investissement, trading, personal branding et monétisation en ligne) et <strong class="text-champagne">MUSE</strong> (arts plastiques, musique et théâtre).
@@ -353,11 +468,11 @@
 
                     <!-- Primary Hero CTAs -->
                     <div class="flex flex-wrap items-center gap-4 pt-2">
-                        <a href="#join" class="px-7 py-4 rounded-xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-obsidian/50 hover:scale-[1.02] transition-all flex items-center gap-3">
+                        <a href="#join" class="min-h-[48px] px-7 py-4 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-obsidian/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3">
                             <span data-i18n="hero_btn_join">Obtenir ma Carte de Membre</span>
                             <i class="fa-solid fa-id-card"></i>
                         </a>
-                        <a href="#wings" class="px-6 py-4 rounded-xl bg-slateCard/90 border border-dustyRose/40 hover:border-champagne text-ivory font-medium text-sm sm:text-base transition-all flex items-center gap-2.5">
+                        <a href="#wings" class="min-h-[48px] px-6 py-4 rounded-2xl bg-slateCard/90 border border-dustyRose/40 hover:border-champagne text-ivory font-medium text-sm sm:text-base active:scale-[0.98] transition-all flex items-center gap-2.5">
                             <span data-i18n="hero_btn_explore">Explorer Lyréa, Noûs & Muse</span>
                             <i class="fa-solid fa-compass text-dustyRose"></i>
                         </a>
@@ -381,28 +496,28 @@
                 </div>
 
                 <!-- Right Column: Architectural Triad Showcase (Click opens Wing Flash + Dedicated Space) -->
-                <div class="lg:col-span-5">
-                    <div class="bg-slateCard/90 gold-border-glow rounded-2xl p-6 sm:p-7 relative">
+                <div class="lg:col-span-5 reveal-on-scroll in-view">
+                    <div class="bg-slateCard/90 backdrop-blur-xl gold-border-glow rounded-3xl p-6 sm:p-7 relative">
                         <div class="flex items-center justify-between pb-4 mb-5 border-b border-dustyRose/20">
                             <div class="flex items-center gap-3">
-                                <div id="heroTriadMainLogo" class="w-11 h-11 rounded-xl bg-[#241628] border border-champagne/40 flex items-center justify-center overflow-hidden shrink-0"></div>
+                                <div id="heroTriadMainLogo" class="w-11 h-11 rounded-2xl bg-[#241628] border border-champagne/40 flex items-center justify-center overflow-hidden shrink-0"></div>
                                 <div>
                                     <span class="text-[11px] font-mono uppercase tracking-widest text-dustyRose block" data-i18n="triad_header">Architecture Opérationnelle</span>
                                     <h2 class="font-serif text-2xl font-bold text-ivory" data-i18n="triad_title">Les 3 Pôles d'AGORA</h2>
                                 </div>
                             </div>
-                            <span class="px-2.5 py-1 rounded bg-obsidian/80 border border-champagne/35 font-mono text-xs text-champagne">ENS-TO</span>
+                            <span class="px-2.5 py-1 rounded-xl bg-obsidian/80 border border-champagne/35 font-mono text-xs text-champagne">ENS-TO</span>
                         </div>
 
                         <div class="space-y-4">
                             <!-- Wing 1 Mini Card: LYRÉA -->
-                            <div onclick="openWingSpace('lyrea')" class="group p-4 rounded-xl bg-obsidian/85 border border-dustyRose/25 hover:border-champagne transition-all cursor-pointer">
+                            <div onclick="openWingSpace('lyrea')" class="group kinetic-wing-card p-4 rounded-2xl cursor-pointer active:scale-[0.98]">
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="flex items-center gap-3.5">
-                                        <div id="triadLogo-lyrea" class="w-12 h-12 rounded-xl bg-[#241628] border border-dustyRose/50 flex items-center justify-center overflow-hidden shrink-0 shadow-md group-hover:scale-105 transition-transform"></div>
+                                        <div id="triadLogo-lyrea" class="w-12 h-12 rounded-2xl bg-[#241628] border border-dustyRose/50 flex items-center justify-center overflow-hidden shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300"></div>
                                         <div>
                                             <div class="flex items-center gap-2">
-                                                <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-dustyRose/20 text-champagne" data-i18n="pole_01_badge">Pôle 01</span>
+                                                <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded-md bg-dustyRose/20 text-champagne" data-i18n="pole_01_badge">Pôle 01</span>
                                                 <h3 class="font-serif text-xl font-bold text-ivory group-hover:text-champagne transition-colors">LYRÉA</h3>
                                             </div>
                                             <p class="text-xs text-parchment/85 mt-1" data-i18n="triad_forum_desc">Écriture (poèmes, romans, textes), poésie & slam, art oratoire, cercle littéraire & débats.</p>
@@ -416,13 +531,13 @@
                             </div>
 
                             <!-- Wing 2 Mini Card: NOÛS -->
-                            <div onclick="openWingSpace('nous')" class="group p-4 rounded-xl bg-obsidian/85 border border-dustyRose/25 hover:border-champagne transition-all cursor-pointer">
+                            <div onclick="openWingSpace('nous')" class="group kinetic-wing-card p-4 rounded-2xl cursor-pointer active:scale-[0.98]">
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="flex items-center gap-3.5">
-                                        <div id="triadLogo-nous" class="w-12 h-12 rounded-xl bg-[#241628] border border-champagne/50 flex items-center justify-center overflow-hidden shrink-0 shadow-md group-hover:scale-105 transition-transform"></div>
+                                        <div id="triadLogo-nous" class="w-12 h-12 rounded-2xl bg-[#241628] border border-champagne/50 flex items-center justify-center overflow-hidden shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300"></div>
                                         <div>
                                             <div class="flex items-center gap-2">
-                                                <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-champagne/20 text-champagne" data-i18n="pole_02_badge">Pôle 02</span>
+                                                <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded-md bg-champagne/20 text-champagne" data-i18n="pole_02_badge">Pôle 02</span>
                                                 <h3 class="font-serif text-xl font-bold text-ivory group-hover:text-champagne transition-colors">NOÛS</h3>
                                             </div>
                                             <p class="text-xs text-parchment/85 mt-1" data-i18n="triad_lab_desc">IA, cybersécurité & IT, investissement & trading, travail en ligne, monétisation & personal branding.</p>
@@ -436,13 +551,13 @@
                             </div>
 
                             <!-- Wing 3 Mini Card: MUSE -->
-                            <div onclick="openWingSpace('muse')" class="group p-4 rounded-xl bg-obsidian/85 border border-dustyRose/25 hover:border-champagne transition-all cursor-pointer">
+                            <div onclick="openWingSpace('muse')" class="group kinetic-wing-card p-4 rounded-2xl cursor-pointer active:scale-[0.98]">
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="flex items-center gap-3.5">
-                                        <div id="triadLogo-muse" class="w-12 h-12 rounded-xl bg-[#241628] border border-dustyRose/50 flex items-center justify-center overflow-hidden shrink-0 shadow-md group-hover:scale-105 transition-transform"></div>
+                                        <div id="triadLogo-muse" class="w-12 h-12 rounded-2xl bg-[#241628] border border-dustyRose/50 flex items-center justify-center overflow-hidden shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300"></div>
                                         <div>
                                             <div class="flex items-center gap-2">
-                                                <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-dustyRose/20 text-champagne" data-i18n="pole_03_badge">Pôle 03</span>
+                                                <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded-md bg-dustyRose/20 text-champagne" data-i18n="pole_03_badge">Pôle 03</span>
                                                 <h3 class="font-serif text-xl font-bold text-ivory group-hover:text-champagne transition-colors">MUSE</h3>
                                             </div>
                                             <p class="text-xs text-parchment/85 mt-1" data-i18n="triad_studio_desc">Arts plastiques (dessin, peinture), musique (tous instruments & chant) et théâtre & scène.</p>
@@ -469,7 +584,7 @@
     </section>
 
     <!-- Section 1: The Manifesto (Why AGORA?) -->
-    <section id="manifesto" class="py-20 bg-obsidian border-b border-gold/20">
+    <section id="manifesto" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
                 <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="manifesto_eyebrow">01 • Le Manifeste d'AGORA</span>
@@ -483,8 +598,8 @@
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Pillar 1 -->
-                <div class="bg-slateCard/80 border border-dustyRose/25 rounded-2xl p-7 hover:border-champagne transition-all">
-                    <div class="w-12 h-12 rounded-xl bg-obsidian border border-dustyRose/40 flex items-center justify-center text-champagne text-xl mb-5">
+                <div class="reveal-on-scroll kinetic-wing-card rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-2xl bg-obsidian border border-dustyRose/40 flex items-center justify-center text-champagne text-xl mb-5">
                         <i class="fa-solid fa-feather-pointed"></i>
                     </div>
                     <h3 class="font-serif text-2xl font-bold text-ivory mb-3" data-i18n="pillar1_title">Lyréa : La Puissance du Verbe</h3>
@@ -494,9 +609,9 @@
                 </div>
 
                 <!-- Pillar 2 -->
-                <div class="bg-slateCard/90 border border-champagne/50 rounded-2xl p-7 relative shadow-xl">
+                <div class="reveal-on-scroll kinetic-wing-card border-champagne/50 rounded-2xl p-7 relative shadow-xl">
                     <span class="absolute -top-3 right-6 rtl:right-auto rtl:left-6 px-3 py-0.5 rounded-full bg-champagne text-obsidian font-mono text-[10px] font-bold uppercase" data-i18n="pillar2_badge">ADN d'AGORA</span>
-                    <div class="w-12 h-12 rounded-xl bg-obsidian border border-champagne/50 flex items-center justify-center text-champagne text-xl mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-obsidian border border-champagne/50 flex items-center justify-center text-champagne text-xl mb-5">
                         <i class="fa-solid fa-microchip"></i>
                     </div>
                     <h3 class="font-serif text-2xl font-bold text-ivory mb-3" data-i18n="pillar2_title">Noûs : Tech, Finance & Marque</h3>
@@ -506,8 +621,8 @@
                 </div>
 
                 <!-- Pillar 3 -->
-                <div class="bg-slateCard/80 border border-dustyRose/25 rounded-2xl p-7 hover:border-champagne transition-all">
-                    <div class="w-12 h-12 rounded-xl bg-obsidian border border-dustyRose/40 flex items-center justify-center text-champagne text-xl mb-5">
+                <div class="reveal-on-scroll kinetic-wing-card rounded-2xl p-7">
+                    <div class="w-12 h-12 rounded-2xl bg-obsidian border border-dustyRose/40 flex items-center justify-center text-champagne text-xl mb-5">
                         <i class="fa-solid fa-masks-theater"></i>
                     </div>
                     <h3 class="font-serif text-2xl font-bold text-ivory mb-3" data-i18n="pillar3_title">Muse : Arts, Musique & Scène</h3>
@@ -520,7 +635,7 @@
     </section>
 
     <!-- Section 2: Interactive 3 Wings Deep-Dive (LYRÉA, NOÛS, MUSE) -->
-    <section id="wings" class="py-20 bg-midnight border-b border-gold/20">
+    <section id="wings" class="py-20 bg-midnight border-b border-gold/20 reveal-on-scroll">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
@@ -536,37 +651,37 @@
 
             <!-- Interactive Wing Selector Tabs -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-                <button id="tab-lyrea" onclick="switchWingTab('lyrea')" class="wing-tab-active p-5 rounded-xl border border-dustyRose/30 bg-slateCard/75 text-left rtl:text-right transition-all flex items-center justify-between cursor-pointer">
+                <button id="tab-lyrea" onclick="switchWingTab('lyrea')" class="wing-tab-active min-h-[64px] p-5 rounded-2xl border border-dustyRose/30 bg-slateCard/75 text-left rtl:text-right transition-all flex items-center justify-between cursor-pointer active:scale-[0.98]">
                     <div class="flex items-center gap-3.5">
-                        <div id="tabLogo-lyrea" class="w-12 h-12 rounded-xl bg-[#241628] border border-dustyRose/40 flex items-center justify-center overflow-hidden shrink-0"></div>
+                        <div id="tabLogo-lyrea" class="w-12 h-12 rounded-2xl bg-[#241628] border border-dustyRose/40 flex items-center justify-center overflow-hidden shrink-0"></div>
                         <div>
                             <span class="font-mono text-[10px] uppercase tracking-widest text-dustyRose block" data-i18n="pole_01_badge">Pôle 01</span>
                             <span class="font-serif text-2xl font-bold text-ivory">LYRÉA</span>
                         </div>
                     </div>
-                    <span class="text-xs font-mono px-2.5 py-1 rounded bg-obsidian/60 text-champagne" data-i18n="wing_tag_forum">Lettres & Voix</span>
+                    <span class="text-xs font-mono px-2.5 py-1 rounded-xl bg-obsidian/60 text-champagne" data-i18n="wing_tag_forum">Lettres & Voix</span>
                 </button>
 
-                <button id="tab-nous" onclick="switchWingTab('nous')" class="p-5 rounded-xl border border-dustyRose/30 bg-slateCard/75 text-left rtl:text-right transition-all flex items-center justify-between hover:border-champagne cursor-pointer">
+                <button id="tab-nous" onclick="switchWingTab('nous')" class="min-h-[64px] p-5 rounded-2xl border border-dustyRose/30 bg-slateCard/75 text-left rtl:text-right transition-all flex items-center justify-between hover:border-champagne cursor-pointer active:scale-[0.98]">
                     <div class="flex items-center gap-3.5">
-                        <div id="tabLogo-nous" class="w-12 h-12 rounded-xl bg-[#241628] border border-champagne/40 flex items-center justify-center overflow-hidden shrink-0"></div>
+                        <div id="tabLogo-nous" class="w-12 h-12 rounded-2xl bg-[#241628] border border-champagne/40 flex items-center justify-center overflow-hidden shrink-0"></div>
                         <div>
                             <span class="font-mono text-[10px] uppercase tracking-widest text-champagne block" data-i18n="pole_02_badge">Pôle 02</span>
                             <span class="font-serif text-2xl font-bold text-ivory">NOÛS</span>
                         </div>
                     </div>
-                    <span class="text-xs font-mono px-2.5 py-1 rounded bg-obsidian/60 text-champagne" data-i18n="wing_tag_lab">Tech & Business</span>
+                    <span class="text-xs font-mono px-2.5 py-1 rounded-xl bg-obsidian/60 text-champagne" data-i18n="wing_tag_lab">Tech & Business</span>
                 </button>
 
-                <button id="tab-muse" onclick="switchWingTab('muse')" class="p-5 rounded-xl border border-dustyRose/30 bg-slateCard/75 text-left rtl:text-right transition-all flex items-center justify-between hover:border-champagne cursor-pointer">
+                <button id="tab-muse" onclick="switchWingTab('muse')" class="min-h-[64px] p-5 rounded-2xl border border-dustyRose/30 bg-slateCard/75 text-left rtl:text-right transition-all flex items-center justify-between hover:border-champagne cursor-pointer active:scale-[0.98]">
                     <div class="flex items-center gap-3.5">
-                        <div id="tabLogo-muse" class="w-12 h-12 rounded-xl bg-[#241628] border border-dustyRose/40 flex items-center justify-center overflow-hidden shrink-0"></div>
+                        <div id="tabLogo-muse" class="w-12 h-12 rounded-2xl bg-[#241628] border border-dustyRose/40 flex items-center justify-center overflow-hidden shrink-0"></div>
                         <div>
                             <span class="font-mono text-[10px] uppercase tracking-widest text-dustyRose block" data-i18n="pole_03_badge">Pôle 03</span>
                             <span class="font-serif text-2xl font-bold text-ivory">MUSE</span>
                         </div>
                     </div>
-                    <span class="text-xs font-mono px-2.5 py-1 rounded bg-obsidian/60 text-champagne" data-i18n="wing_tag_studio">Arts, Musique & Scène</span>
+                    <span class="text-xs font-mono px-2.5 py-1 rounded-xl bg-obsidian/60 text-champagne" data-i18n="wing_tag_studio">Arts, Musique & Scène</span>
                 </button>
             </div>
 
@@ -578,7 +693,7 @@
     </section>
 
     <!-- Section 3: Interactive Diagnostic Quiz ("Find Your Wing") -->
-    <section id="quiz" class="py-20 bg-obsidian border-b border-gold/20">
+    <section id="quiz" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-gradient-to-b from-slateCard to-midnight gold-border-glow rounded-2xl p-6 sm:p-10">
                 <div class="text-center max-w-2xl mx-auto mb-8">
@@ -679,7 +794,112 @@
     </section>
 
     <!-- Section 4: Inaugural Semester Roadmap & Events -->
-    <section id="roadmap" class="py-20 bg-midnight border-b border-gold/20">
+    <section id="roadmap" class="py-20 bg-midnight border-b border-gold/20 reveal-on-scroll">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="roadmap_eyebrow">03 • Calendrier Officiel d'Activités</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-ivory mt-2" data-i18n="roadmap_title">
+                    Programme Inaugural d'AGORA
+                </h2>
+                <p class="text-parchment/85 text-sm sm:text-base mt-2" data-i18n="roadmap_subtitle">
+                    Des grands débats en amphithéâtre aux masterclasses Tech & Trading, cercles littéraires et festivals artistiques à l'ENS Tizi Ouzou.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Event 1 -->
+                <div class="reveal-on-scroll kinetic-wing-card border-champagne/35 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-champagne/20 text-champagne font-semibold" data-i18n="ev1_tag">Événement Phare #1</span>
+                            <span class="text-parchment/70" data-i18n="ev1_loc">Amphithéâtre Central</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev1_title">
+                            Grand Gala d'Ouverture AGORA : Lyréa × Noûs × Muse
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev1_desc">
+                            Joute oratoire et slam inaugural, démonstration IA & souveraineté numérique en direct, suivis d'une performance théâtrale et musicale des membres de l'ENS.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-dustyRose">Lyréa × Noûs × Muse</span>
+                        <button onclick="preselectEventInForm('Gala Inaugural AGORA')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event 2 -->
+                <div class="reveal-on-scroll kinetic-wing-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-obsidian text-champagne font-semibold">NOÛS • Masterclass</span>
+                            <span class="text-parchment/70" data-i18n="ev2_loc">Atelier Pratique</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev2_title">
+                            IA, Cybersécurité (« Architect's Key »), Trading & Business en Ligne
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev2_desc">
+                            Séminaire intensif : outils IA et sécurité numérique, bases de l'investissement et du trading, personal branding et méthodes concrètes pour travailler et monétiser ses compétences en ligne.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-champagne">Pôle 02 : NOÛS</span>
+                        <button onclick="preselectEventInForm('Masterclass NOÛS : IA, Cyber & Business')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event 3 -->
+                <div class="reveal-on-scroll kinetic-wing-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-obsidian text-dustyRose font-semibold">LYRÉA • Plume & Voix</span>
+                            <span class="text-parchment/70">FR / EN / AR</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev3_title">
+                            Salon du Cercle Littéraire, Nuit du Slam & Olympiades d'Éloquence
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev3_desc">
+                            Rencontre d'écriture créative (poèmes, romans, lettres), échanges et critiques de livres du Cercle Littéraire, scène de poésie/slam et tournoi de débats.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-dustyRose">Pôle 01 : LYRÉA</span>
+                        <button onclick="preselectEventInForm('Salon LYRÉA : Cercle Littéraire, Slam & Débats')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event 4 -->
+                <div class="reveal-on-scroll kinetic-wing-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-obsidian text-dustyRose font-semibold">MUSE • Galerie & Scène</span>
+                            <span class="text-parchment/70" data-i18n="ev4_loc">Exposition & Spectacle</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev4_title">
+                            Festival MUSE : Exposition d'Arts Plastiques, Concert & Théâtre
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev4_desc">
+                            Grande galerie de dessin et peinture sur le campus, sessions acoustiques (tous instruments et chant) et représentation de la troupe de théâtre universitaire.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-dustyRose">Pôle 03 : MUSE</span>
+                        <button onclick="preselectEventInForm('Festival MUSE : Arts Plastiques, Musique & Théâtre')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Governance, Executive Structure & Official Charter -->
+    <section id="governance" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-14">
                 <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="roadmap_eyebrow">03 • Calendrier Officiel d'Activités</span>
@@ -883,7 +1103,7 @@
     </section>
 
     <!-- Section 6: Membership Application & Instant Digital Pass Generator -->
-    <section id="join" class="py-20 bg-midnight relative">
+    <section id="join" class="py-20 bg-midnight relative reveal-on-scroll">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-14">
                 <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="join_eyebrow">05 • Portail d'Adhésion Officiel</span>
@@ -903,11 +1123,11 @@
                         <div>
                             <label class="block text-xs font-mono uppercase tracking-wider text-champagne mb-2" data-i18n="form_name">Nom & Prénom Complet *</label>
                             <input type="text" id="memberName" required placeholder="Ex: Yasmine Mansouri" oninput="updateLivePassPreview()"
-                                class="w-full px-4 py-3 rounded-xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory placeholder-parchment/40">
+                                class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory placeholder-parchment/40">
                         </div>
 
                         <!-- Multi-Channel Contact System (Require at least 1 of the 3) -->
-                        <div class="p-4 rounded-xl bg-obsidian/85 border border-dustyRose/30 space-y-3">
+                        <div class="p-4 rounded-2xl bg-obsidian/85 border border-dustyRose/30 space-y-3">
                             <div class="flex items-center justify-between flex-wrap gap-1">
                                 <span class="text-xs font-mono uppercase tracking-wider text-champagne font-semibold" data-i18n="form_contact_header">
                                     Coordonnées de Contact (Remplissez au moins 1 canal) *
@@ -921,21 +1141,21 @@
                                         <i class="fa-solid fa-envelope text-champagne mr-1"></i> <span data-i18n="form_email_lbl">Email</span>
                                     </label>
                                     <input type="email" id="memberEmail" placeholder="etudiant@ens.dz" oninput="updateLivePassPreview(); clearContactError();"
-                                        class="w-full px-3 py-2.5 rounded-lg bg-midnight border border-dustyRose/25 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/35">
+                                        class="w-full min-h-[48px] px-3.5 py-2.5 rounded-2xl bg-midnight border border-dustyRose/25 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/35">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-mono text-parchment/90 mb-1">
                                         <i class="fa-brands fa-telegram text-dustyRose mr-1"></i> <span data-i18n="form_tg_lbl">Telegram / Tél</span>
                                     </label>
                                     <input type="text" id="memberTelegram" placeholder="@pseudo ou 0550..." oninput="updateLivePassPreview(); clearContactError();"
-                                        class="w-full px-3 py-2.5 rounded-lg bg-midnight border border-dustyRose/25 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/35">
+                                        class="w-full min-h-[48px] px-3.5 py-2.5 rounded-2xl bg-midnight border border-dustyRose/25 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/35">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-mono text-parchment/90 mb-1">
                                         <i class="fa-brands fa-instagram text-champagne mr-1"></i> <span data-i18n="form_ig_lbl">Instagram</span>
                                     </label>
                                     <input type="text" id="memberInstagram" placeholder="@votre_insta" oninput="updateLivePassPreview(); clearContactError();"
-                                        class="w-full px-3 py-2.5 rounded-lg bg-midnight border border-dustyRose/25 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/35">
+                                        class="w-full min-h-[48px] px-3.5 py-2.5 rounded-2xl bg-midnight border border-dustyRose/25 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/35">
                                 </div>
                             </div>
                             <p id="contactValidationError" class="hidden text-xs text-rose-300 font-mono pt-1" data-i18n="form_contact_err">
@@ -947,7 +1167,7 @@
                         <div class="grid sm:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-xs font-mono uppercase tracking-wider text-champagne mb-2" data-i18n="form_dept">Département / Filière (ENS) *</label>
-                                <select id="memberDept" onchange="updateLivePassPreview()" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory">
+                                <select id="memberDept" onchange="updateLivePassPreview()" class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory">
                                     <option value="Langue & Littérature Françaises">Langue & Littérature Françaises</option>
                                     <option value="Langue & Littérature Anglaises">Langue & Littérature Anglaises</option>
                                     <option value="Langue & Littérature Arabes">Langue & Littérature Arabes</option>
@@ -960,7 +1180,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-mono uppercase tracking-wider text-champagne mb-2" data-i18n="form_year">Année d'Études *</label>
-                                <select id="memberYear" onchange="updateLivePassPreview()" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory">
+                                <select id="memberYear" onchange="updateLivePassPreview()" class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory">
                                     <option value="1ère Année">1ère Année (S1/S2)</option>
                                     <option value="2ème Année" selected>2ème Année</option>
                                     <option value="3ème Année">3ème Année</option>
@@ -973,7 +1193,7 @@
                         <div class="grid sm:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-xs font-mono uppercase tracking-wider text-champagne mb-2" data-i18n="form_wing">Pôle Principal Souhaité *</label>
-                                <select id="memberWing" onchange="updateLivePassPreview()" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-champagne/50 focus:border-champagne focus:outline-none text-sm text-ivory font-medium">
+                                <select id="memberWing" onchange="updateLivePassPreview()" class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-obsidian border border-champagne/50 focus:border-champagne focus:outline-none text-sm text-ivory font-medium">
                                     <option value="LYRÉA (Écriture, Slam, Éloquence, Cercle Littéraire & Débats)">Pôle 01 — LYRÉA (Écriture, Slam, Éloquence, Cercle Littéraire & Débats)</option>
                                     <option value="NOÛS (IA, Cybersécurité, IT, Trading & Business en Ligne)">Pôle 02 — NOÛS (IA, Cybersécurité, IT, Trading & Business en Ligne)</option>
                                     <option value="MUSE (Arts Plastiques, Musique & Théâtre)">Pôle 03 — MUSE (Arts Plastiques, Musique & Théâtre)</option>
@@ -982,7 +1202,7 @@
                             <div>
                                 <label class="block text-xs font-mono uppercase tracking-wider text-champagne mb-2" data-i18n="form_role">Statut d'Adhésion Initial</label>
                                 <!-- Locked Regular Member Badge -->
-                                <div class="w-full px-4 py-3 rounded-xl bg-obsidian/90 border border-dustyRose/40 flex items-center justify-between text-sm text-ivory">
+                                <div class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-obsidian/90 border border-dustyRose/40 flex items-center justify-between text-sm text-ivory">
                                     <span class="flex items-center gap-2 font-medium">
                                         <i class="fa-solid fa-lock text-champagne text-xs"></i>
                                         <span data-i18n="locked_role_label">Membre Actif (Regular Member)</span>
@@ -1039,10 +1259,10 @@
                         <div>
                             <label class="block text-xs font-mono uppercase tracking-wider text-champagne mb-2" data-i18n="form_note">Vos passions, spécialités ou sujets d'intérêt (Optionnel)</label>
                             <textarea id="memberMotivation" rows="2" placeholder="Ex: Écriture, slam, débat, IA, cybersécurité, trading, business en ligne, dessin, peinture, musique, théâtre..."
-                                class="w-full px-4 py-3 rounded-xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory placeholder-parchment/35"></textarea>
+                                class="w-full px-4 py-3 rounded-2xl bg-obsidian border border-dustyRose/30 focus:border-champagne focus:outline-none text-sm text-ivory placeholder-parchment/35"></textarea>
                         </div>
 
-                        <button type="submit" id="submitMemberBtn" class="w-full py-4 rounded-xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-sm sm:text-base uppercase tracking-wider shadow-lg hover:brightness-105 transition-all flex items-center justify-center gap-3 cursor-pointer">
+                        <button type="submit" id="submitMemberBtn" class="w-full min-h-[52px] py-4 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-sm sm:text-base uppercase tracking-wider shadow-lg hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-3 cursor-pointer">
                             <i class="fa-solid fa-stamp"></i>
                             <span data-i18n="form_submit">Valider mon Adhésion & Générer ma Carte (PDF)</span>
                         </button>
@@ -1051,8 +1271,10 @@
 
                 <!-- Live Digital AGORA Pass Card + PDF Export -->
                 <div class="lg:col-span-5 space-y-5">
-                    <!-- Printable Card Wrapper (#passPreviewCard) -->
+                    <!-- Printable Card Wrapper (#passPreviewCard) with 3D Perspective Tilt & Specular Glare -->
                     <div id="passPreviewCard" class="bg-gradient-to-br from-[#433E5E] via-[#34304A] to-[#242134] gold-border-glow rounded-2xl p-6 sm:p-7 relative overflow-hidden">
+                        <!-- Dynamic Specular Light Sweep Overlay -->
+                        <div id="passSpecularGlare" class="pass-specular-glare absolute inset-0 z-20"></div>
                         <!-- Subtle Watermark Crest -->
                         <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
                             <i class="fa-solid fa-sparkles text-[150px] text-dustyRose"></i>
@@ -1113,11 +1335,11 @@
 
                     <!-- Direct PDF Download Button for Membership Pass -->
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <button type="button" onclick="downloadMembershipCardPDF()" class="flex-1 py-3.5 px-4 rounded-xl bg-slateCard border border-champagne/50 hover:bg-champagne hover:text-obsidian text-champagne font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md">
+                        <button type="button" onclick="downloadMembershipCardPDF()" class="flex-1 min-h-[48px] py-3.5 px-4 rounded-2xl bg-slateCard border border-champagne/50 hover:bg-champagne hover:text-obsidian text-champagne font-bold text-xs uppercase tracking-wider active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md">
                             <i class="fa-solid fa-file-pdf text-sm"></i>
                             <span data-i18n="btn_download_pass_pdf">Télécharger ma Carte (PDF)</span>
                         </button>
-                        <button type="button" onclick="copyMembershipReceipt()" class="py-3.5 px-4 rounded-xl bg-obsidian border border-dustyRose/30 hover:border-champagne text-parchment font-mono text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <button type="button" onclick="copyMembershipReceipt()" class="min-h-[48px] py-3.5 px-4 rounded-2xl bg-obsidian border border-dustyRose/30 hover:border-champagne text-parchment font-mono text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
                             <i class="fa-regular fa-copy"></i>
                             <span id="copyReceiptBtnText" data-i18n="pass_btn_copy">Copier Reçu</span>
                         </button>
@@ -2754,7 +2976,8 @@
                 if (errEl) errEl.classList.remove('hidden');
                 return;
             }
-// Check if member already exists in local cache or database by Email or Full Name
+
+            // Check if member already exists in local cache or database by Email or Full Name
             loadLocalMembers();
             const existingMember = membersCache.find(m => {
                 const sameEmail = email && m.email && m.email.toLowerCase() === email.toLowerCase();
@@ -2763,10 +2986,9 @@
             });
 
             if (existingMember) {
-                // If they already registered, retrieve their existing card instead of creating a duplicate
                 currentMemberCode = existingMember.member_code;
                 document.getElementById('passIdBadge').textContent = `#${currentMemberCode}`;
-                
+
                 const statusInd = document.getElementById('passStatusIndicator');
                 if (statusInd) {
                     statusInd.textContent = currentLang === 'ar' ? '● عضو مسجل مسبقاً (تم استرجاع البطاقة)' : '● Déjà inscrit (Carte récupérée)';
@@ -2781,8 +3003,9 @@
                 }
 
                 downloadMembershipCardPDF();
-                return; // STOP EXECUTION: Do not insert a duplicate into the database!
+                return;
             }
+
             currentMemberCode = generateUniqueMemberCode();
             document.getElementById('passIdBadge').textContent = `#${currentMemberCode}`;
 
@@ -2813,7 +3036,6 @@
             saveLocalMembers(membersCache);
 
             const submitBtn = document.getElementById('submitMemberBtn');
-            const origHtml = submitBtn.innerHTML;
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Enregistrement...</span>`;
 
@@ -3661,7 +3883,80 @@
         }
 
         // ============================================================================
-        // 14. INITIALIZE PORTAL ON LOAD
+        // 14. VISUAL MASTERPIECE INTERACTIONS (AMBIENT LIGHT, 3D PASS TILT, SCROLL REVEAL)
+        // ============================================================================
+        function initHeroAmbientLighting() {
+            const hero = document.getElementById('heroSection');
+            const orb = document.getElementById('heroAmbientLight');
+            if (!hero || !orb) return;
+
+            hero.addEventListener('mousemove', (e) => {
+                if (window.innerWidth < 1024) return;
+                const rect = hero.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                orb.style.left = `${x}px`;
+                orb.style.top = `${y}px`;
+            }, { passive: true });
+
+            hero.addEventListener('mouseleave', () => {
+                if (window.innerWidth < 1024) return;
+                orb.style.left = '50%';
+                orb.style.top = '50%';
+            }, { passive: true });
+        }
+
+        function initLuxuryPass3DTilt() {
+            const card = document.getElementById('passPreviewCard');
+            const glare = document.getElementById('passSpecularGlare');
+            if (!card) return;
+
+            card.addEventListener('mousemove', (e) => {
+                if (window.innerWidth < 1024) return;
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -6.5;
+                const rotateY = ((x - centerX) / centerX) * 6.5;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
+
+                if (glare) {
+                    const pctX = Math.round((x / rect.width) * 100);
+                    const pctY = Math.round((y / rect.height) * 100);
+                    glare.style.background = `radial-gradient(circle at ${pctX}% ${pctY}%, rgba(233, 217, 183, 0.24) 0%, rgba(216, 184, 200, 0.12) 38%, rgba(36, 33, 52, 0) 72%)`;
+                }
+            }, { passive: true });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            }, { passive: true });
+        }
+
+        function initScrollRevealObserver() {
+            const revealEls = document.querySelectorAll('.reveal-on-scroll');
+            if (!('IntersectionObserver' in window)) {
+                revealEls.forEach(el => el.classList.add('in-view'));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+            revealEls.forEach(el => observer.observe(el));
+        }
+
+        // ============================================================================
+        // 15. INITIALIZE PORTAL ON LOAD
         // ============================================================================
         window.addEventListener('DOMContentLoaded', () => {
             initBrandLogos();
@@ -3670,6 +3965,9 @@
             renderWingContent('lyrea');
             renderCharterContent();
             updateLivePassPreview();
+            initHeroAmbientLighting();
+            initLuxuryPass3DTilt();
+            initScrollRevealObserver();
 
             setTimeout(() => {
                 skipEntrySplash();
