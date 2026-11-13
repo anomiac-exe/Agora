@@ -684,8 +684,8 @@
             console.warn('Supabase init warning:', err);
         }
 
-        const LOCAL_POSTS_KEY = 'agora_journal_posts_cache_v1';
-        const LOCAL_COMMENTS_KEY = 'agora_journal_comments_cache_v1';
+        const LOCAL_POSTS_KEY = 'agora_journal_posts_cache_v2';
+        const LOCAL_COMMENTS_KEY = 'agora_journal_comments_cache_v2';
         const LOCAL_LIKED_KEY = 'agora_journal_liked_posts_v1';
         const LOCAL_COMMENT_COOLDOWN_KEY = 'agora_journal_last_comment_ts';
 
@@ -697,80 +697,7 @@
         let pendingCompressedDataUrl = null;
 
         // ============================================================================
-        // 2. INITIAL SAMPLE POSTS (USED ONLY IF DATABASE TABLE IS EMPTY)
-        // ============================================================================
-        const DEFAULT_INAUGURAL_POSTS = [
-            {
-                id: 'inaugural-lyrea-01',
-                title: "Manifeste de la Plume et de l'Amphithéâtre",
-                subtitle: "Pourquoi la parole poétique et l'éloquence restent nos premières armes de liberté",
-                wing: 'LYRÉA',
-                category: 'Poésie & Slam',
-                issue_label: 'Édition #01 • Novembre 2026',
-                author_name: 'Cercle Lyréa — @deartyyn',
-                author_role: 'Coordinatrice Pôle Lyréa',
-                lang: 'fr',
-                image_url: '',
-                content: `Dans le silence feutré des pupitres de Tizi Ouzou,
-Nous avons longtemps cru que les livres suffisaient à dire le monde.
-Mais un livre fermé attend qu'une voix l'ouvre,
-Qu'un souffle le porte jusqu'au dernier rang de l'amphithéâtre.
-
-Ici commence Lyréa :
-Pour celles et ceux qui écrivent des vers aux marges de leurs cahiers,
-Pour les romanciers en devenir, les orateurs, les amoureux du débat contradictoire.
-Que chaque mot prononcé soit un pont entre les langues —
-Du français ciselé à l'anglais incisif, jusqu'à l'arabe classique et aux échos de nos montagnes.
-
-Prenez la plume. Prenez le micro. L'Agora vous écoute.`,
-                likes_count: 24,
-                created_at: '2026-11-10T10:00:00.000Z'
-            },
-            {
-                id: 'inaugural-nous-02',
-                title: "The Architect's Key : Souveraineté Numérique & Intelligence Artificielle à l'Université",
-                subtitle: "Comment les étudiants en lettres, sciences et arts peuvent maîtriser les systèmes au lieu de les subir",
-                wing: 'NOÛS',
-                category: 'Tech, IA & Business (Noûs)',
-                issue_label: 'Édition #01 • Novembre 2026',
-                author_name: '@anomiac.exe',
-                author_role: 'Président AGORA & Coordinateur Pôle Noûs',
-                lang: 'fr',
-                image_url: '',
-                content: `La révolution technologique actuelle ne divise plus le monde entre littéraires et scientifiques : elle sépare ceux qui comprennent l'architecture des systèmes de ceux qui consomment aveuglément des algorithmes.
-
-Au sein du pôle NOÛS de l'Agora (ENS Tizi Ouzou), notre feuille de route repose sur quatre piliers concrets :
-1. L'Intelligence Artificielle Méthodique : Utiliser les modèles de langage avancés pour accélérer la recherche bibliographique, structurer des projets et synthétiser des corpus sans jamais sacrifier l'esprit critique.
-2. La Cybersécurité Pratique (« The Architect's Key ») : Chiffrement des données personnelles, hygiène des mots de passe, défense contre l'ingénierie sociale et initiation à Linux.
-3. L'Éducation Financière & le Trading : Comprendre la structure des marchés, la gestion rigoureuse du risque et l'investissement à long terme.
-4. Le Personal Branding & le Travail en Ligne : Transformer ses compétences académiques, rédactionnelles ou techniques en revenus réels sur la scène internationale.`,
-                likes_count: 31,
-                created_at: '2026-11-11T14:30:00.000Z'
-            },
-            {
-                id: 'inaugural-muse-03',
-                title: "L'Atelier des Sens : Quand la Toile, la Mélodie et la Scène Éveillent l'ENS",
-                subtitle: "Chronique inaugurale du Pôle Muse — Arts Plastiques, Musique & Théâtre universitaire",
-                wing: 'MUSE',
-                category: 'Arts Plastiques (Muse)',
-                issue_label: 'Édition #01 • Novembre 2026',
-                author_name: 'Collectif Muse — @onyssaa',
-                author_role: 'Vice-Présidente & Coordinatrice Pôle Muse',
-                lang: 'fr',
-                image_url: '',
-                content: `Une université vivante se reconnaît à la place qu'elle accorde à la beauté.
-Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sensibilités artistiques de l'École Normale Supérieure de Tizi Ouzou :
-
-• Les Arts Plastiques : du croquis au fusain jusqu'à la peinture sur toile et l'exposition collective sur le campus.
-• La Musique & le Chant : réunir tous les instruments (guitare, piano, violon, percussions, instruments traditionnels) et les voix autour de sessions acoustiques vibrantes.
-• Le Théâtre & les Arts de la Scène : incarner des personnages, apprivoiser l'espace scénique et faire vivre la dramaturgie devant nos camarades.`,
-                likes_count: 19,
-                created_at: '2026-11-12T09:15:00.000Z'
-            }
-        ];
-
-        // ============================================================================
-        // 3. TRILINGUAL DICTIONARY (FR / EN / AR)
+        // 2. TRILINGUAL DICTIONARY (FR / EN / AR)
         // ============================================================================
         const i18n = {
             fr: {
@@ -991,12 +918,12 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
                 const raw = localStorage.getItem(LOCAL_POSTS_KEY);
                 if (raw) {
                     const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
+                    if (Array.isArray(parsed)) {
                         return parsed;
                     }
                 }
             } catch (e) {}
-            return null;
+            return [];
         }
 
         function saveCachedPosts(list) {
@@ -1012,7 +939,6 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
                 loader.classList.remove('hidden');
             }
 
-            let remotePosts = null;
             if (supabaseClient) {
                 try {
                     const { data, error } = await supabaseClient
@@ -1020,26 +946,19 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
                         .select('*')
                         .order('created_at', { ascending: false });
 
-                    if (!error && Array.isArray(data)) {
-                        remotePosts = data;
+                    if (error) {
+                        showToast(`Erreur chargement Supabase : ${error.message}`, true);
+                        journalPosts = loadCachedPosts();
+                    } else if (Array.isArray(data)) {
+                        journalPosts = data;
+                        saveCachedPosts(journalPosts);
                     }
                 } catch (err) {
                     console.warn('Supabase journal fetch note:', err);
+                    journalPosts = loadCachedPosts();
                 }
-            }
-
-            const localCached = loadCachedPosts() || [];
-
-            if (remotePosts && remotePosts.length > 0) {
-                const remoteIds = new Set(remotePosts.map(p => String(p.id)));
-                const localOnly = localCached.filter(p => !remoteIds.has(String(p.id)) && !String(p.id).startsWith('inaugural-'));
-                journalPosts = [...localOnly, ...remotePosts];
-                saveCachedPosts(journalPosts);
-            } else if (localCached.length > 0) {
-                journalPosts = localCached;
             } else {
-                journalPosts = [...DEFAULT_INAUGURAL_POSTS];
-                saveCachedPosts(journalPosts);
+                journalPosts = loadCachedPosts();
             }
 
             if (loader) loader.classList.add('hidden');
@@ -1138,12 +1057,14 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
 
             grid.innerHTML = filtered.map(post => {
                 const wingNorm = normalizeWingName(post.wing);
-                const coverSrc = (post.image_url && post.image_url.trim())
-                    ? post.image_url
+                const rawCover = post.cover_image_url || post.image_url || '';
+                const coverSrc = rawCover.trim()
+                    ? rawCover
                     : generateEditorialCoverSvg(wingNorm, post.category, post.title);
                 const fallbackSvgUri = generateEditorialCoverSvg(wingNorm, post.category, post.title);
                 const excerpt = (post.content || '').replace(/\s+/g, ' ').trim().slice(0, 165) + ((post.content || '').length > 165 ? '…' : '');
-                const isRtlPost = post.lang === 'ar';
+                const postLanguage = post.language || post.lang || 'fr';
+                const isRtlPost = postLanguage === 'ar';
 
                 return `
                     <article onclick="openReaderModal('${escapeHtml(post.id)}')" dir="${isRtlPost ? 'rtl' : 'ltr'}" class="editorial-card rounded-3xl overflow-hidden flex flex-col justify-between cursor-pointer group">
@@ -1211,6 +1132,9 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
             activeReaderPost = post;
 
             const wingNorm = normalizeWingName(post.wing);
+            const postLanguage = post.language || post.lang || 'fr';
+            const coverImageUrl = post.cover_image_url || post.image_url || '';
+
             document.getElementById('readerWingBadge').textContent = `✦ ${wingNorm}`;
             document.getElementById('readerIssueLabel').textContent = post.issue_label || 'Édition #01 • Novembre 2026';
             document.getElementById('readerCategoryTag').textContent = post.category || 'Publication Officielle';
@@ -1224,12 +1148,12 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
 
             const bodyEl = document.getElementById('readerContentBody');
             bodyEl.textContent = post.content || '';
-            bodyEl.setAttribute('dir', post.lang === 'ar' ? 'rtl' : 'ltr');
+            bodyEl.setAttribute('dir', postLanguage === 'ar' ? 'rtl' : 'ltr');
 
             const imgWrap = document.getElementById('readerImageWrapper');
             const imgEl = document.getElementById('readerImage');
-            if (post.image_url && post.image_url.trim()) {
-                imgEl.src = post.image_url;
+            if (coverImageUrl.trim()) {
+                imgEl.src = coverImageUrl;
                 imgWrap.classList.remove('hidden');
             } else {
                 imgWrap.classList.add('hidden');
@@ -1319,7 +1243,7 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
             const localMap = getLocalCommentsMap();
             const localForPost = Array.isArray(localMap[postId]) ? localMap[postId] : [];
 
-            if (supabaseClient && !String(postId).startsWith('inaugural-')) {
+            if (supabaseClient) {
                 try {
                     const { data, error } = await supabaseClient
                         .from('agora_journal_comments')
@@ -1352,7 +1276,7 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
                 <div class="p-4 rounded-2xl bg-midnight/90 border border-dustyRose/25 space-y-1.5">
                     <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
-                            <span class="font-bold text-xs text-ivory">${escapeHtml(c.member_name || 'Membre AGORA')}</span>
+                            <span class="font-bold text-xs text-ivory">${escapeHtml(c.author_name || c.member_name || 'Membre AGORA')}</span>
                             <span class="px-2 py-0.5 rounded-full bg-champagne/15 border border-champagne/40 font-mono text-[10px] text-champagne">
                                 ✓ #${escapeHtml(c.member_code || 'AGORA')}
                             </span>
@@ -1406,25 +1330,29 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
             const commentRecord = {
                 post_id: activeReaderPost.id,
                 member_code: rawCode,
-                member_name: verifiedName,
-                comment_text: commentText,
-                created_at: new Date().toISOString()
+                author_name: verifiedName,
+                comment_text: commentText
             };
 
-            // Save locally first
-            const localMap = getLocalCommentsMap();
-            if (!Array.isArray(localMap[activeReaderPost.id])) localMap[activeReaderPost.id] = [];
-            localMap[activeReaderPost.id].unshift(commentRecord);
-            saveLocalCommentsMap(localMap);
+            if (supabaseClient) {
+                const { error } = await supabaseClient
+                    .from('agora_journal_comments')
+                    .insert([commentRecord]);
 
-            // Insert into `agora_journal_comments` if remote post
-            if (supabaseClient && !String(activeReaderPost.id).startsWith('inaugural-')) {
-                try {
-                    await supabaseClient.from('agora_journal_comments').insert([commentRecord]);
-                } catch (err) {
-                    console.warn('Comment saved locally:', err);
+                if (error) {
+                    submitBtn.disabled = false;
+                    showToast(`Erreur Supabase : ${error.message}`, true);
+                    return;
                 }
             }
+
+            const localMap = getLocalCommentsMap();
+            if (!Array.isArray(localMap[activeReaderPost.id])) localMap[activeReaderPost.id] = [];
+            localMap[activeReaderPost.id].unshift({
+                ...commentRecord,
+                created_at: new Date().toISOString()
+            });
+            saveLocalCommentsMap(localMap);
 
             localStorage.setItem(LOCAL_COMMENT_COOLDOWN_KEY, String(Date.now()));
             document.getElementById('commentTextInput').value = '';
@@ -1577,7 +1505,7 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
             const issue_label = document.getElementById('postIssue').value.trim();
             const author_name = document.getElementById('postAuthorName').value.trim();
             const author_role = document.getElementById('postAuthorRole').value.trim();
-            const lang = document.getElementById('postLang').value;
+            const language = document.getElementById('postLang').value;
             const content = document.getElementById('postContent').value.trim();
 
             if (!title || !content) return;
@@ -1625,29 +1553,30 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
                 issue_label,
                 author_name,
                 author_role,
-                lang,
-                image_url: finalImageUrl,
+                language,
+                cover_image_url: finalImageUrl,
                 content,
-                likes_count: 1,
-                created_at: new Date().toISOString()
+                likes_count: 1
             };
 
-            let insertedPost = { id: `local-${Date.now()}`, ...newPostPayload };
+            let insertedPost = null;
 
             if (supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient
-                        .from('agora_journal_posts')
-                        .insert([newPostPayload])
-                        .select()
-                        .single();
+                const { data, error } = await supabaseClient
+                    .from('agora_journal_posts')
+                    .insert([newPostPayload])
+                    .select()
+                    .single();
 
-                    if (!error && data) {
-                        insertedPost = data;
-                    }
-                } catch (dbErr) {
-                    console.warn('Saved to local cache; Supabase insert note:', dbErr);
+                if (error) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                    showToast(`Erreur Supabase : ${error.message}`, true);
+                    return;
                 }
+                insertedPost = data;
+            } else {
+                insertedPost = { id: `local-${Date.now()}`, ...newPostPayload, created_at: new Date().toISOString() };
             }
 
             journalPosts.unshift(insertedPost);
@@ -1732,7 +1661,8 @@ Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sen
         }
 
         function formatSingleArticlePrintHtml(post) {
-            const isRtl = post.lang === 'ar';
+            const postLanguage = post.language || post.lang || 'fr';
+            const isRtl = postLanguage === 'ar';
             const wingNorm = normalizeWingName(post.wing);
             return `
                 <div dir="${isRtl ? 'rtl' : 'ltr'}" style="background: #FFFFFF; color: #1A1826;">
