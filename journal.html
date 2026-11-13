@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#242134">
+    <title>Les Cahiers de l'Agora — Revue Littéraire, Artistique & Scientifique | AGORA ENS Tizi Ouzou</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond, Inter, JetBrains Mono + Cairo & Amiri for Arabic Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- html2pdf.js for Print-Ready Magazine & Article PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Supabase JS v2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#242134',
+                        midnight: '#34304A',
+                        slateCard: '#433E5E',
+                        plum: {
+                            dark: '#242134',
+                            DEFAULT: '#34304A',
+                            light: '#433E5E'
+                        },
+                        dustyRose: '#D8B8C8',
+                        champagne: '#E9D9B7',
+                        gold: {
+                            light: '#E9D9B7',
+                            DEFAULT: '#D8B8C8',
+                            dark: '#B793A5',
+                        },
+                        parchment: '#E9D9B7',
+                        ivory: '#FAF6F0'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', '"Amiri"', 'Georgia', 'serif'],
+                        sans: ['"Inter"', '"Cairo"', 'system-ui', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', '"Cairo"', 'monospace'],
+                        arabic: ['"Cairo"', 'sans-serif'],
+                        arabicSerif: ['"Amiri"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #34304A;
+            color: #E9D9B7;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        html[dir="rtl"] body {
+            font-family: 'Cairo', sans-serif;
+        }
+        html[dir="rtl"] .font-serif {
+            font-family: 'Amiri', 'Cairo', serif;
+            line-height: 1.4;
+        }
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(216, 184, 200, 0.07) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(233, 217, 183, 0.06) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        .agora-metallic-title {
+            background: linear-gradient(135deg, #FAF6F0 0%, #E9D9B7 45%, #D8B8C8 85%, #FAF6F0 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 12px 35px rgba(20, 17, 30, 0.55);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FAF6F0 0%, #E9D9B7 48%, #D8B8C8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-topbar {
+            background: rgba(36, 33, 52, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(216, 184, 200, 0.22);
+        }
+        .glass-nav {
+            background: rgba(52, 48, 74, 0.88);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            border-bottom: 1px solid rgba(233, 217, 183, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(20, 17, 30, 0.65);
+        }
+        .editorial-card {
+            background: linear-gradient(155deg, rgba(67, 62, 94, 0.88), rgba(36, 33, 52, 0.94));
+            border: 1px solid rgba(216, 184, 200, 0.30);
+            box-shadow: 0 14px 34px -10px rgba(16, 13, 26, 0.78), inset 0 1px 0 0 rgba(250, 246, 240, 0.10);
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.32s ease, box-shadow 0.32s ease;
+        }
+        .editorial-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(233, 217, 183, 0.82);
+            box-shadow: 0 20px 44px -10px rgba(16, 13, 26, 0.90), 0 0 28px -4px rgba(216, 184, 200, 0.30);
+        }
+        .filter-tab-active {
+            background: linear-gradient(135deg, #E9D9B7 0%, #D8B8C8 100%) !important;
+            color: #242134 !important;
+            border-color: #FAF6F0 !important;
+            font-weight: 700 !important;
+        }
+        .lang-btn-active {
+            background-color: #E9D9B7 !important;
+            color: #34304A !important;
+            font-weight: 700 !important;
+        }
+        .editorial-body-text {
+            white-space: pre-line;
+            line-height: 1.85;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #242134;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #433E5E;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D8B8C8;
+        }
+    </style>
+</head>
+<body class="bg-midnight text-parchment antialiased selection:bg-dustyRose selection:text-obsidian min-h-screen flex flex-col">
+
+    <!-- Toast Notification Banner (No alert() used) -->
+    <div id="journalToast" class="hidden fixed bottom-6 right-6 z-[110] max-w-sm px-5 py-3.5 rounded-2xl bg-obsidian/95 border border-champagne shadow-2xl text-xs sm:text-sm text-ivory flex items-center gap-3 transition-all">
+        <i id="journalToastIcon" class="fa-solid fa-circle-check text-champagne text-base"></i>
+        <span id="journalToastText">Action effectuée.</span>
+    </div>
+
+    <!-- Top Institutional Bar -->
+    <div class="glass-topbar py-2.5 px-4 text-xs font-mono tracking-wider text-parchment/90">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-2.5">
+                <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-champagne/15 border border-champagne/45 text-champagne hover:bg-champagne hover:text-obsidian font-semibold transition-all">
+                    <i class="fa-solid fa-arrow-left text-[10px] rtl:rotate-180"></i>
+                    <span data-i18n="back_to_portal">Retour au Portail AGORA</span>
+                </a>
+                <span class="hidden md:inline text-parchment/30">|</span>
+                <span class="hidden md:inline" data-i18n="topbar_inst">REVUE OFFICIELLE • ÉCOLE NORMALE SUPÉRIEURE (ENS) DE TIZI OUZOU</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="https://www.instagram.com/agora.ens?exln=MTRwamF4ZjQwajA3Zw==" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 text-champagne hover:text-dustyRose transition-colors">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>@agora.ens</span>
+                </a>
+                <span class="hidden sm:inline text-parchment/30">|</span>
+                <button type="button" onclick="openStudioModal()" class="px-3 py-1.5 rounded-xl bg-dustyRose/15 border border-dustyRose/45 text-ivory hover:bg-champagne hover:text-obsidian font-semibold transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98]">
+                    <i class="fa-solid fa-pen-nib text-[11px]"></i>
+                    <span data-i18n="btn_open_studio">Accès Rédaction / Publier</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Sticky Header -->
+    <header class="sticky top-0 z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+            <!-- Brand Crest & Title -->
+            <div class="flex items-center gap-3.5">
+                <a href="index.html" class="w-12 h-12 rounded-2xl bg-[#241628] border border-champagne/55 flex items-center justify-center shadow-lg overflow-hidden shrink-0 group" title="AGORA - ENS Tizi Ouzou">
+                    <div id="headerLogoBox" class="w-full h-full"></div>
+                </a>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-serif text-xl sm:text-3xl font-bold tracking-[0.16em] agora-metallic-title leading-none" data-i18n="masthead_short">
+                            LES CAHIERS DE L'AGORA
+                        </span>
+                    </div>
+                    <span class="block font-mono text-[10px] tracking-[0.16em] text-dustyRose uppercase mt-1" data-i18n="masthead_sub">
+                        Lyréa • Noûs • Muse — ENS Tizi Ouzou
+                    </span>
+                </div>
+            </div>
+
+            <!-- Right Controls: Language Switcher & PDF Issue Export -->
+            <div class="flex items-center gap-2.5">
+                <div class="inline-flex items-center rounded-2xl border border-champagne/35 bg-obsidian/90 p-1 text-xs font-mono min-h-[44px]" role="group" aria-label="Language selector">
+                    <button type="button" id="langBtn-fr" onclick="setLanguage('fr')" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-champagne transition-all lang-btn-active">FR</button>
+                    <button type="button" id="langBtn-en" onclick="setLanguage('en')" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-champagne hover:text-ivory transition-all">EN</button>
+                    <button type="button" id="langBtn-ar" onclick="setLanguage('ar')" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-champagne hover:text-ivory transition-all font-arabic">عربي</button>
+                </div>
+
+                <button type="button" onclick="downloadFullEditionPDF()" class="hidden md:inline-flex min-h-[44px] px-4 py-2 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs tracking-wide shadow-md hover:brightness-105 active:scale-[0.98] transition-all items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span data-i18n="btn_download_edition">Télécharger l'Édition Complète (PDF)</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editorial Masthead Hero -->
+    <section class="relative bg-grid-pattern pt-12 pb-14 border-b border-dustyRose/20 overflow-hidden">
+        <!-- Ambient Glows -->
+        <div class="absolute top-1/3 left-1/4 w-[480px] h-[280px] bg-dustyRose/15 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="absolute bottom-0 right-1/4 w-[440px] h-[260px] bg-champagne/10 blur-[110px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto space-y-4">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-obsidian/85 border border-dustyRose/45 text-champagne text-xs font-mono uppercase tracking-widest">
+                    <i class="fa-solid fa-feather-pointed text-dustyRose"></i>
+                    <span data-i18n="hero_eyebrow">Publication Périodique Officielle • ISSN Campus ENS-TO</span>
+                </div>
+
+                <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-[0.12em] agora-metallic-title leading-none pt-1" data-i18n="hero_title">
+                    LES CAHIERS DE L'AGORA
+                </h1>
+
+                <p class="font-serif italic text-lg sm:text-2xl text-dustyRose" data-i18n="hero_subtitle">
+                    « La Revue Littéraire, Artistique & Scientifique de l'ENS Tizi Ouzou »
+                </p>
+
+                <p class="text-sm sm:text-base text-parchment/85 max-w-2xl mx-auto leading-relaxed" data-i18n="hero_desc">
+                    Poèmes, textes de slam, essais critiques et comptes-rendus du Cercle Littéraire (<strong class="text-ivory">LYRÉA</strong>), analyses IA, cybersécurité et stratégies digitales (<strong class="text-ivory">NOÛS</strong>), galeries d'arts plastiques, partitions et chroniques théâtrales (<strong class="text-ivory">MUSE</strong>).
+                </p>
+
+                <!-- Mobile Action Bar -->
+                <div class="pt-3 flex flex-wrap items-center justify-center gap-3">
+                    <button type="button" onclick="downloadFullEditionPDF()" class="min-h-[48px] px-5 py-3 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span data-i18n="btn_download_edition">Télécharger l'Édition Complète (PDF)</span>
+                    </button>
+                    <button type="button" onclick="openStudioModal()" class="min-h-[48px] px-5 py-3 rounded-2xl bg-obsidian/90 border border-champagne/45 hover:border-champagne text-champagne font-mono text-xs sm:text-sm active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-plus"></i>
+                        <span data-i18n="btn_publish_work">Publier une Œuvre (Coordinateurs)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Bar: Wing Tabs + Issue Dropdown + Search -->
+            <div class="mt-10 p-4 sm:p-5 rounded-3xl bg-obsidian/85 border border-dustyRose/30 shadow-xl">
+                <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+                    <!-- Wing Filter Tabs -->
+                    <div class="flex flex-wrap items-center gap-2" role="tablist">
+                        <button type="button" id="wingTab-ALL" onclick="setWingFilter('ALL')" class="filter-tab-active min-h-[44px] px-4 py-2 rounded-2xl border border-dustyRose/30 bg-slateCard/70 text-xs font-mono uppercase tracking-wider text-parchment transition-all cursor-pointer">
+                            <span data-i18n="filter_all">Tout</span>
+                            <span id="countBadge-ALL" class="ml-1.5 px-1.5 py-0.5 rounded-full bg-black/20 text-[10px]">0</span>
+                        </button>
+                        <button type="button" id="wingTab-LYRÉA" onclick="setWingFilter('LYRÉA')" class="min-h-[44px] px-4 py-2 rounded-2xl border border-dustyRose/30 bg-slateCard/70 text-xs font-mono uppercase tracking-wider text-parchment hover:border-champagne transition-all cursor-pointer">
+                            <i class="fa-solid fa-feather-pointed mr-1"></i> LYRÉA
+                            <span id="countBadge-LYRÉA" class="ml-1 px-1.5 py-0.5 rounded-full bg-black/20 text-[10px]">0</span>
+                        </button>
+                        <button type="button" id="wingTab-NOÛS" onclick="setWingFilter('NOÛS')" class="min-h-[44px] px-4 py-2 rounded-2xl border border-dustyRose/30 bg-slateCard/70 text-xs font-mono uppercase tracking-wider text-parchment hover:border-champagne transition-all cursor-pointer">
+                            <i class="fa-solid fa-terminal mr-1"></i> NOÛS
+                            <span id="countBadge-NOÛS" class="ml-1 px-1.5 py-0.5 rounded-full bg-black/20 text-[10px]">0</span>
+                        </button>
+                        <button type="button" id="wingTab-MUSE" onclick="setWingFilter('MUSE')" class="min-h-[44px] px-4 py-2 rounded-2xl border border-dustyRose/30 bg-slateCard/70 text-xs font-mono uppercase tracking-wider text-parchment hover:border-champagne transition-all cursor-pointer">
+                            <i class="fa-solid fa-masks-theater mr-1"></i> MUSE
+                            <span id="countBadge-MUSE" class="ml-1 px-1.5 py-0.5 rounded-full bg-black/20 text-[10px]">0</span>
+                        </button>
+                    </div>
+
+                    <!-- Issue / Edition Selector & Search -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <div class="relative min-w-[220px]">
+                            <i class="fa-solid fa-book-journal-whills absolute left-3.5 rtl:left-auto rtl:right-3.5 top-1/2 -translate-y-1/2 text-dustyRose text-xs pointer-events-none"></i>
+                            <select id="issueFilterSelect" onchange="renderJournalGrid()" class="w-full min-h-[44px] pl-9 pr-4 rtl:pl-4 rtl:pr-9 py-2 rounded-2xl bg-midnight border border-dustyRose/35 focus:border-champagne focus:outline-none text-xs font-mono text-ivory">
+                                <option value="ALL" data-i18n="all_editions">Toutes les Éditions</option>
+                            </select>
+                        </div>
+
+                        <div class="relative flex-1 sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 rtl:left-auto rtl:right-3.5 top-1/2 -translate-y-1/2 text-parchment/50 text-xs pointer-events-none"></i>
+                            <input type="text" id="journalSearchInput" oninput="renderJournalGrid()" placeholder="Titre, auteur, thème..."
+                                class="w-full min-h-[44px] pl-9 pr-3.5 rtl:pl-3.5 rtl:pr-9 py-2 rounded-2xl bg-midnight border border-dustyRose/35 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/40">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Magazine Grid Section -->
+    <main class="flex-1 py-14 bg-midnight">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Status / Edition Header Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-8 pb-4 border-b border-dustyRose/20">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-champagne"></span>
+                    <h2 id="activeEditionHeading" class="font-serif text-2xl sm:text-3xl font-bold text-ivory" data-i18n="grid_heading">
+                        Publications Récentes de l'Agora
+                    </h2>
+                </div>
+                <button type="button" onclick="fetchJournalPosts()" class="text-xs font-mono text-dustyRose hover:text-champagne flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-rotate"></i>
+                    <span data-i18n="btn_refresh">Actualiser le flux</span>
+                </button>
+            </div>
+
+            <!-- Loading Skeleton -->
+            <div id="journalLoadingState" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+                <div class="h-96 rounded-3xl bg-slateCard/50 border border-dustyRose/20 animate-pulse p-6"></div>
+                <div class="h-96 rounded-3xl bg-slateCard/50 border border-dustyRose/20 animate-pulse p-6"></div>
+                <div class="h-96 rounded-3xl bg-slateCard/50 border border-dustyRose/20 animate-pulse p-6"></div>
+            </div>
+
+            <!-- Posts Grid Container -->
+            <div id="journalPostsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+                <!-- Populated dynamically by renderJournalGrid() -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-obsidian border-t border-dustyRose/25 py-10 text-xs text-parchment/75">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#241628] border border-champagne/45 flex items-center justify-center font-serif font-bold text-champagne text-base">
+                    A
+                </div>
+                <div>
+                    <span class="font-serif text-base font-bold text-ivory block">LES CAHIERS DE L'AGORA • ENS Tizi Ouzou</span>
+                    <span class="font-mono text-[11px] text-dustyRose">LYRÉA • NOÛS • MUSE — @agora.ens</span>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-5 font-mono text-[11px]">
+                <a href="index.html" class="text-champagne hover:underline flex items-center gap-1.5">
+                    <i class="fa-solid fa-landmark"></i>
+                    <span data-i18n="back_to_portal">Portail Principal AGORA</span>
+                </a>
+                <a href="https://www.instagram.com/agora.ens?exln=MTRwamF4ZjQwajA3Zw==" target="_blank" rel="noopener noreferrer" class="hover:text-champagne flex items-center gap-1.5">
+                    <i class="fa-brands fa-instagram text-dustyRose"></i>
+                    <span>@agora.ens</span>
+                </a>
+                <button type="button" onclick="openStudioModal()" class="hover:text-champagne cursor-pointer" data-i18n="btn_open_studio">Studio Rédaction</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================================ -->
+    <!-- MODAL 1: FULL ARTICLE READER + REACTIONS + VERIFIED MEMBER COMMENTS + PDF    -->
+    <!-- ============================================================================ -->
+    <div id="readerModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-obsidian border border-champagne/50 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Modal Top Bar -->
+            <div class="px-5 py-4 bg-midnight/95 border-b border-dustyRose/25 flex items-center justify-between gap-3 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <span id="readerWingBadge" class="px-3 py-1 rounded-full bg-champagne/20 border border-champagne/50 font-mono text-[11px] font-bold text-champagne uppercase">
+                        LYRÉA
+                    </span>
+                    <span id="readerIssueLabel" class="font-mono text-xs text-dustyRose truncate">
+                        Édition #01 • Novembre 2026
+                    </span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="downloadCurrentArticlePDF()" class="px-3.5 py-2 rounded-xl bg-champagne text-obsidian font-bold text-xs flex items-center gap-1.5 hover:brightness-105 transition-all cursor-pointer">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span data-i18n="btn_pdf_single">Télécharger cet Article (PDF)</span>
+                    </button>
+                    <button type="button" onclick="closeReaderModal()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-parchment flex items-center justify-center cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scrollable Article Body & Social Section -->
+            <div class="p-6 sm:p-10 overflow-y-auto space-y-8 flex-1">
+                <!-- Article Header -->
+                <div class="space-y-3 border-b border-dustyRose/20 pb-6">
+                    <div id="readerCategoryTag" class="font-mono text-xs uppercase tracking-widest text-dustyRose">
+                        POÉSIE & SLAM
+                    </div>
+                    <h2 id="readerTitle" class="font-serif text-3xl sm:text-5xl font-bold text-ivory leading-tight">
+                        Titre de l'œuvre
+                    </h2>
+                    <p id="readerSubtitle" class="font-serif italic text-lg sm:text-2xl text-champagne"></p>
+
+                    <div class="pt-3 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-parchment/80">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-slateCard border border-champagne/45 flex items-center justify-center font-serif font-bold text-base text-champagne" id="readerAuthorInitial">
+                                A
+                            </div>
+                            <div>
+                                <div id="readerAuthorName" class="text-sm font-bold text-ivory">Auteur</div>
+                                <div id="readerAuthorRole" class="text-[11px] text-dustyRose">Membre AGORA</div>
+                            </div>
+                        </div>
+                        <div id="readerDate" class="text-[11px] text-parchment/60"></div>
+                    </div>
+                </div>
+
+                <!-- Optional Artwork / Cover Image -->
+                <div id="readerImageWrapper" class="hidden rounded-2xl overflow-hidden border border-dustyRose/30 bg-midnight max-h-[480px] flex items-center justify-center">
+                    <img id="readerImage" src="" alt="Illustration de l'article" class="w-full h-auto max-h-[480px] object-contain">
+                </div>
+
+                <!-- Full Literary / Scientific Text -->
+                <article id="readerContentBody" class="editorial-body-text font-serif text-lg sm:text-xl text-ivory/95 bg-midnight/60 p-6 sm:p-8 rounded-2xl border border-dustyRose/20 shadow-inner">
+                </article>
+
+                <!-- Reaction Bar (👏, ❤️, 🖋️, 🔥) -->
+                <div class="p-5 rounded-2xl bg-slateCard/80 border border-champagne/35 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                        <span class="font-serif text-xl font-bold text-ivory block" data-i18n="react_title">Saluer cette publication</span>
+                        <span class="text-xs text-parchment/75" data-i18n="react_sub">Soutenez l'auteur(e) avec une réaction officielle de l'Agora :</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <button type="button" onclick="triggerPostReaction('👏')" class="reaction-btn px-4 py-2.5 rounded-2xl bg-obsidian hover:bg-champagne hover:text-obsidian border border-champagne/40 text-xs font-mono transition-all flex items-center gap-2 cursor-pointer active:scale-95">
+                            <span class="text-base">👏</span> <span data-i18n="react_bravo">Bravo</span>
+                        </button>
+                        <button type="button" onclick="triggerPostReaction('❤️')" class="reaction-btn px-4 py-2.5 rounded-2xl bg-obsidian hover:bg-champagne hover:text-obsidian border border-champagne/40 text-xs font-mono transition-all flex items-center gap-2 cursor-pointer active:scale-95">
+                            <span class="text-base">❤️</span> <span data-i18n="react_heart">Coup de cœur</span>
+                        </button>
+                        <button type="button" onclick="triggerPostReaction('🖋️')" class="reaction-btn px-4 py-2.5 rounded-2xl bg-obsidian hover:bg-champagne hover:text-obsidian border border-champagne/40 text-xs font-mono transition-all flex items-center gap-2 cursor-pointer active:scale-95">
+                            <span class="text-base">🖋️</span> <span data-i18n="react_pen">Belle Plume</span>
+                        </button>
+                        <button type="button" onclick="triggerPostReaction('🔥')" class="reaction-btn px-4 py-2.5 rounded-2xl bg-obsidian hover:bg-champagne hover:text-obsidian border border-champagne/40 text-xs font-mono transition-all flex items-center gap-2 cursor-pointer active:scale-95">
+                            <span class="text-base">🔥</span> <span class="font-bold" id="readerLikesCount">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Verified Member Comment System -->
+                <div class="space-y-5 pt-4 border-t border-dustyRose/25">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-serif text-2xl font-bold text-ivory flex items-center gap-2">
+                            <i class="fa-regular fa-comments text-champagne text-lg"></i>
+                            <span data-i18n="comments_heading">Cercle de Lecture & Commentaires Vérifiés</span>
+                        </h3>
+                        <span id="readerCommentsCountBadge" class="font-mono text-xs px-2.5 py-1 rounded-full bg-obsidian border border-dustyRose/35 text-champagne">0</span>
+                    </div>
+
+                    <!-- Add Comment Form (Verified via #AGORA-XXXX Member Code) -->
+                    <form id="commentForm" onsubmit="handleCommentSubmit(event)" class="p-5 rounded-2xl bg-midnight border border-dustyRose/30 space-y-4">
+                        <div class="grid sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-mono uppercase text-champagne mb-1" data-i18n="lbl_member_code">
+                                    Code Membre Officiel (#AGORA-XXXX) *
+                                </label>
+                                <input type="text" id="commentMemberCode" required placeholder="Ex: AGORA-4821"
+                                    class="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-xs font-mono text-ivory uppercase placeholder-parchment/35">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-mono uppercase text-dustyRose mb-1" data-i18n="lbl_display_name">
+                                    Nom & Prénom (si code hors-ligne)
+                                </label>
+                                <input type="text" id="commentFallbackName" placeholder="Vérifié automatiquement via la base AGORA"
+                                    class="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-obsidian border border-dustyRose/25 focus:border-champagne focus:outline-none text-xs text-ivory placeholder-parchment/35">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-mono uppercase text-champagne mb-1" data-i18n="lbl_comment_body">
+                                Votre Critique Littéraire, Réflexion ou Encouragement *
+                            </label>
+                            <textarea id="commentTextInput" rows="2" required placeholder="Partagez votre analyse avec l'auteur(e) et les membres de l'Agora..."
+                                class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-xs sm:text-sm text-ivory placeholder-parchment/35"></textarea>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span id="commentFeedbackMsg" class="text-xs font-mono text-dustyRose">
+                                <i class="fa-solid fa-shield-check text-champagne mr-1"></i>
+                                <span data-i18n="comment_verify_note">Identification liée au registre `agora_members`.</span>
+                            </span>
+                            <button type="submit" id="commentSubmitBtn" class="px-5 py-2.5 rounded-xl bg-champagne text-obsidian font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all cursor-pointer">
+                                <i class="fa-solid fa-paper-plane mr-1"></i>
+                                <span data-i18n="btn_post_comment">Publier mon Commentaire</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Comments List -->
+                    <div id="readerCommentsList" class="space-y-3">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================================ -->
+    <!-- MODAL 2: COORDINATOR LOGIN & PUBLISHING STUDIO (WITH CANVAS COMPRESSION)     -->
+    <!-- ============================================================================ -->
+    <div id="studioModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-midnight border border-champagne/50 rounded-3xl max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Studio Header -->
+            <div class="p-4 sm:p-6 bg-obsidian/90 border-b border-dustyRose/25 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-slateCard border border-champagne/45 flex items-center justify-center text-champagne">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] uppercase tracking-widest text-dustyRose block">COMITÉ ÉDITORIAL • AGORA ENS TIZI OUZOU</span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-bold text-ivory" data-i18n="studio_modal_title">Studio de Publication — Les Cahiers de l'Agora</h3>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="studioLogoutBtn" onclick="handleStudioLogout()" class="hidden px-3 py-1.5 rounded-xl border border-rose-400/40 text-rose-200 hover:bg-rose-500/15 font-mono text-xs cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Déconnexion
+                    </button>
+                    <button type="button" onclick="closeStudioModal()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-parchment flex items-center justify-center cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- View A: Coordinator Login (Supabase Auth) -->
+            <div id="studioLoginView" class="p-6 sm:p-10 overflow-y-auto flex-1 flex items-center justify-center">
+                <div class="max-w-md w-full bg-slateCard/90 border border-dustyRose/35 rounded-3xl p-6 sm:p-8 space-y-5">
+                    <div class="text-center space-y-1">
+                        <span class="px-3 py-1 rounded-full bg-obsidian text-champagne font-mono text-[10px] uppercase tracking-widest">Accès Comité de Rédaction</span>
+                        <h4 class="font-serif text-2xl font-bold text-ivory pt-1">Connexion Rédaction AGORA</h4>
+                        <p class="text-xs text-parchment/80">Réservé au Président (@anomiac.exe) et aux Coordinatrices des Pôles Lyréa, Noûs et Muse.</p>
+                    </div>
+
+                    <form onsubmit="handleStudioLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-champagne mb-1">Email Coordinateur / Bureau</label>
+                            <input type="email" id="studioEmail" required placeholder="president@agora-ens.dz"
+                                class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-champagne mb-1">Mot de Passe</label>
+                            <input type="password" id="studioPassword" required placeholder="••••••••••••"
+                                class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory">
+                        </div>
+                        <p id="studioLoginError" class="hidden text-xs font-mono text-rose-300"></p>
+                        <button type="submit" id="studioLoginBtn" class="w-full min-h-[48px] py-3 rounded-2xl bg-champagne text-obsidian font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-lock"></i>
+                            <span>Déverrouiller le Studio de Publication</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- View B: Publishing Studio Form & Manage Posts -->
+            <div id="studioEditorView" class="hidden p-5 sm:p-8 overflow-y-auto flex-1 space-y-8">
+                <form id="publishPostForm" onsubmit="handlePublishPost(event)" class="bg-slateCard/80 border border-champagne/35 rounded-3xl p-5 sm:p-7 space-y-5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-dustyRose/20 pb-3">
+                        <h4 class="font-serif text-2xl font-bold text-ivory">
+                            <i class="fa-solid fa-feather text-champagne mr-2"></i> Nouvelle Publication Officielle
+                        </h4>
+                        <span class="font-mono text-[11px] px-3 py-1 rounded-full bg-obsidian text-champagne border border-champagne/30">
+                            Compression Auto JPEG 1200px (0.78)
+                        </span>
+                    </div>
+
+                    <!-- Title & Subtitle -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-champagne mb-1.5">Titre de l'Œuvre / Article *</label>
+                            <input type="text" id="postTitle" required placeholder="Ex: Ode aux Sommets de Kabylie / L'Architecture du Silence"
+                                class="w-full min-h-[46px] px-4 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-dustyRose mb-1.5">Sous-titre / Accroche</label>
+                            <input type="text" id="postSubtitle" placeholder="Ex: Réflexions poétiques et philosophiques..."
+                                class="w-full min-h-[46px] px-4 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory">
+                        </div>
+                    </div>
+
+                    <!-- Wing, Category & Edition Label -->
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-champagne mb-1.5">Pôle d'Origine *</label>
+                            <select id="postWing" class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-champagne/45 text-sm text-ivory font-semibold">
+                                <option value="LYRÉA">Pôle 01 — LYRÉA (Lettres & Voix)</option>
+                                <option value="NOÛS">Pôle 02 — NOÛS (Tech, IA & Business)</option>
+                                <option value="MUSE">Pôle 03 — MUSE (Arts, Musique & Scène)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-champagne mb-1.5">Rubrique / Catégorie *</label>
+                            <select id="postCategory" class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 text-sm text-ivory">
+                                <option value="Poésie & Slam">Poésie & Slam</option>
+                                <option value="Article / Essai">Article / Essai Littéraire</option>
+                                <option value="Cercle Littéraire (Critique)">Cercle Littéraire (Critique)</option>
+                                <option value="Arts Plastiques (Muse)">Arts Plastiques & Galerie (Muse)</option>
+                                <option value="Musique & Théâtre (Muse)">Musique & Théâtre (Muse)</option>
+                                <option value="Tech, IA & Business (Noûs)">Tech, IA, Cyber & Business (Noûs)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-champagne mb-1.5">Numéro d'Édition *</label>
+                            <input type="text" id="postIssue" required value="Édition #01 • Novembre 2026"
+                                class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-xs font-mono text-ivory">
+                        </div>
+                    </div>
+
+                    <!-- Author Name, Role & Language -->
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-champagne mb-1.5">Nom de l'Auteur(e) / Artiste *</label>
+                            <input type="text" id="postAuthorName" required placeholder="Ex: Membre Lyréa / @anomiac.exe"
+                                class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-dustyRose mb-1.5">Titre / Rôle dans l'Agora *</label>
+                            <input type="text" id="postAuthorRole" required value="Membre Actif AGORA" placeholder="Ex: Coordinatrice Lyréa / Président"
+                                class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-dustyRose mb-1.5">Langue du Texte</label>
+                            <select id="postLang" class="w-full min-h-[46px] px-3.5 py-2.5 rounded-2xl bg-obsidian border border-dustyRose/35 text-sm text-ivory">
+                                <option value="fr">Français (FR)</option>
+                                <option value="en">English (EN)</option>
+                                <option value="ar">العربية (AR - RTL)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Image Upload with Client-Side HTML5 Canvas Compression (Max 1200px, JPEG 0.78) -->
+                    <div class="p-4 rounded-2xl bg-obsidian/85 border border-dustyRose/30 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <label class="text-xs font-mono uppercase text-champagne font-semibold">
+                                <i class="fa-regular fa-image mr-1"></i> Illustration / Œuvre Visuelle (Optionnel)
+                            </label>
+                            <span id="compressionStatsBadge" class="text-[11px] font-mono text-dustyRose">
+                                Compression Canvas : Max 1200px • JPEG 0.78 (~110 KB)
+                            </span>
+                        </div>
+                        <input type="file" id="postImageInput" accept="image/*" onchange="handleImageFileSelect(event)"
+                            class="w-full text-xs text-parchment file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-mono file:font-bold file:bg-champagne file:text-obsidian hover:file:brightness-105 cursor-pointer">
+                        <div id="compressedImagePreviewWrap" class="hidden pt-2 flex items-center gap-4">
+                            <img id="compressedImagePreview" src="" alt="Aperçu compressé" class="w-20 h-20 rounded-xl object-cover border border-champagne">
+                            <div class="text-xs font-mono text-emerald-300" id="compressedImageInfo"></div>
+                        </div>
+                    </div>
+
+                    <!-- Full Text Content -->
+                    <div>
+                        <label class="block text-xs font-mono uppercase text-champagne mb-1.5">Texte Intégral (Poème, Essai, Article ou Description de l'Œuvre) *</label>
+                        <textarea id="postContent" rows="7" required placeholder="Saisissez ou collez le texte complet ici. Les retours à la ligne sont intégralement respectés pour la poésie et le slam..."
+                            class="w-full p-4 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory font-serif leading-relaxed"></textarea>
+                    </div>
+
+                    <button type="submit" id="publishSubmitBtn" class="w-full min-h-[50px] py-3.5 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:brightness-105 transition-all cursor-pointer flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Publier dans Les Cahiers de l'Agora</span>
+                    </button>
+                </form>
+
+                <!-- Published Articles Management List -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-serif text-2xl font-bold text-ivory">Articles Publiés (Gestion & Suppression)</h4>
+                        <span id="studioTotalPostsCount" class="font-mono text-xs px-3 py-1 rounded-full bg-obsidian border border-champagne/40 text-champagne">0</span>
+                    </div>
+                    <div id="studioPostsManageList" class="space-y-2.5">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // 1. SUPABASE CREDENTIALS & INITIALIZATION
+        // ============================================================================
+        const SUPABASE_CONFIG = {
+            url: 'https://gbiprlmxcoftwnmuieto.supabase.co',
+            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiaXBybG14Y29mdHdubXVpZXRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3NTU4MDUsImV4cCI6MjEwODMzMTgwNX0.cd1S6qK6u2EjvaooXIiHsLH8qw9H08qg63-lafXlxIY'
+        };
+
+        let supabaseClient = null;
+        try {
+            if (window.supabase && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
+                supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            }
+        } catch (err) {
+            console.warn('Supabase init warning:', err);
+        }
+
+        const LOCAL_POSTS_KEY = 'agora_journal_posts_cache_v1';
+        const LOCAL_COMMENTS_KEY = 'agora_journal_comments_cache_v1';
+        const LOCAL_LIKED_KEY = 'agora_journal_liked_posts_v1';
+        const LOCAL_COMMENT_COOLDOWN_KEY = 'agora_journal_last_comment_ts';
+
+        let currentLang = 'fr';
+        let activeWingFilter = 'ALL';
+        let journalPosts = [];
+        let activeReaderPost = null;
+        let pendingCompressedBlob = null;
+        let pendingCompressedDataUrl = null;
+
+        // ============================================================================
+        // 2. INITIAL SAMPLE POSTS (USED ONLY IF DATABASE TABLE IS EMPTY)
+        // ============================================================================
+        const DEFAULT_INAUGURAL_POSTS = [
+            {
+                id: 'inaugural-lyrea-01',
+                title: "Manifeste de la Plume et de l'Amphithéâtre",
+                subtitle: "Pourquoi la parole poétique et l'éloquence restent nos premières armes de liberté",
+                wing: 'LYRÉA',
+                category: 'Poésie & Slam',
+                issue_label: 'Édition #01 • Novembre 2026',
+                author_name: 'Cercle Lyréa — @deartyyn',
+                author_role: 'Coordinatrice Pôle Lyréa',
+                lang: 'fr',
+                image_url: '',
+                content: `Dans le silence feutré des pupitres de Tizi Ouzou,
+Nous avons longtemps cru que les livres suffisaient à dire le monde.
+Mais un livre fermé attend qu'une voix l'ouvre,
+Qu'un souffle le porte jusqu'au dernier rang de l'amphithéâtre.
+
+Ici commence Lyréa :
+Pour celles et ceux qui écrivent des vers aux marges de leurs cahiers,
+Pour les romanciers en devenir, les orateurs, les amoureux du débat contradictoire.
+Que chaque mot prononcé soit un pont entre les langues —
+Du français ciselé à l'anglais incisif, jusqu'à l'arabe classique et aux échos de nos montagnes.
+
+Prenez la plume. Prenez le micro. L'Agora vous écoute.`,
+                likes_count: 24,
+                created_at: '2026-11-10T10:00:00.000Z'
+            },
+            {
+                id: 'inaugural-nous-02',
+                title: "The Architect's Key : Souveraineté Numérique & Intelligence Artificielle à l'Université",
+                subtitle: "Comment les étudiants en lettres, sciences et arts peuvent maîtriser les systèmes au lieu de les subir",
+                wing: 'NOÛS',
+                category: 'Tech, IA & Business (Noûs)',
+                issue_label: 'Édition #01 • Novembre 2026',
+                author_name: '@anomiac.exe',
+                author_role: 'Président AGORA & Coordinateur Pôle Noûs',
+                lang: 'fr',
+                image_url: '',
+                content: `La révolution technologique actuelle ne divise plus le monde entre littéraires et scientifiques : elle sépare ceux qui comprennent l'architecture des systèmes de ceux qui consomment aveuglément des algorithmes.
+
+Au sein du pôle NOÛS de l'Agora (ENS Tizi Ouzou), notre feuille de route repose sur quatre piliers concrets :
+1. L'Intelligence Artificielle Méthodique : Utiliser les modèles de langage avancés pour accélérer la recherche bibliographique, structurer des projets et synthétiser des corpus sans jamais sacrifier l'esprit critique.
+2. La Cybersécurité Pratique (« The Architect's Key ») : Chiffrement des données personnelles, hygiène des mots de passe, défense contre l'ingénierie sociale et initiation à Linux.
+3. L'Éducation Financière & le Trading : Comprendre la structure des marchés, la gestion rigoureuse du risque et l'investissement à long terme.
+4. Le Personal Branding & le Travail en Ligne : Transformer ses compétences académiques, rédactionnelles ou techniques en revenus réels sur la scène internationale.`,
+                likes_count: 31,
+                created_at: '2026-11-11T14:30:00.000Z'
+            },
+            {
+                id: 'inaugural-muse-03',
+                title: "L'Atelier des Sens : Quand la Toile, la Mélodie et la Scène Éveillent l'ENS",
+                subtitle: "Chronique inaugurale du Pôle Muse — Arts Plastiques, Musique & Théâtre universitaire",
+                wing: 'MUSE',
+                category: 'Arts Plastiques (Muse)',
+                issue_label: 'Édition #01 • Novembre 2026',
+                author_name: 'Collectif Muse — @onyssaa',
+                author_role: 'Vice-Présidente & Coordinatrice Pôle Muse',
+                lang: 'fr',
+                image_url: '',
+                content: `Une université vivante se reconnaît à la place qu'elle accorde à la beauté.
+Le pôle MUSE a été conçu comme un atelier permanent ouvert à toutes les sensibilités artistiques de l'École Normale Supérieure de Tizi Ouzou :
+
+• Les Arts Plastiques : du croquis au fusain jusqu'à la peinture sur toile et l'exposition collective sur le campus.
+• La Musique & le Chant : réunir tous les instruments (guitare, piano, violon, percussions, instruments traditionnels) et les voix autour de sessions acoustiques vibrantes.
+• Le Théâtre & les Arts de la Scène : incarner des personnages, apprivoiser l'espace scénique et faire vivre la dramaturgie devant nos camarades.`,
+                likes_count: 19,
+                created_at: '2026-11-12T09:15:00.000Z'
+            }
+        ];
+
+        // ============================================================================
+        // 3. TRILINGUAL DICTIONARY (FR / EN / AR)
+        // ============================================================================
+        const i18n = {
+            fr: {
+                back_to_portal: "Retour au Portail AGORA",
+                topbar_inst: "REVUE OFFICIELLE • ÉCOLE NORMALE SUPÉRIEURE (ENS) DE TIZI OUZOU",
+                btn_open_studio: "Accès Rédaction / Publier",
+                masthead_short: "LES CAHIERS DE L'AGORA",
+                masthead_sub: "Lyréa • Noûs • Muse — ENS Tizi Ouzou",
+                btn_download_edition: "Télécharger l'Édition Complète (PDF)",
+                hero_eyebrow: "Publication Périodique Officielle • Campus ENS Tizi Ouzou",
+                hero_title: "LES CAHIERS DE L'AGORA",
+                hero_subtitle: "« La Revue Littéraire, Artistique & Scientifique de l'ENS Tizi Ouzou »",
+                hero_desc: "Poèmes, textes de slam, essais critiques et comptes-rendus du Cercle Littéraire (<strong class='text-ivory'>LYRÉA</strong>), analyses IA, cybersécurité et stratégies digitales (<strong class='text-ivory'>NOÛS</strong>), galeries d'arts plastiques, partitions et chroniques théâtrales (<strong class='text-ivory'>MUSE</strong>).",
+                btn_publish_work: "Publier une Œuvre (Coordinateurs)",
+                filter_all: "Tout",
+                all_editions: "Toutes les Éditions",
+                grid_heading: "Publications Récentes de l'Agora",
+                btn_refresh: "Actualiser le flux",
+                read_more_btn: "Lire & Réagir →",
+                btn_pdf_single: "Télécharger cet Article (PDF)",
+                react_title: "Saluer cette publication",
+                react_sub: "Soutenez l'auteur(e) avec une réaction officielle de l'Agora :",
+                react_bravo: "Bravo",
+                react_heart: "Coup de cœur",
+                react_pen: "Belle Plume",
+                comments_heading: "Cercle de Lecture & Commentaires Vérifiés",
+                lbl_member_code: "Code Membre Officiel (#AGORA-XXXX) *",
+                lbl_display_name: "Nom & Prénom (si code hors-ligne)",
+                lbl_comment_body: "Votre Critique Littéraire, Réflexion ou Encouragement *",
+                comment_verify_note: "Identification liée au registre officiel `agora_members`.",
+                btn_post_comment: "Publier mon Commentaire",
+                studio_modal_title: "Studio de Publication — Les Cahiers de l'Agora"
+            },
+            en: {
+                back_to_portal: "Back to AGORA Portal",
+                topbar_inst: "OFFICIAL JOURNAL • HIGHER NORMAL SCHOOL (ENS) OF TIZI OUZOU",
+                btn_open_studio: "Editorial Login / Publish",
+                masthead_short: "LES CAHIERS DE L'AGORA",
+                masthead_sub: "Lyréa • Noûs • Muse — ENS Tizi Ouzou",
+                btn_download_edition: "Download Full Issue (PDF)",
+                hero_eyebrow: "Official Periodical Publication • ENS Tizi Ouzou Campus",
+                hero_title: "LES CAHIERS DE L'AGORA",
+                hero_subtitle: "“The Literary, Artistic & Scientific Review of ENS Tizi Ouzou”",
+                hero_desc: "Poems, slam verses, literary critiques and book club essays (<strong class='text-ivory'>LYRÉA</strong>), AI workflows, cybersecurity and digital business insights (<strong class='text-ivory'>NOÛS</strong>), visual arts galleries, music and theatrical chronicles (<strong class='text-ivory'>MUSE</strong>).",
+                btn_publish_work: "Publish a Work (Coordinators)",
+                filter_all: "All",
+                all_editions: "All Editions / Issues",
+                grid_heading: "Latest Agora Publications",
+                btn_refresh: "Refresh Feed",
+                read_more_btn: "Read & React →",
+                btn_pdf_single: "Download Article (PDF)",
+                react_title: "Applaud This Publication",
+                react_sub: "Support the author with an official Agora reaction:",
+                react_bravo: "Bravo",
+                react_heart: "Favorite",
+                react_pen: "Fine Pen",
+                comments_heading: "Reading Circle & Verified Member Comments",
+                lbl_member_code: "Official Member Code (#AGORA-XXXX) *",
+                lbl_display_name: "Full Name (if offline)",
+                lbl_comment_body: "Your Literary Critique, Thought or Encouragement *",
+                comment_verify_note: "Verified against the official `agora_members` registry.",
+                btn_post_comment: "Post Comment",
+                studio_modal_title: "Publishing Studio — Les Cahiers de l'Agora"
+            },
+            ar: {
+                back_to_portal: "العودة إلى بوابة أغورا",
+                topbar_inst: "المجلة الرسمية • المدرسة العليا للأساتذة (ENS) بتيزي وزو",
+                btn_open_studio: "بوابة التحرير / نشر عمل",
+                masthead_short: "دفاتر الأغورا • LES CAHIERS",
+                masthead_sub: "ليريا • نوس • ميوز — المدرسة العليا للأساتذة تيزي وزو",
+                btn_download_edition: "تحميل العدد الكامل (PDF)",
+                hero_eyebrow: "إصدار دوري رسمي • المدرسة العليا للأساتذة بتيزي وزو",
+                hero_title: "دفاتر الأغورا • LES CAHIERS",
+                hero_subtitle: "« المجلة الأدبية والفنية والعلمية للمدرسة العليا للأساتذة بتيزي وزو »",
+                hero_desc: "قصائد شعرية، نصوص سلام، مقالات نقدية ومراجعات النادي الأدبي (<strong class='text-ivory'>LYRÉA</strong>)، أبحاث الذكاء الاصطناعي والأمن السيبراني وريادة الأعمال (<strong class='text-ivory'>NOÛS</strong>)، معارض الفنون التشكيلية والموسيقى والمسرح (<strong class='text-ivory'>MUSE</strong>).",
+                btn_publish_work: "نشر عمل جديد (للمنسقين)",
+                filter_all: "الكل",
+                all_editions: "جميع الأعداد والإصدارات",
+                grid_heading: "أحدث إبداعات ومقالات أغورا",
+                btn_refresh: "تحديث المنشورات",
+                read_more_btn: "قراءة وتفاعل ←",
+                btn_pdf_single: "تحميل هذا المقال (PDF)",
+                react_title: "تفاعل مع هذا العمل",
+                react_sub: "ادعم الكاتب(ة) أو الفنان(ة) بتفاعل رسمي:",
+                react_bravo: "إعجاب وتقدير",
+                react_heart: "عمل مميز",
+                react_pen: "قلم مبدع",
+                comments_heading: "حلقة القراءة والتعليقات الموثقة للأعضاء",
+                lbl_member_code: "رمز العضوية الرسمي (#AGORA-XXXX) *",
+                lbl_display_name: "الاسم الكامل (احتياطي)",
+                lbl_comment_body: "قراءتك النقدية أو تعليقك التفاعلي *",
+                comment_verify_note: "يتم التحقق من الرمز تلقائياً عبر سجل الأعضاء `agora_members`.",
+                btn_post_comment: "نشر التعليق",
+                studio_modal_title: "استوديو التحرير والنشر — دفاتر الأغورا"
+            }
+        };
+
+        // ============================================================================
+        // 4. HELPER UTILITIES & TOAST NOTIFICATIONS
+        // ============================================================================
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('journalToast');
+            const icon = document.getElementById('journalToastIcon');
+            const text = document.getElementById('journalToastText');
+            if (!toast || !text) return;
+
+            text.textContent = message;
+            if (icon) {
+                icon.className = isError
+                    ? 'fa-solid fa-triangle-exclamation text-rose-400 text-base'
+                    : 'fa-solid fa-circle-check text-champagne text-base';
+            }
+            toast.classList.remove('hidden');
+            clearTimeout(window._journalToastTimer);
+            window._journalToastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3800);
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str == null ? '' : String(str);
+            return div.innerHTML;
+        }
+
+        function formatReadableDate(isoStr) {
+            if (!isoStr) return 'Novembre 2026';
+            try {
+                const d = new Date(isoStr);
+                return d.toLocaleDateString(currentLang === 'ar' ? 'ar-DZ' : (currentLang === 'en' ? 'en-US' : 'fr-FR'), {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return 'Novembre 2026';
+            }
+        }
+
+        function getCelestialLogoSvg() {
+            return `<svg viewBox="0 0 240 240" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="240" height="240" rx="22" fill="#241122"/>
+                <path d="M120 22 L123 36 L134 39 L123 42 L120 56 L117 42 L106 39 L117 36 Z" fill="#E9D9B7"/>
+                <path d="M120 62 L82 152 H98 L108 126 H132 L142 152 H158 L120 62 Z" stroke="#E9D9B7" stroke-width="4" fill="rgba(216,184,200,0.1)"/>
+                <ellipse cx="122" cy="108" rx="64" ry="22" transform="rotate(-19 122 108)" stroke="#D8B8C8" stroke-width="4" fill="none"/>
+                <text x="120" y="196" text-anchor="middle" fill="#FAF6F0" font-family="'Cormorant Garamond', Georgia, serif" font-size="30" font-weight="700" letter-spacing="6">AGORA</text>
+            </svg>`;
+        }
+
+        function generateEditorialCoverSvg(wing, category, title) {
+            const upperWing = (wing || 'LYRÉA').toUpperCase();
+            let accent = '#D8B8C8';
+            let emblem = '✦ LYRÉA • LETTRES & ÉLOQUENCE';
+            if (upperWing.includes('NOÛS') || upperWing.includes('NOUS')) {
+                accent = '#E9D9B7';
+                emblem = '✦ NOÛS • SYSTÈMES, IA & BUSINESS';
+            } else if (upperWing.includes('MUSE')) {
+                accent = '#D8B8C8';
+                emblem = '✦ MUSE • ARTS, MUSIQUE & SCÈNE';
+            }
+            const shortTitle = (title || 'AGORA').slice(0, 38);
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="100%" height="100%">
+                <defs>
+                    <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#241628"/>
+                        <stop offset="55%" stop-color="#34304A"/>
+                        <stop offset="100%" stop-color="#433E5E"/>
+                    </linearGradient>
+                </defs>
+                <rect width="600" height="340" fill="url(#bgG)"/>
+                <rect x="18" y="18" width="564" height="304" rx="14" stroke="${accent}" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+                <circle cx="300" cy="170" r="110" stroke="#E9D9B7" stroke-opacity="0.12" stroke-width="1.5" fill="none"/>
+                <ellipse cx="300" cy="170" rx="165" ry="52" transform="rotate(-14 300 170)" stroke="${accent}" stroke-opacity="0.28" stroke-width="2" fill="none"/>
+                <text x="300" y="95" text-anchor="middle" fill="${accent}" font-family="monospace" font-size="12" letter-spacing="3">${escapeHtml(emblem)}</text>
+                <text x="300" y="178" text-anchor="middle" fill="#FAF6F0" font-family="Georgia, serif" font-size="24" font-weight="bold">${escapeHtml(shortTitle)}</text>
+                <text x="300" y="255" text-anchor="middle" fill="#E9D9B7" font-family="monospace" font-size="11" letter-spacing="2">LES CAHIERS DE L'AGORA • ENS TIZI OUZOU</text>
+            </svg>`;
+            return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+        }
+
+        // ============================================================================
+        // 5. LANGUAGE SWITCHING & AUTOMATIC RTL
+        // ============================================================================
+        function setLanguage(lang) {
+            if (!i18n[lang]) return;
+            currentLang = lang;
+
+            if (lang === 'ar') {
+                document.documentElement.lang = 'ar';
+                document.documentElement.dir = 'rtl';
+            } else {
+                document.documentElement.lang = lang;
+                document.documentElement.dir = 'ltr';
+            }
+
+            ['fr', 'en', 'ar'].forEach(code => {
+                const btn = document.getElementById(`langBtn-${code}`);
+                if (btn) {
+                    if (code === lang) btn.classList.add('lang-btn-active');
+                    else btn.classList.remove('lang-btn-active');
+                }
+            });
+
+            const dict = i18n[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerHTML = dict[key];
+            });
+
+            renderJournalGrid();
+        }
+
+        // ============================================================================
+        // 6. FETCH & FILTER JOURNAL POSTS (`agora_journal_posts` + LOCAL FALLBACK)
+        // ============================================================================
+        function loadCachedPosts() {
+            try {
+                const raw = localStorage.getItem(LOCAL_POSTS_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function saveCachedPosts(list) {
+            try {
+                localStorage.setItem(LOCAL_POSTS_KEY, JSON.stringify(list));
+            } catch (e) {}
+        }
+
+        async function fetchJournalPosts() {
+            const loader = document.getElementById('journalLoadingState');
+            const grid = document.getElementById('journalPostsGrid');
+            if (loader && grid && journalPosts.length === 0) {
+                loader.classList.remove('hidden');
+            }
+
+            let remotePosts = null;
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('agora_journal_posts')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        remotePosts = data;
+                    }
+                } catch (err) {
+                    console.warn('Supabase journal fetch note:', err);
+                }
+            }
+
+            const localCached = loadCachedPosts() || [];
+
+            if (remotePosts && remotePosts.length > 0) {
+                const remoteIds = new Set(remotePosts.map(p => String(p.id)));
+                const localOnly = localCached.filter(p => !remoteIds.has(String(p.id)) && !String(p.id).startsWith('inaugural-'));
+                journalPosts = [...localOnly, ...remotePosts];
+                saveCachedPosts(journalPosts);
+            } else if (localCached.length > 0) {
+                journalPosts = localCached;
+            } else {
+                journalPosts = [...DEFAULT_INAUGURAL_POSTS];
+                saveCachedPosts(journalPosts);
+            }
+
+            if (loader) loader.classList.add('hidden');
+            populateIssueDropdown();
+            updateWingCounts();
+            renderJournalGrid();
+            renderStudioManageList();
+        }
+
+        function populateIssueDropdown() {
+            const select = document.getElementById('issueFilterSelect');
+            if (!select) return;
+            const currentVal = select.value || 'ALL';
+            const allIssuesLabel = (i18n[currentLang] || i18n.fr).all_editions;
+
+            const uniqueIssues = Array.from(new Set(journalPosts.map(p => (p.issue_label || '').trim()).filter(Boolean)));
+            select.innerHTML = `<option value="ALL">${escapeHtml(allIssuesLabel)}</option>` +
+                uniqueIssues.map(iss => `<option value="${escapeHtml(iss)}">${escapeHtml(iss)}</option>`).join('');
+
+            if (uniqueIssues.includes(currentVal)) {
+                select.value = currentVal;
+            } else {
+                select.value = 'ALL';
+            }
+        }
+
+        function normalizeWingName(wing) {
+            const u = (wing || '').toUpperCase();
+            if (u.includes('LYR')) return 'LYRÉA';
+            if (u.includes('NOÛ') || u.includes('NOU')) return 'NOÛS';
+            if (u.includes('MUS')) return 'MUSE';
+            return 'LYRÉA';
+        }
+
+        function updateWingCounts() {
+            const total = journalPosts.length;
+            const lyrea = journalPosts.filter(p => normalizeWingName(p.wing) === 'LYRÉA').length;
+            const nous = journalPosts.filter(p => normalizeWingName(p.wing) === 'NOÛS').length;
+            const muse = journalPosts.filter(p => normalizeWingName(p.wing) === 'MUSE').length;
+
+            const setBadge = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = val;
+            };
+            setBadge('countBadge-ALL', total);
+            setBadge('countBadge-LYRÉA', lyrea);
+            setBadge('countBadge-NOÛS', nous);
+            setBadge('countBadge-MUSE', muse);
+        }
+
+        function setWingFilter(wing) {
+            activeWingFilter = wing;
+            ['ALL', 'LYRÉA', 'NOÛS', 'MUSE'].forEach(w => {
+                const btn = document.getElementById(`wingTab-${w}`);
+                if (btn) {
+                    if (w === wing) btn.classList.add('filter-tab-active');
+                    else btn.classList.remove('filter-tab-active');
+                }
+            });
+            renderJournalGrid();
+        }
+
+        function getFilteredPosts() {
+            const issueFilter = document.getElementById('issueFilterSelect')?.value || 'ALL';
+            const query = (document.getElementById('journalSearchInput')?.value || '').toLowerCase().trim();
+
+            return journalPosts.filter(post => {
+                const w = normalizeWingName(post.wing);
+                if (activeWingFilter !== 'ALL' && w !== activeWingFilter) return false;
+                if (issueFilter !== 'ALL' && (post.issue_label || '') !== issueFilter) return false;
+                if (query) {
+                    const hay = `${post.title || ''} ${post.subtitle || ''} ${post.author_name || ''} ${post.category || ''} ${post.content || ''}`.toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+        }
+
+        function renderJournalGrid() {
+            const grid = document.getElementById('journalPostsGrid');
+            if (!grid) return;
+
+            const filtered = getFilteredPosts();
+            const readBtnText = (i18n[currentLang] || i18n.fr).read_more_btn;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full p-12 rounded-3xl bg-slateCard/60 border border-dustyRose/25 text-center space-y-3">
+                        <i class="fa-solid fa-book-open text-3xl text-dustyRose"></i>
+                        <h3 class="font-serif text-2xl font-bold text-ivory">Aucune publication trouvée pour ce filtre</h3>
+                        <p class="text-xs text-parchment/75">Réinitialisez les filtres ou publiez une nouvelle œuvre depuis le Studio de Rédaction.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(post => {
+                const wingNorm = normalizeWingName(post.wing);
+                const coverSrc = (post.image_url && post.image_url.trim())
+                    ? post.image_url
+                    : generateEditorialCoverSvg(wingNorm, post.category, post.title);
+                const fallbackSvgUri = generateEditorialCoverSvg(wingNorm, post.category, post.title);
+                const excerpt = (post.content || '').replace(/\s+/g, ' ').trim().slice(0, 165) + ((post.content || '').length > 165 ? '…' : '');
+                const isRtlPost = post.lang === 'ar';
+
+                return `
+                    <article onclick="openReaderModal('${escapeHtml(post.id)}')" dir="${isRtlPost ? 'rtl' : 'ltr'}" class="editorial-card rounded-3xl overflow-hidden flex flex-col justify-between cursor-pointer group">
+                        <div>
+                            <!-- Cover Artwork -->
+                            <div class="relative h-52 bg-obsidian overflow-hidden border-b border-dustyRose/20">
+                                <img src="${escapeHtml(coverSrc)}" loading="lazy" alt="${escapeHtml(post.title)}"
+                                    onerror="this.onerror=null;this.src='${fallbackSvgUri}';"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                                    <span class="px-3 py-1 rounded-full bg-obsidian/90 backdrop-blur-md border border-champagne/50 font-mono text-[10px] font-bold text-champagne uppercase">
+                                        ✦ ${escapeHtml(wingNorm)}
+                                    </span>
+                                    <span class="px-2.5 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-dustyRose/35 font-mono text-[10px] text-dustyRose truncate max-w-[180px]">
+                                        ${escapeHtml(post.issue_label || 'Édition #01')}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Card Content -->
+                            <div class="p-6 space-y-3">
+                                <div class="flex items-center justify-between text-[11px] font-mono text-dustyRose">
+                                    <span>${escapeHtml(post.category || 'Article')}</span>
+                                    <span>${formatReadableDate(post.created_at)}</span>
+                                </div>
+
+                                <h3 class="font-serif text-2xl font-bold text-ivory group-hover:text-champagne transition-colors leading-snug">
+                                    ${escapeHtml(post.title)}
+                                </h3>
+
+                                ${post.subtitle ? `<p class="font-serif italic text-sm text-champagne/90 line-clamp-2">${escapeHtml(post.subtitle)}</p>` : ''}
+
+                                <p class="text-xs text-parchment/80 leading-relaxed line-clamp-3">
+                                    ${escapeHtml(excerpt)}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer: Author & Likes -->
+                        <div class="px-6 py-4 bg-obsidian/60 border-t border-dustyRose/20 flex items-center justify-between gap-2">
+                            <div class="truncate">
+                                <div class="text-xs font-bold text-ivory truncate">${escapeHtml(post.author_name || 'Membre AGORA')}</div>
+                                <div class="text-[10px] font-mono text-dustyRose truncate">${escapeHtml(post.author_role || 'AGORA ENS')}</div>
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0">
+                                <span class="text-xs font-mono text-champagne flex items-center gap-1">
+                                    <i class="fa-solid fa-fire text-dustyRose"></i> ${Number(post.likes_count || 0)}
+                                </span>
+                                <span class="text-xs font-mono font-semibold text-ivory group-hover:text-champagne">
+                                    ${escapeHtml(readBtnText)}
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // ============================================================================
+        // 7. FULL READER MODAL, REACTIONS & VERIFIED MEMBER COMMENTS
+        // ============================================================================
+        function openReaderModal(postId) {
+            const post = journalPosts.find(p => String(p.id) === String(postId));
+            if (!post) return;
+            activeReaderPost = post;
+
+            const wingNorm = normalizeWingName(post.wing);
+            document.getElementById('readerWingBadge').textContent = `✦ ${wingNorm}`;
+            document.getElementById('readerIssueLabel').textContent = post.issue_label || 'Édition #01 • Novembre 2026';
+            document.getElementById('readerCategoryTag').textContent = post.category || 'Publication Officielle';
+            document.getElementById('readerTitle').textContent = post.title || '';
+            document.getElementById('readerSubtitle').textContent = post.subtitle || '';
+            document.getElementById('readerAuthorName').textContent = post.author_name || 'Membre AGORA';
+            document.getElementById('readerAuthorRole').textContent = post.author_role || 'AGORA ENS Tizi Ouzou';
+            document.getElementById('readerAuthorInitial').textContent = (post.author_name || 'A').trim().charAt(0).toUpperCase();
+            document.getElementById('readerDate').textContent = formatReadableDate(post.created_at);
+            document.getElementById('readerLikesCount').textContent = Number(post.likes_count || 0);
+
+            const bodyEl = document.getElementById('readerContentBody');
+            bodyEl.textContent = post.content || '';
+            bodyEl.setAttribute('dir', post.lang === 'ar' ? 'rtl' : 'ltr');
+
+            const imgWrap = document.getElementById('readerImageWrapper');
+            const imgEl = document.getElementById('readerImage');
+            if (post.image_url && post.image_url.trim()) {
+                imgEl.src = post.image_url;
+                imgWrap.classList.remove('hidden');
+            } else {
+                imgWrap.classList.add('hidden');
+            }
+
+            document.getElementById('readerModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            fetchAndRenderComments(post.id);
+        }
+
+        function closeReaderModal() {
+            document.getElementById('readerModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function getLikedPostSet() {
+            try {
+                const raw = localStorage.getItem(LOCAL_LIKED_KEY);
+                if (raw) return new Set(JSON.parse(raw));
+            } catch (e) {}
+            return new Set();
+        }
+
+        function saveLikedPostSet(setObj) {
+            try {
+                localStorage.setItem(LOCAL_LIKED_KEY, JSON.stringify(Array.from(setObj)));
+            } catch (e) {}
+        }
+
+        async function triggerPostReaction(emoji) {
+            if (!activeReaderPost) return;
+            const postId = String(activeReaderPost.id);
+            const likedSet = getLikedPostSet();
+
+            if (likedSet.has(postId)) {
+                showToast(currentLang === 'ar' ? 'لقد تفاعلت مع هذا العمل مسبقاً!' : 'Vous avez déjà salué cette publication !');
+                return;
+            }
+
+            likedSet.add(postId);
+            saveLikedPostSet(likedSet);
+
+            activeReaderPost.likes_count = Number(activeReaderPost.likes_count || 0) + 1;
+            document.getElementById('readerLikesCount').textContent = activeReaderPost.likes_count;
+            saveCachedPosts(journalPosts);
+            renderJournalGrid();
+
+            showToast(`${emoji} Merci pour votre réaction !`);
+
+            if (supabaseClient && !postId.startsWith('inaugural-')) {
+                try {
+                    const { error } = await supabaseClient.rpc('increment_post_likes', { post_uuid: activeReaderPost.id });
+                    if (error) {
+                        await supabaseClient
+                            .from('agora_journal_posts')
+                            .update({ likes_count: activeReaderPost.likes_count })
+                            .eq('id', activeReaderPost.id);
+                    }
+                } catch (err) {
+                    console.warn('Like sync note:', err);
+                }
+            }
+        }
+
+        // Verified Member Comments (`agora_journal_comments` + `agora_members` lookup)
+        function getLocalCommentsMap() {
+            try {
+                const raw = localStorage.getItem(LOCAL_COMMENTS_KEY);
+                if (raw) return JSON.parse(raw) || {};
+            } catch (e) {}
+            return {};
+        }
+
+        function saveLocalCommentsMap(mapObj) {
+            try {
+                localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(mapObj));
+            } catch (e) {}
+        }
+
+        async function fetchAndRenderComments(postId) {
+            const listEl = document.getElementById('readerCommentsList');
+            const badgeEl = document.getElementById('readerCommentsCountBadge');
+            if (!listEl) return;
+
+            let comments = [];
+            const localMap = getLocalCommentsMap();
+            const localForPost = Array.isArray(localMap[postId]) ? localMap[postId] : [];
+
+            if (supabaseClient && !String(postId).startsWith('inaugural-')) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('agora_journal_comments')
+                        .select('*')
+                        .eq('post_id', postId)
+                        .order('created_at', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        comments = data;
+                    }
+                } catch (e) {}
+            }
+
+            if (comments.length === 0 && localForPost.length > 0) {
+                comments = localForPost;
+            }
+
+            if (badgeEl) badgeEl.textContent = comments.length;
+
+            if (comments.length === 0) {
+                listEl.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-midnight/60 border border-dustyRose/15 text-xs text-parchment/65 font-mono text-center">
+                        Soyez le premier membre d'AGORA à commenter cette œuvre avec votre code #AGORA-XXXX.
+                    </div>
+                `;
+                return;
+            }
+
+            listEl.innerHTML = comments.map(c => `
+                <div class="p-4 rounded-2xl bg-midnight/90 border border-dustyRose/25 space-y-1.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-xs text-ivory">${escapeHtml(c.member_name || 'Membre AGORA')}</span>
+                            <span class="px-2 py-0.5 rounded-full bg-champagne/15 border border-champagne/40 font-mono text-[10px] text-champagne">
+                                ✓ #${escapeHtml(c.member_code || 'AGORA')}
+                            </span>
+                        </div>
+                        <span class="font-mono text-[10px] text-parchment/50">${formatReadableDate(c.created_at)}</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-parchment/90 leading-relaxed">${escapeHtml(c.comment_text)}</p>
+                </div>
+            `).join('');
+        }
+
+        async function handleCommentSubmit(e) {
+            e.preventDefault();
+            if (!activeReaderPost) return;
+
+            // Enforce 15-second cooldown
+            const lastTs = Number(localStorage.getItem(LOCAL_COMMENT_COOLDOWN_KEY) || 0);
+            const now = Date.now();
+            if (now - lastTs < 15000) {
+                const waitSec = Math.ceil((15000 - (now - lastTs)) / 1000);
+                showToast(`Veuillez patienter ${waitSec}s avant de publier un autre commentaire.`, true);
+                return;
+            }
+
+            const rawCode = document.getElementById('commentMemberCode').value.trim().toUpperCase().replace(/^#/, '');
+            const fallbackName = document.getElementById('commentFallbackName').value.trim();
+            const commentText = document.getElementById('commentTextInput').value.trim();
+
+            if (!rawCode || !commentText) return;
+
+            const submitBtn = document.getElementById('commentSubmitBtn');
+            submitBtn.disabled = true;
+
+            let verifiedName = fallbackName || 'Membre Actif AGORA';
+
+            // Query `agora_members` in Supabase to verify member_code and fetch full_name
+            if (supabaseClient) {
+                try {
+                    const { data } = await supabaseClient
+                        .from('agora_members')
+                        .select('full_name, primary_wing')
+                        .ilike('member_code', rawCode)
+                        .maybeSingle();
+
+                    if (data && data.full_name) {
+                        verifiedName = data.full_name;
+                    }
+                } catch (err) {}
+            }
+
+            const commentRecord = {
+                post_id: activeReaderPost.id,
+                member_code: rawCode,
+                member_name: verifiedName,
+                comment_text: commentText,
+                created_at: new Date().toISOString()
+            };
+
+            // Save locally first
+            const localMap = getLocalCommentsMap();
+            if (!Array.isArray(localMap[activeReaderPost.id])) localMap[activeReaderPost.id] = [];
+            localMap[activeReaderPost.id].unshift(commentRecord);
+            saveLocalCommentsMap(localMap);
+
+            // Insert into `agora_journal_comments` if remote post
+            if (supabaseClient && !String(activeReaderPost.id).startsWith('inaugural-')) {
+                try {
+                    await supabaseClient.from('agora_journal_comments').insert([commentRecord]);
+                } catch (err) {
+                    console.warn('Comment saved locally:', err);
+                }
+            }
+
+            localStorage.setItem(LOCAL_COMMENT_COOLDOWN_KEY, String(Date.now()));
+            document.getElementById('commentTextInput').value = '';
+            submitBtn.disabled = false;
+
+            showToast(`Commentaire publié au nom de ${verifiedName} (#${rawCode})`);
+            fetchAndRenderComments(activeReaderPost.id);
+        }
+
+        // ============================================================================
+        // 8. COORDINATOR PUBLISHING STUDIO & HTML5 CANVAS IMAGE COMPRESSION (1200px)
+        // ============================================================================
+        async function openStudioModal() {
+            document.getElementById('studioModal').classList.remove('hidden');
+            document.getElementById('studioLoginError').classList.add('hidden');
+
+            if (supabaseClient) {
+                try {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    if (session && session.user) {
+                        unlockStudioEditor();
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            document.getElementById('studioEditorView').classList.add('hidden');
+            document.getElementById('studioLoginView').classList.remove('hidden');
+            document.getElementById('studioLogoutBtn').classList.add('hidden');
+        }
+
+        function closeStudioModal() {
+            document.getElementById('studioModal').classList.add('hidden');
+        }
+
+        async function handleStudioLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('studioEmail').value.trim();
+            const password = document.getElementById('studioPassword').value.trim();
+            const errEl = document.getElementById('studioLoginError');
+            const btn = document.getElementById('studioLoginBtn');
+            errEl.classList.add('hidden');
+
+            if (!supabaseClient) {
+                errEl.textContent = 'Service Supabase indisponible.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            const origHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Authentification...</span>`;
+
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+
+                if (error || !data || !data.session) {
+                    errEl.textContent = 'Identifiants invalides. Accès réservé au Comité Éditorial AGORA.';
+                    errEl.classList.remove('hidden');
+                    return;
+                }
+                unlockStudioEditor();
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+                errEl.textContent = 'Erreur réseau lors de la connexion.';
+                errEl.classList.remove('hidden');
+            }
+        }
+
+        function unlockStudioEditor() {
+            document.getElementById('studioLoginView').classList.add('hidden');
+            document.getElementById('studioEditorView').classList.remove('hidden');
+            document.getElementById('studioLogoutBtn').classList.remove('hidden');
+            renderStudioManageList();
+        }
+
+        async function handleStudioLogout() {
+            if (supabaseClient) {
+                try { await supabaseClient.auth.signOut(); } catch (e) {}
+            }
+            document.getElementById('studioEditorView').classList.add('hidden');
+            document.getElementById('studioLoginView').classList.remove('hidden');
+            document.getElementById('studioLogoutBtn').classList.add('hidden');
+        }
+
+        // Client-Side HTML5 Canvas Compression (Max Width 1200px, JPEG quality 0.78)
+        function handleImageFileSelect(event) {
+            const file = event.target.files?.[0];
+            if (!file) {
+                pendingCompressedBlob = null;
+                pendingCompressedDataUrl = null;
+                document.getElementById('compressedImagePreviewWrap').classList.add('hidden');
+                return;
+            }
+
+            const originalKB = Math.round(file.size / 1024);
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const maxWidth = 1200;
+                    let targetW = img.width;
+                    let targetH = img.height;
+
+                    if (targetW > maxWidth) {
+                        const ratio = maxWidth / targetW;
+                        targetW = maxWidth;
+                        targetH = Math.round(img.height * ratio);
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = targetW;
+                    canvas.height = targetH;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#242134';
+                    ctx.fillRect(0, 0, targetW, targetH);
+                    ctx.drawImage(img, 0, 0, targetW, targetH);
+
+                    pendingCompressedDataUrl = canvas.toDataURL('image/jpeg', 0.78);
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            pendingCompressedBlob = blob;
+                            const compressedKB = Math.round(blob.size / 1024);
+                            const previewEl = document.getElementById('compressedImagePreview');
+                            const infoEl = document.getElementById('compressedImageInfo');
+                            const wrapEl = document.getElementById('compressedImagePreviewWrap');
+                            if (previewEl) previewEl.src = pendingCompressedDataUrl;
+                            if (infoEl) {
+                                infoEl.textContent = `✓ Image optimisée : ${originalKB} KB → ${compressedKB} KB (${targetW}×${targetH}px JPEG 0.78)`;
+                            }
+                            if (wrapEl) wrapEl.classList.remove('hidden');
+                        }
+                    }, 'image/jpeg', 0.78);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handlePublishPost(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('postTitle').value.trim();
+            const subtitle = document.getElementById('postSubtitle').value.trim();
+            const wing = document.getElementById('postWing').value;
+            const category = document.getElementById('postCategory').value;
+            const issue_label = document.getElementById('postIssue').value.trim();
+            const author_name = document.getElementById('postAuthorName').value.trim();
+            const author_role = document.getElementById('postAuthorRole').value.trim();
+            const lang = document.getElementById('postLang').value;
+            const content = document.getElementById('postContent').value.trim();
+
+            if (!title || !content) return;
+
+            const btn = document.getElementById('publishSubmitBtn');
+            const origHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Compression & Publication en cours...</span>`;
+
+            let finalImageUrl = '';
+
+            // Upload compressed JPEG (~100KB) to Supabase Storage bucket `journal-media`
+            if (pendingCompressedBlob && supabaseClient) {
+                try {
+                    const fileName = `agora_${Date.now()}_${Math.random().toString(36).slice(2, 7)}.jpg`;
+                    const { error: upErr } = await supabaseClient.storage
+                        .from('journal-media')
+                        .upload(fileName, pendingCompressedBlob, {
+                            contentType: 'image/jpeg',
+                            upsert: false
+                        });
+
+                    if (!upErr) {
+                        const { data: pubData } = supabaseClient.storage
+                            .from('journal-media')
+                            .getPublicUrl(fileName);
+                        if (pubData && pubData.publicUrl) {
+                            finalImageUrl = pubData.publicUrl;
+                        }
+                    } else if (pendingCompressedDataUrl) {
+                        finalImageUrl = pendingCompressedDataUrl;
+                    }
+                } catch (storageErr) {
+                    if (pendingCompressedDataUrl) finalImageUrl = pendingCompressedDataUrl;
+                }
+            } else if (pendingCompressedDataUrl) {
+                finalImageUrl = pendingCompressedDataUrl;
+            }
+
+            const newPostPayload = {
+                title,
+                subtitle,
+                wing,
+                category,
+                issue_label,
+                author_name,
+                author_role,
+                lang,
+                image_url: finalImageUrl,
+                content,
+                likes_count: 1,
+                created_at: new Date().toISOString()
+            };
+
+            let insertedPost = { id: `local-${Date.now()}`, ...newPostPayload };
+
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('agora_journal_posts')
+                        .insert([newPostPayload])
+                        .select()
+                        .single();
+
+                    if (!error && data) {
+                        insertedPost = data;
+                    }
+                } catch (dbErr) {
+                    console.warn('Saved to local cache; Supabase insert note:', dbErr);
+                }
+            }
+
+            journalPosts.unshift(insertedPost);
+            saveCachedPosts(journalPosts);
+
+            // Reset form
+            document.getElementById('publishPostForm').reset();
+            document.getElementById('postIssue').value = issue_label;
+            pendingCompressedBlob = null;
+            pendingCompressedDataUrl = null;
+            document.getElementById('compressedImagePreviewWrap').classList.add('hidden');
+
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
+
+            populateIssueDropdown();
+            updateWingCounts();
+            renderJournalGrid();
+            renderStudioManageList();
+            showToast(`Œuvre « ${title} » publiée avec succès !`);
+        }
+
+        function renderStudioManageList() {
+            const listEl = document.getElementById('studioPostsManageList');
+            const countEl = document.getElementById('studioTotalPostsCount');
+            if (!listEl) return;
+            if (countEl) countEl.textContent = `${journalPosts.length} publications`;
+
+            listEl.innerHTML = journalPosts.map(p => `
+                <div class="p-3.5 rounded-2xl bg-obsidian/90 border border-dustyRose/25 flex flex-wrap items-center justify-between gap-3">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-champagne/20 font-mono text-[10px] text-champagne">${escapeHtml(normalizeWingName(p.wing))}</span>
+                            <span class="font-mono text-[10px] text-dustyRose">${escapeHtml(p.issue_label || '')}</span>
+                        </div>
+                        <div class="font-serif text-lg font-bold text-ivory truncate mt-0.5">${escapeHtml(p.title)}</div>
+                        <div class="text-[11px] font-mono text-parchment/70">${escapeHtml(p.author_name)} • ${formatReadableDate(p.created_at)}</div>
+                    </div>
+                    <button type="button" onclick="deleteJournalPost('${escapeHtml(p.id)}')" class="px-3.5 py-2 rounded-xl bg-rose-500/15 border border-rose-400/40 text-rose-200 hover:bg-rose-500 hover:text-white font-mono text-xs transition-all cursor-pointer shrink-0">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Supprimer
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function deleteJournalPost(postId) {
+            journalPosts = journalPosts.filter(p => String(p.id) !== String(postId));
+            saveCachedPosts(journalPosts);
+
+            if (supabaseClient && !String(postId).startsWith('inaugural-') && !String(postId).startsWith('local-')) {
+                try {
+                    await supabaseClient.from('agora_journal_posts').delete().eq('id', postId);
+                } catch (e) {}
+            }
+
+            populateIssueDropdown();
+            updateWingCounts();
+            renderJournalGrid();
+            renderStudioManageList();
+            showToast('Publication supprimée.');
+        }
+
+        // ============================================================================
+        // 9. OFF-SCREEN INK-FRIENDLY EDITORIAL PDF GENERATOR (WHITE PAPER #FFFFFF)
+        // ============================================================================
+        function buildPrintableWrapper(innerHtml) {
+            const existing = document.getElementById('agoraJournalPdfWrapper');
+            if (existing) existing.remove();
+
+            const wrapper = document.createElement('div');
+            wrapper.id = 'agoraJournalPdfWrapper';
+            wrapper.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 750px; background: #FFFFFF; color: #1A1826; z-index: -1; pointer-events: none;';
+
+            const sheet = document.createElement('div');
+            sheet.id = 'agoraJournalPdfSheet';
+            sheet.style.cssText = 'width: 750px; background: #FFFFFF; color: #1A1826; padding: 36px 44px; box-sizing: border-box; font-family: Georgia, "Cormorant Garamond", "Amiri", serif;';
+            sheet.innerHTML = innerHtml;
+
+            wrapper.appendChild(sheet);
+            document.body.appendChild(wrapper);
+            return { wrapper, sheet };
+        }
+
+        function formatSingleArticlePrintHtml(post) {
+            const isRtl = post.lang === 'ar';
+            const wingNorm = normalizeWingName(post.wing);
+            return `
+                <div dir="${isRtl ? 'rtl' : 'ltr'}" style="background: #FFFFFF; color: #1A1826;">
+                    <div style="border-bottom: 2px solid #34304A; padding-bottom: 14px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #5A527A;">
+                                ÉCOLE NORMALE SUPÉRIEURE (ENS) DE TIZI OUZOU • REVUE AGORA
+                            </div>
+                            <div style="font-size: 24px; font-weight: 700; letter-spacing: 2px; color: #242134; margin-top: 2px;">
+                                LES CAHIERS DE L'AGORA
+                            </div>
+                        </div>
+                        <div style="text-align: right; font-family: monospace; font-size: 11px; color: #34304A;">
+                            <div><strong>Pôle :</strong> ${escapeHtml(wingNorm)}</div>
+                            <div>${escapeHtml(post.issue_label || 'Édition #01')}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-family: monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #6E5668; margin-bottom: 6px;">
+                            ${escapeHtml(post.category || 'Publication')}
+                        </div>
+                        <h1 style="font-size: 30px; font-weight: 700; color: #1A1826; line-height: 1.2; margin: 0 0 8px 0;">
+                            ${escapeHtml(post.title)}
+                        </h1>
+                        ${post.subtitle ? `<div style="font-size: 17px; font-style: italic; color: #433E5E; margin-bottom: 12px;">${escapeHtml(post.subtitle)}</div>` : ''}
+                        <div style="font-family: monospace; font-size: 11px; color: #34304A; border-top: 1px solid #E2DCE8; border-bottom: 1px solid #E2DCE8; padding: 8px 0;">
+                            <strong>Auteur(e) :</strong> ${escapeHtml(post.author_name)} (${escapeHtml(post.author_role || 'Membre AGORA')}) &nbsp;•&nbsp; <strong>Date :</strong> ${formatReadableDate(post.created_at)}
+                        </div>
+                    </div>
+
+                    <div style="font-size: 15px; line-height: 1.85; color: #1A1826; white-space: pre-line; margin-top: 18px;">
+                        ${escapeHtml(post.content)}
+                    </div>
+
+                    <div style="margin-top: 36px; padding-top: 12px; border-top: 1px solid #34304A; display: flex; justify-content: space-between; font-family: monospace; font-size: 10px; color: #5A527A;">
+                        <span>✦ AGORA — LYRÉA • NOÛS • MUSE</span>
+                        <span>ENS Tizi Ouzou • @agora.ens</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function downloadCurrentArticlePDF() {
+            if (!activeReaderPost || typeof html2pdf === 'undefined') return;
+            showToast('Préparation du PDF de l\'article...');
+
+            const html = formatSingleArticlePrintHtml(activeReaderPost);
+            const { wrapper, sheet } = buildPrintableWrapper(html);
+            const safeTitle = (activeReaderPost.title || 'Article').replace(/[^a-zA-Z0-9\u0600-\u06FF_-]/g, '_').slice(0, 40);
+
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `Cahiers_Agora_${safeTitle}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#FFFFFF',
+                    width: 750,
+                    scrollX: 0,
+                    scrollY: 0,
+                    onclone: function(clonedDoc) {
+                        const w = clonedDoc.getElementById('agoraJournalPdfWrapper');
+                        if (w) {
+                            w.style.position = 'static';
+                            w.style.left = '0';
+                            w.style.top = '0';
+                        }
+                    }
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(sheet).save().then(() => {
+                wrapper.remove();
+            }).catch(() => {
+                wrapper.remove();
+            });
+        }
+
+        function downloadFullEditionPDF() {
+            if (typeof html2pdf === 'undefined') return;
+            const postsToExport = getFilteredPosts();
+            if (postsToExport.length === 0) {
+                showToast(' aucun article à exporter.', true);
+                return;
+            }
+
+            showToast(`Génération de l'Édition Complète (${postsToExport.length} œuvres)...`);
+            const issueFilter = document.getElementById('issueFilterSelect')?.value;
+            const editionTitle = (issueFilter && issueFilter !== 'ALL') ? issueFilter : 'Édition Complète • Novembre 2026';
+
+            const articlesHtml = postsToExport.map((post, idx) => `
+                <div style="${idx > 0 ? 'page-break-before: always; padding-top: 20px;' : ''}">
+                    ${formatSingleArticlePrintHtml(post)}
+                </div>
+            `).join('');
+
+            const coverAndBodyHtml = `
+                <div style="text-align: center; border: 3px double #34304A; padding: 48px 32px; margin-bottom: 36px; background: #FAF8F5;">
+                    <div style="font-family: monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #34304A;">
+                        ÉCOLE NORMALE SUPÉRIEURE (ENS) DE TIZI OUZOU
+                    </div>
+                    <h1 style="font-size: 38px; font-weight: 700; letter-spacing: 4px; color: #242134; margin: 14px 0 6px 0;">
+                        LES CAHIERS DE L'AGORA
+                    </h1>
+                    <div style="font-size: 18px; font-style: italic; color: #5A527A; margin-bottom: 18px;">
+                        La Revue Littéraire, Artistique & Scientifique — Lyréa • Noûs • Muse
+                    </div>
+                    <div style="display: inline-block; padding: 6px 18px; border: 1px solid #34304A; font-family: monospace; font-size: 12px; font-weight: 700; color: #242134;">
+                        ${escapeHtml(editionTitle)} — ${postsToExport.length} Publications
+                    </div>
+                </div>
+                ${articlesHtml}
+            `;
+
+            const { wrapper, sheet } = buildPrintableWrapper(coverAndBodyHtml);
+
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `Les_Cahiers_de_l_Agora_ENS_Tizi_Ouzou.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#FFFFFF',
+                    width: 750,
+                    scrollX: 0,
+                    scrollY: 0,
+                    onclone: function(clonedDoc) {
+                        const w = clonedDoc.getElementById('agoraJournalPdfWrapper');
+                        if (w) {
+                            w.style.position = 'static';
+                            w.style.left = '0';
+                            w.style.top = '0';
+                        }
+                    }
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(sheet).save().then(() => {
+                wrapper.remove();
+            }).catch(() => {
+                wrapper.remove();
+            });
+        }
+
+        // ============================================================================
+        // 10. INITIALIZE JOURNAL ON LOAD
+        // ============================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            const logoBox = document.getElementById('headerLogoBox');
+            if (logoBox) {
+                const encodedSvg = encodeURIComponent(getCelestialLogoSvg());
+                logoBox.innerHTML = `<img src="./logo-main.jpg" alt="AGORA" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,${encodedSvg}';">`;
+            }
+            fetchJournalPosts();
+        });
+    </script>
+</body>
+</html>
