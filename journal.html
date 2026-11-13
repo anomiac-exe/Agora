@@ -445,13 +445,13 @@
                     <!-- Add Comment Form (Verified via #AGORA-XXXX Member Code) -->
                     <form id="commentForm" onsubmit="handleCommentSubmit(event)" class="p-5 rounded-2xl bg-midnight border border-dustyRose/30 space-y-4">
                         <div class="grid sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[11px] font-mono uppercase text-champagne mb-1" data-i18n="lbl_member_code">
-                                    Code Membre Officiel (#AGORA-XXXX) *
-                                </label>
-                                <input type="text" id="commentMemberCode" required placeholder="Ex: AGORA-4821"
-                                    class="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-xs font-mono text-ivory uppercase placeholder-parchment/35">
-                            </div>
+                           <div>
+                            <label class="block text-[11px] font-mono uppercase text-champagne mb-1" data-i18n="lbl_member_code">
+                                Code Membre Officiel (#AGORA-XXXX) *
+                            </label>
+                            <input type="text" id="commentMemberCode" required placeholder="Ex: AGORA-4821"
+                                class="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-xs font-mono text-ivory uppercase placeholder-parchment/35">
+                        </div>
                             <div>
                                 <label class="block text-[11px] font-mono uppercase text-dustyRose mb-1" data-i18n="lbl_display_name">
                                     Nom & Prénom (si code hors-ligne)
@@ -1312,26 +1312,39 @@
 
             let verifiedName = fallbackName || 'Membre Actif AGORA';
 
-            // Query `agora_members` in Supabase to verify member_code and fetch full_name
-            if (supabaseClient) {
-                try {
-                    const { data } = await supabaseClient
-                        .from('agora_members')
-                        .select('full_name, primary_wing')
-                        .ilike('member_code', rawCode)
-                        .maybeSingle();
+           // Format code cleanly (handles both "AGORA-1234" and "#AGORA-1234")
+            const cleanCode = rawCode.toUpperCase().replace(/^#/, '').trim();
 
-                    if (data && data.full_name) {
-                        verifiedName = data.full_name;
-                    }
-                } catch (err) {}
+            if (!supabaseClient) {
+                submitBtn.disabled = false;
+                showToast("Erreur de connexion à la base de données AGORA.", true);
+                return;
             }
+
+            // Verify code against `agora_members` via our secure RPC function
+            const { data: verifiedRows, error: verifyErr } = await supabaseClient
+                .rpc('verify_agora_member', { input_code: cleanCode });
+
+            if (verifyErr || !verifiedRows || verifiedRows.length === 0) {
+                submitBtn.disabled = false;
+                showToast(
+                    currentLang === 'ar'
+                        ? `رمز العضوية #${cleanCode} غير مسجل! يرجى التسجيل في البوابة الرئيسية أولاً.`
+                        : `Code membre #${cleanCode} introuvable ! Seuls les membres inscrits d'AGORA peuvent commenter.`,
+                    true
+                );
+                return; // BLOCK SUBMISSION
+            }
+
+            const realMemberName = verifiedRows[0].full_name;
+            const realMemberRole = verifiedRows[0].member_role || 'Membre Actif';
 
             const commentRecord = {
                 post_id: activeReaderPost.id,
-                member_code: rawCode,
-                author_name: verifiedName,
-                comment_text: commentText
+                member_code: cleanCode,
+                author_name: `${realMemberName} (${realMemberRole})`,
+                comment_text: commentText,
+                created_at: new Date().toISOString()
             };
 
             if (supabaseClient) {
@@ -1360,6 +1373,8 @@
 
             showToast(`Commentaire publié au nom de ${verifiedName} (#${rawCode})`);
             fetchAndRenderComments(activeReaderPost.id);
+
+            
         }
 
         // ============================================================================
