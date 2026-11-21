@@ -2,7 +2,7 @@
 <html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#242134">
     <title>AGORA — ENS Tizi Ouzou | Lyréa • Noûs • Muse | أغورا المدرسة العليا للأساتذة</title>
     <!-- Tailwind CSS -->
@@ -54,6 +54,13 @@
     </script>
 
     <style>
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
         body {
             background-color: #34304A;
             color: #E9D9B7;
@@ -318,7 +325,7 @@
     </div>
 
     <!-- Institutional Top Bar -->
-    <div class="glass-topbar py-2.5 px-4 text-xs font-mono tracking-wider text-parchment/90">
+    <div class="glass-topbar py-2.5 px-4 text-xs font-mono tracking-wider text-parchment/90 overflow-x-hidden">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-2">
                 <span class="inline-block w-2 h-2 rounded-full bg-[#D8B8C8] animate-pulse"></span>
@@ -343,7 +350,7 @@
     </div>
 
     <!-- Main Sticky Navigation -->
-    <header class="sticky top-0 z-50 glass-nav">
+    <header class="sticky top-0 z-50 glass-nav overflow-x-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2">
             <!-- Brand Crest & Title -->
             <a href="#" onclick="replayEntrySplash(event)" class="flex items-center gap-3 group shrink-0" title="AGORA - ENS Tizi Ouzou">
@@ -361,26 +368,35 @@
             </a>
 
             <!-- Desktop Navigation Links -->
-            <nav class="hidden xl:flex items-center gap-6 text-sm font-medium text-parchment/90">
+            <nav class="hidden xl:flex items-center gap-5 text-sm font-medium text-parchment/90">
                 <a href="#manifesto" class="hover:text-ivory transition-colors" data-i18n="nav_manifesto">Le Manifeste</a>
                 <a href="#wings" class="hover:text-ivory transition-colors" data-i18n="nav_wings">Les 3 Pôles</a>
-                <button type="button" onclick="openWingSpace('lyrea')" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ LYRÉA</button>
-                <button type="button" onclick="openWingSpace('nous')" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-obsidian/70 border border-champagne/30 hover:border-champagne text-champagne hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ NOÛS</button>
-                <button type="button" onclick="openWingSpace('muse')" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ MUSE</button>
-                <a href="#quiz" class="hover:text-ivory transition-colors" data-i18n="nav_diagnostic">Orientation</a>
+                <button type="button" onclick="openWingSpace('lyrea')" class="text-xs font-mono px-2.5 py-1.5 rounded-xl bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ LYRÉA</button>
+                <button type="button" onclick="openWingSpace('nous')" class="text-xs font-mono px-2.5 py-1.5 rounded-xl bg-obsidian/70 border border-champagne/30 hover:border-champagne text-champagne hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ NOÛS</button>
+                <button type="button" onclick="openWingSpace('muse')" class="text-xs font-mono px-2.5 py-1.5 rounded-xl bg-obsidian/70 border border-dustyRose/30 hover:border-champagne text-dustyRose hover:text-ivory transition-all cursor-pointer active:scale-[0.98]">✦ MUSE</button>
+                <a href="/journal" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-champagne/15 border border-champagne/45 text-champagne hover:bg-champagne hover:text-obsidian font-semibold text-xs transition-all shadow-sm">
+                    <i class="fa-solid fa-feather-pointed text-[11px]"></i>
+                    <span data-i18n="nav_journal">Les Cahiers (Revue)</span>
+                </a>
                 <a href="#roadmap" class="hover:text-ivory transition-colors" data-i18n="nav_events">Programme</a>
                 <a href="#governance" class="hover:text-ivory transition-colors" data-i18n="nav_governance">Gouvernance</a>
             </nav>
 
-            <!-- Action Controls: Trilingual Switcher (FR / EN / AR) & Join CTA -->
-            <div class="flex items-center gap-2.5">
+            <!-- Action Controls: Profile Hub Pill, Trilingual Switcher (FR / EN / AR) & Join CTA -->
+            <div class="flex items-center gap-2">
+                <!-- Member Profile Hub Pill -->
+                <button type="button" id="navProfilePillBtn" onclick="openMemberProfileModal()" class="hidden md:inline-flex items-center gap-2 min-h-[48px] px-3.5 py-2 rounded-2xl bg-obsidian/90 border border-dustyRose/45 hover:border-champagne text-champagne font-mono text-xs transition-all cursor-pointer active:scale-[0.98] shadow-md">
+                    <i class="fa-solid fa-id-badge text-dustyRose"></i>
+                    <span id="navProfilePillLabel">Mon Profil / Ma Carte</span>
+                </button>
+
                 <div class="inline-flex items-center rounded-2xl border border-champagne/35 bg-obsidian/90 p-1 text-xs font-mono min-h-[48px]" role="group" aria-label="Language selector">
-                    <button type="button" id="langBtn-fr" onclick="setLanguage('fr')" class="px-3 py-2 rounded-xl text-champagne transition-all lang-btn-active">FR</button>
-                    <button type="button" id="langBtn-en" onclick="setLanguage('en')" class="px-3 py-2 rounded-xl text-champagne hover:text-ivory transition-all">EN</button>
-                    <button type="button" id="langBtn-ar" onclick="setLanguage('ar')" class="px-3 py-2 rounded-xl text-champagne hover:text-ivory transition-all font-arabic">عربي</button>
+                    <button type="button" id="langBtn-fr" onclick="setLanguage('fr')" class="px-2.5 sm:px-3 py-2 rounded-xl text-champagne transition-all lang-btn-active">FR</button>
+                    <button type="button" id="langBtn-en" onclick="setLanguage('en')" class="px-2.5 sm:px-3 py-2 rounded-xl text-champagne hover:text-ivory transition-all">EN</button>
+                    <button type="button" id="langBtn-ar" onclick="setLanguage('ar')" class="px-2.5 sm:px-3 py-2 rounded-xl text-champagne hover:text-ivory transition-all font-arabic">عربي</button>
                 </div>
 
-                <a href="#join" class="hidden sm:inline-flex min-h-[48px] px-5 py-2.5 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm tracking-wide shadow-md hover:brightness-105 active:scale-[0.98] transition-all items-center gap-2">
+                <a href="#join" class="hidden sm:inline-flex min-h-[48px] px-4 lg:px-5 py-2.5 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm tracking-wide shadow-md hover:brightness-105 active:scale-[0.98] transition-all items-center gap-2">
                     <span data-i18n="nav_cta">Rejoindre l'Agora</span>
                     <i class="fa-solid fa-arrow-right text-xs rtl:rotate-180"></i>
                 </a>
@@ -394,6 +410,24 @@
 
         <!-- Mobile Dropdown Navigation -->
         <div id="mobileMenu" class="hidden xl:hidden bg-obsidian/95 backdrop-blur-xl border-b border-gold/25 px-6 py-5 space-y-3">
+            <!-- Mobile Profile Hub Button -->
+            <button type="button" id="mobileProfilePillBtn" onclick="toggleMobileMenu(); openMemberProfileModal();" class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-slateCard/90 border border-champagne/45 text-champagne font-mono text-xs font-semibold flex items-center justify-between active:scale-[0.98]">
+                <span class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-id-badge text-dustyRose text-sm"></i>
+                    <span id="mobileProfilePillLabel">Mon Profil / Ma Carte AGORA</span>
+                </span>
+                <i class="fa-solid fa-chevron-right text-[10px] rtl:rotate-180"></i>
+            </button>
+
+            <!-- Direct Link to Les Cahiers de l'Agora (/journal) -->
+            <a href="/journal" onclick="toggleMobileMenu()" class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-champagne/15 border border-champagne/50 text-champagne font-semibold text-sm flex items-center justify-between active:scale-[0.98]">
+                <span class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <span data-i18n="nav_journal">Les Cahiers (Revue)</span>
+                </span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+
             <a href="#manifesto" onclick="toggleMobileMenu()" class="flex items-center min-h-[48px] text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_manifesto">Le Manifeste</a>
             <a href="#wings" onclick="toggleMobileMenu()" class="flex items-center min-h-[48px] text-sm text-parchment hover:text-ivory border-b border-white/5" data-i18n="nav_wings">Les 3 Pôles (Lyréa, Noûs, Muse)</a>
             <div class="grid grid-cols-3 gap-2.5 py-1">
@@ -412,34 +446,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="heroSection" class="relative bg-grid-pattern pt-12 pb-20 lg:py-24 border-b border-gold/20 overflow-hidden">
-        <!-- Interactive Pointer-Tracking / Breathing Ambient Glow -->
-        <div id="heroAmbientLight" class="hero-ambient-orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] sm:w-[740px] sm:h-[740px] rounded-full pointer-events-none z-0"></div>
-        <!-- Secondary Ambient Radial Glows (#D8B8C8 & #E9D9B7) -->
-        <div class="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[360px] bg-dustyRose/15 blur-[130px] rounded-full pointer-events-none z-0"></div>
-        <div class="absolute bottom-10 right-1/4 w-[480px] h-[300px] bg-champagne/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-12 gap-12 items-center">
-                
-                <!-- Left Column: Grand Editorial Pitch -->
-                <div class="lg:col-span-7 space-y-6 reveal-on-scroll in-view">
-                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-obsidian/85 border border-dustyRose/45 text-champagne text-xs font-mono uppercase tracking-widest shadow-lg">
-                        <i class="fa-solid fa-sparkles text-dustyRose"></i>
-                        <span data-i18n="hero_badge">Agora - ENS Tizi Ouzou • Société Universitaire Phare</span>
-                    </div>
-
-                    <!-- Monumental Classical Metallic Title + Headline -->
-                    <div class="space-y-3">
-                        <div class="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold tracking-[0.22em] agora-metallic-title leading-none select-none">
-                            AGORA
-                        </div>
-                        <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight pt-1">
-                            <span class="block text-ivory" data-i18n="hero_title_1">L'Éclat des Lettres & des Arts.</span>
-                            <span class="block gold-gradient-text italic" data-i18n="hero_title_2">L'Esprit des Systèmes & du Futur.</span>
-                        </h1>
-                    </div>
-
+    <section id="heroSection" class="relative bg-grid-pattern pt-12 pb-20 lg:py-24 border-b border-gold/20 overflow-hidden overflow-x-hidden">
                     <!-- Sleek Constellation Accent Line Linking Lyréa (Quill), Noûs (Terminal/Spark), and Muse (Masks) -->
                     <div class="flex items-center gap-3 py-1 max-w-xl" aria-hidden="true">
                         <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-obsidian/80 border border-dustyRose/40 text-dustyRose text-[11px] font-mono shadow-sm">
@@ -467,12 +474,16 @@
                     </p>
 
                     <!-- Primary Hero CTAs -->
-                    <div class="flex flex-wrap items-center gap-4 pt-2">
-                        <a href="#join" class="min-h-[48px] px-7 py-4 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-obsidian/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3">
+                    <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                        <a href="#join" class="min-h-[48px] px-6 sm:px-7 py-4 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-obsidian/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3">
                             <span data-i18n="hero_btn_join">Obtenir ma Carte de Membre</span>
                             <i class="fa-solid fa-id-card"></i>
                         </a>
-                        <a href="#wings" class="min-h-[48px] px-6 py-4 rounded-2xl bg-slateCard/90 border border-dustyRose/40 hover:border-champagne text-ivory font-medium text-sm sm:text-base active:scale-[0.98] transition-all flex items-center gap-2.5">
+                        <a href="/journal" class="min-h-[48px] px-6 py-4 rounded-2xl bg-obsidian/70 backdrop-blur-md border border-champagne/55 hover:border-ivory hover:bg-slateCard/85 text-champagne font-semibold text-sm sm:text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-lg">
+                            <i class="fa-solid fa-feather-pointed text-dustyRose"></i>
+                            <span data-i18n="hero_btn_journal">Lire Les Cahiers de l'Agora →</span>
+                        </a>
+                        <a href="#wings" class="min-h-[48px] px-5 py-4 rounded-2xl bg-slateCard/85 border border-dustyRose/35 hover:border-champagne text-ivory font-medium text-sm sm:text-base active:scale-[0.98] transition-all flex items-center gap-2.5">
                             <span data-i18n="hero_btn_explore">Explorer Lyréa, Noûs & Muse</span>
                             <i class="fa-solid fa-compass text-dustyRose"></i>
                         </a>
@@ -584,7 +595,7 @@
     </section>
 
     <!-- Section 1: The Manifesto (Why AGORA?) -->
-    <section id="manifesto" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll">
+    <section id="manifesto" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll overflow-x-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
                 <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="manifesto_eyebrow">01 • Le Manifeste d'AGORA</span>
@@ -635,7 +646,7 @@
     </section>
 
     <!-- Section 2: Interactive 3 Wings Deep-Dive (LYRÉA, NOÛS, MUSE) -->
-    <section id="wings" class="py-20 bg-midnight border-b border-gold/20 reveal-on-scroll">
+    <section id="wings" class="py-20 bg-midnight border-b border-gold/20 reveal-on-scroll overflow-x-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
@@ -693,7 +704,7 @@
     </section>
 
     <!-- Section 3: Interactive Diagnostic Quiz ("Find Your Wing") -->
-    <section id="quiz" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll">
+    <section id="quiz" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll overflow-x-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-gradient-to-b from-slateCard to-midnight gold-border-glow rounded-2xl p-6 sm:p-10">
                 <div class="text-center max-w-2xl mx-auto mb-8">
@@ -794,7 +805,7 @@
     </section>
 
     <!-- Section 4: Inaugural Semester Roadmap & Events -->
-    <section id="roadmap" class="py-20 bg-midnight border-b border-gold/20 reveal-on-scroll">
+    <section id="roadmap" class="py-20 bg-midnight border-b border-gold/20 reveal-on-scroll overflow-x-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-14">
                 <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="roadmap_eyebrow">03 • Calendrier Officiel d'Activités</span>
@@ -897,9 +908,114 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Section 5: Governance, Executive Structure & Official Charter -->
-    <section id="governance" class="py-20 bg-obsidian border-b border-gold/20">
+    <section id="governance" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="roadmap_eyebrow">03 • Calendrier Officiel d'Activités</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-ivory mt-2" data-i18n="roadmap_title">
+                    Programme Inaugural d'AGORA
+                </h2>
+                <p class="text-parchment/85 text-sm sm:text-base mt-2" data-i18n="roadmap_subtitle">
+                    Des grands débats en amphithéâtre aux masterclasses Tech & Trading, cercles littéraires et festivals artistiques à l'ENS Tizi Ouzou.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Event 1 -->
+                <div class="bg-slateCard/85 border border-champagne/35 rounded-2xl p-6 flex flex-col justify-between hover:border-champagne transition-all">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-champagne/20 text-champagne font-semibold" data-i18n="ev1_tag">Événement Phare #1</span>
+                            <span class="text-parchment/70" data-i18n="ev1_loc">Amphithéâtre Central</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev1_title">
+                            Grand Gala d'Ouverture AGORA : Lyréa × Noûs × Muse
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev1_desc">
+                            Joute oratoire et slam inaugural, démonstration IA & souveraineté numérique en direct, suivis d'une performance théâtrale et musicale des membres de l'ENS.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-dustyRose">Lyréa × Noûs × Muse</span>
+                        <button onclick="preselectEventInForm('Gala Inaugural AGORA')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event 2 -->
+                <div class="bg-slateCard/85 border border-dustyRose/25 rounded-2xl p-6 flex flex-col justify-between hover:border-champagne transition-all">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-obsidian text-champagne font-semibold">NOÛS • Masterclass</span>
+                            <span class="text-parchment/70" data-i18n="ev2_loc">Atelier Pratique</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev2_title">
+                            IA, Cybersécurité (« Architect's Key »), Trading & Business en Ligne
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev2_desc">
+                            Séminaire intensif : outils IA et sécurité numérique, bases de l'investissement et du trading, personal branding et méthodes concrètes pour travailler et monétiser ses compétences en ligne.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-champagne">Pôle 02 : NOÛS</span>
+                        <button onclick="preselectEventInForm('Masterclass NOÛS : IA, Cyber & Business')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event 3 -->
+                <div class="bg-slateCard/85 border border-dustyRose/25 rounded-2xl p-6 flex flex-col justify-between hover:border-champagne transition-all">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-obsidian text-dustyRose font-semibold">LYRÉA • Plume & Voix</span>
+                            <span class="text-parchment/70">FR / EN / AR</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev3_title">
+                            Salon du Cercle Littéraire, Nuit du Slam & Olympiades d'Éloquence
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev3_desc">
+                            Rencontre d'écriture créative (poèmes, romans, lettres), échanges et critiques de livres du Cercle Littéraire, scène de poésie/slam et tournoi de débats.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-dustyRose">Pôle 01 : LYRÉA</span>
+                        <button onclick="preselectEventInForm('Salon LYRÉA : Cercle Littéraire, Slam & Débats')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event 4 -->
+                <div class="bg-slateCard/85 border border-dustyRose/25 rounded-2xl p-6 flex flex-col justify-between hover:border-champagne transition-all">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono mb-4">
+                            <span class="px-2.5 py-1 rounded bg-obsidian text-dustyRose font-semibold">MUSE • Galerie & Scène</span>
+                            <span class="text-parchment/70" data-i18n="ev4_loc">Exposition & Spectacle</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mb-2" data-i18n="ev4_title">
+                            Festival MUSE : Exposition d'Arts Plastiques, Concert & Théâtre
+                        </h3>
+                        <p class="text-xs text-parchment/85 leading-relaxed mb-4" data-i18n="ev4_desc">
+                            Grande galerie de dessin et peinture sur le campus, sessions acoustiques (tous instruments et chant) et représentation de la troupe de théâtre universitaire.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-dustyRose">Pôle 03 : MUSE</span>
+                        <button onclick="preselectEventInForm('Festival MUSE : Arts Plastiques, Musique & Théâtre')" class="text-xs font-semibold text-ivory hover:text-champagne flex items-center gap-1 cursor-pointer">
+                            <span data-i18n="ev_rsvp">Réserver ma place</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Governance, Executive Structure & Official Charter -->
+    <section id="governance" class="py-20 bg-obsidian border-b border-gold/20 reveal-on-scroll overflow-x-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-12 gap-12 items-start">
                 <!-- Left Column: Executive Architecture -->
@@ -998,7 +1114,7 @@
     </section>
 
     <!-- Section 6: Membership Application & Instant Digital Pass Generator -->
-    <section id="join" class="py-20 bg-midnight relative reveal-on-scroll">
+    <section id="join" class="py-20 bg-midnight relative reveal-on-scroll overflow-x-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-14">
                 <span class="font-mono text-xs uppercase tracking-[0.25em] text-dustyRose" data-i18n="join_eyebrow">05 • Portail d'Adhésion Officiel</span>
@@ -1266,7 +1382,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-obsidian border-t border-gold/25 py-12 text-xs text-parchment/75">
+    <footer class="bg-obsidian border-t border-gold/25 py-12 text-xs text-parchment/75 overflow-x-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex items-center gap-3">
                 <div id="footerLogoThumb" class="w-10 h-10 rounded-xl bg-[#241628] border border-champagne/40 flex items-center justify-center overflow-hidden"></div>
@@ -1277,6 +1393,14 @@
             </div>
 
             <div class="flex flex-wrap items-center justify-center gap-5 font-mono text-[11px]">
+                <a href="/journal" class="text-champagne hover:text-ivory transition-colors flex items-center gap-1.5 font-semibold">
+                    <i class="fa-solid fa-feather-pointed text-dustyRose"></i>
+                    <span data-i18n="footer_journal">Les Cahiers de l'Agora</span>
+                </a>
+                <button onclick="openMemberProfileModal()" class="hover:text-champagne transition-colors cursor-pointer flex items-center gap-1.5">
+                    <i class="fa-solid fa-id-badge text-dustyRose"></i>
+                    <span data-i18n="footer_profile">Mon Profil AGORA</span>
+                </button>
                 <a href="https://www.instagram.com/agora.ens?exln=MTRwamF4ZjQwajA3Zw==" target="_blank" rel="noopener noreferrer" class="text-champagne hover:underline flex items-center gap-1.5">
                     <i class="fa-brands fa-instagram text-sm"></i>
                     <span>@agora.ens</span>
@@ -1294,17 +1418,9 @@
     <!-- ============================================================================ -->
     <!-- HERMES: OFFICIAL AI VIRTUAL CONCIERGE WIDGET (LAUNCHER + CHAT MODAL)         -->
     <!-- ============================================================================ -->
-    <div id="hermesWidgetRoot" class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+    <div id="hermesWidgetRoot" class="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end">
         <!-- Interactive Chat Modal Interface -->
-        <div id="hermesChatModal" dir="ltr" class="hidden opacity-0 scale-95 hermes-modal-enter mb-4 w-80 sm:w-96 h-[490px] max-h-[85vh] rounded-2xl shadow-2xl bg-[#242134] border border-[#E9D9B7]/45 flex flex-col overflow-hidden">
-            
-            <!-- Chat Window Header (Velvet Plum #34304A) -->
-            <div class="bg-[#34304A] border-b border-[#D8B8C8]/30 px-4 py-3 flex items-center justify-between gap-2 shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="relative w-11 h-11 rounded-full border-2 border-[#E9D9B7] bg-[#241122] overflow-hidden shrink-0 shadow-md">
-                        <div id="hermesHeaderAvatar" class="w-full h-full"></div>
-                    </div>
-                    <div>
+        <div id="hermesChatModal" dir="ltr" class="hidden opacity-0 scale-95 hermes-modal-enter mb-4 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[490px] max-h-[85vh] rounded-2xl shadow-2xl bg-[#242134] border border-[#E9D9B7]/45 flex flex-col overflow-hidden">
                         <div class="flex items-center gap-2">
                             <h4 class="font-serif text-lg font-bold text-[#FAF6F0] leading-none">Hermes</h4>
                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] font-mono text-emerald-300">
@@ -1533,6 +1649,67 @@
         </div>
     </div>
 
+    <!-- Modal 3: "MON PROFIL AGORA" — OFFICIAL MEMBER PROFILE HUB & DOSSIER -->
+    <div id="memberProfileModal" class="hidden fixed inset-0 z-[80] bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="bg-obsidian border border-champagne/50 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden my-auto">
+            <!-- Modal Header -->
+            <div class="px-5 sm:px-7 py-4 sm:py-5 border-b border-dustyRose/25 bg-midnight/95 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-obsidian border border-champagne/45 flex items-center justify-center text-champagne shrink-0">
+                        <i class="fa-solid fa-id-card-clip"></i>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] uppercase tracking-widest text-dustyRose block" data-i18n="profile_modal_eyebrow">Dossier Officiel de Membre • ENS Tizi Ouzou</span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-bold text-ivory leading-tight" data-i18n="profile_modal_title">Mon Profil AGORA</h3>
+                    </div>
+                </div>
+                <button type="button" onclick="closeMemberProfileModal()" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-parchment flex items-center justify-center cursor-pointer" aria-label="Fermer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Scrollable Content -->
+            <div class="p-5 sm:p-8 overflow-y-auto flex-1">
+                <!-- View A: Lookup Profile via #AGORA-XXXX or Email -->
+                <div id="profileLookupView" class="max-w-lg mx-auto py-4 space-y-6">
+                    <div class="text-center space-y-2">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-slateCard border border-champagne/45 flex items-center justify-center text-champagne text-2xl shadow-lg">
+                            <i class="fa-solid fa-magnifying-glass-location"></i>
+                        </div>
+                        <h4 class="font-serif text-2xl sm:text-3xl font-bold text-ivory" data-i18n="profile_lookup_title">Retrouver mon Profil & ma Carte AGORA</h4>
+                        <p class="text-xs sm:text-sm text-parchment/80 leading-relaxed" data-i18n="profile_lookup_desc">
+                            Déjà inscrit(e) à AGORA ? Saisissez votre <strong class="text-champagne">Code Membre (#AGORA-XXXX)</strong> ou votre <strong class="text-champagne">Email</strong> pour charger votre dossier officiel et votre carte PDF sur cet appareil.
+                        </p>
+                    </div>
+
+                    <form onsubmit="handleProfileLookup(event)" class="space-y-4 bg-midnight/90 border border-dustyRose/30 rounded-2xl p-5 sm:p-6">
+                        <div>
+                            <label class="block text-xs font-mono uppercase tracking-wider text-champagne mb-2" data-i18n="profile_lookup_label">Code Membre (#AGORA-XXXX) ou Email *</label>
+                            <input type="text" id="profileLookupInput" required placeholder="Ex: AGORA-4821 ou etudiant@ens.dz"
+                                class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-obsidian border border-dustyRose/35 focus:border-champagne focus:outline-none text-sm text-ivory placeholder-parchment/35 font-mono">
+                        </div>
+                        <p id="profileLookupError" class="hidden text-xs font-mono text-rose-300"></p>
+                        <button type="submit" id="profileLookupSubmitBtn" class="w-full min-h-[48px] py-3.5 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm uppercase tracking-wider hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-key"></i>
+                            <span data-i18n="profile_lookup_btn">Accéder à mon Profil Officiel</span>
+                        </button>
+                    </form>
+
+                    <div class="text-center pt-2">
+                        <button type="button" onclick="closeMemberProfileModal(); document.getElementById('join').scrollIntoView({behavior:'smooth'});" class="text-xs font-mono text-dustyRose hover:text-champagne underline cursor-pointer" data-i18n="profile_not_member_yet">
+                            Pas encore membre ? S'inscrire gratuitement à AGORA →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- View B: Full Official Member Dossier (Rendered Dynamically) -->
+                <div id="profileDossierView" class="hidden space-y-6">
+                    <!-- Populated dynamically by renderMemberProfileDossier() -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ============================================================================
         // 0. AGORA & WINGS OFFICIAL LOGOS CONFIGURATION + BESPOKE CELESTIAL SVG FALLBACKS
@@ -1661,6 +1838,8 @@
         }
 
         const LOCAL_STORAGE_KEY = 'polymath_agora_members_v2';
+        const USER_PROFILE_KEY = 'agora_user_profile_v1';
+        let activeUserProfile = null;
         let membersCache = [];
         let currentLang = 'fr';
         let activeWing = 'lyrea';
@@ -1709,6 +1888,7 @@
                 nav_subtitle: "Agora - ENS Tizi Ouzou",
                 nav_manifesto: "Le Manifeste",
                 nav_wings: "Les 3 Pôles",
+                nav_journal: "Les Cahiers (Revue)",
                 nav_diagnostic: "Orientation",
                 nav_events: "Programme",
                 nav_governance: "Gouvernance",
@@ -1718,6 +1898,7 @@
                 hero_title_2: "L'Esprit des Systèmes & du Futur.",
                 hero_desc: "Bienvenue à <strong class='text-ivory font-semibold'>AGORA</strong> (<em class='text-dustyRose'>Agora - ENS Tizi Ouzou</em>). Notre organisation fédère trois univers complémentaires : <strong class='text-champagne'>LYRÉA</strong> (écriture, poésie & slam, art oratoire, cercle littéraire et débats), <strong class='text-champagne'>NOÛS</strong> (IA, cybersécurité, IT, investissement, trading, personal branding et monétisation en ligne) et <strong class='text-champagne'>MUSE</strong> (arts plastiques, musique et théâtre).",
                 hero_btn_join: "Obtenir ma Carte de Membre",
+                hero_btn_journal: "Lire Les Cahiers de l'Agora →",
                 hero_btn_explore: "Explorer Lyréa, Noûs & Muse",
                 stat_1_val: "3 Pôles",
                 stat_1: "Lyréa • Noûs • Muse",
@@ -1841,7 +2022,16 @@
                 btn_pdf_charter_full: "Télécharger le Statut & Règlement (PDF)",
                 btn_copy_charter: "Copier le texte",
                 btn_close: "Fermer",
-                admin_modal_title: "Portail du Bureau Exécutif & Gestion des Membres"
+                admin_modal_title: "Portail du Bureau Exécutif & Gestion des Membres",
+                footer_journal: "Les Cahiers de l'Agora",
+                footer_profile: "Mon Profil AGORA",
+                profile_modal_eyebrow: "Dossier Officiel de Membre • ENS Tizi Ouzou",
+                profile_modal_title: "Mon Profil AGORA",
+                profile_lookup_title: "Retrouver mon Profil & ma Carte AGORA",
+                profile_lookup_desc: "Déjà inscrit(e) à AGORA ? Saisissez votre <strong class='text-champagne'>Code Membre (#AGORA-XXXX)</strong> ou votre <strong class='text-champagne'>Email</strong> pour charger votre dossier officiel et votre carte PDF sur cet appareil.",
+                profile_lookup_label: "Code Membre (#AGORA-XXXX) ou Email *",
+                profile_lookup_btn: "Accéder à mon Profil Officiel",
+                profile_not_member_yet: "Pas encore membre ? S'inscrire gratuitement à AGORA →"
             },
             en: {
                 topbar_inst: "HIGHER NORMAL SCHOOL (ENS) OF TIZI OUZOU • AGORA: LYRÉA • NOÛS • MUSE",
@@ -1851,6 +2041,7 @@
                 nav_subtitle: "Agora • ENS Tizi Ouzou",
                 nav_manifesto: "Manifesto",
                 nav_wings: "The 3 Wings",
+                nav_journal: "Les Cahiers (Journal)",
                 nav_diagnostic: "Diagnostic",
                 nav_events: "Roadmap",
                 nav_governance: "Governance",
@@ -1860,6 +2051,7 @@
                 hero_title_2: "The Mind of Systems & Future.",
                 hero_desc: "Welcome to <strong class='text-ivory font-semibold'>AGORA</strong> (<em class='text-dustyRose'>Agora • ENS Tizi Ouzou</em>). Our organization unites three complementary realms: <strong class='text-champagne'>LYRÉA</strong> (creative writing, poetry & slam, public speaking, literary book club, and debates), <strong class='text-champagne'>NOÛS</strong> (AI, cybersecurity, IT, investing, trading, personal branding, and making money online), and <strong class='text-champagne'>MUSE</strong> (plastic arts, music, and theater).",
                 hero_btn_join: "Claim My Member Pass",
+                hero_btn_journal: "Read Les Cahiers de l'Agora →",
                 hero_btn_explore: "Explore Lyréa, Noûs & Muse",
                 stat_1_val: "3 Wings",
                 stat_1: "Lyréa • Noûs • Muse",
@@ -1983,7 +2175,16 @@
                 btn_pdf_charter_full: "Download Full Charter & Bylaws (PDF)",
                 btn_copy_charter: "Copy Text",
                 btn_close: "Close",
-                admin_modal_title: "Executive Bureau Portal & Member Registry"
+                admin_modal_title: "Executive Bureau Portal & Member Registry",
+                footer_journal: "Les Cahiers de l'Agora",
+                footer_profile: "My AGORA Profile",
+                profile_modal_eyebrow: "Official Member Dossier • ENS Tizi Ouzou",
+                profile_modal_title: "My AGORA Profile",
+                profile_lookup_title: "Retrieve My AGORA Profile & Pass",
+                profile_lookup_desc: "Already registered with AGORA? Enter your <strong class='text-champagne'>Member Code (#AGORA-XXXX)</strong> or your <strong class='text-champagne'>Email</strong> to load your official dossier and PDF pass on this device.",
+                profile_lookup_label: "Member Code (#AGORA-XXXX) or Email *",
+                profile_lookup_btn: "Access My Official Profile",
+                profile_not_member_yet: "Not a member yet? Register for free at AGORA →"
             },
             ar: {
                 topbar_inst: "المدرسة العليا للأساتذة (ENS) بتيزي وزو • أغورا (AGORA): ليريا • نوس • ميوز",
@@ -1993,6 +2194,7 @@
                 nav_subtitle: "أغورا المدرسة العليا للأساتذة بتيزي وزو",
                 nav_manifesto: "البيان التأسيسي",
                 nav_wings: "الأقطاب الثلاثة",
+                nav_journal: "دفاتر الأغورا (المجلة)",
                 nav_diagnostic: "بوصلة التوجيه",
                 nav_events: "البرنامج السنوي",
                 nav_governance: "الحوكمة والمكتب",
@@ -2002,6 +2204,7 @@
                 hero_title_2: "وذكاءُ الأنظمة وريادة المستقبل.",
                 hero_desc: "مرحباً بكم في <strong class='text-ivory font-semibold'>أغورا (AGORA)</strong> (<em class='text-dustyRose'>Agora - ENS Tizi Ouzou</em>). تجمع هيئتنا ثلاثة عوالم متكاملة: <strong class='text-champagne'>LYRÉA (ليريا)</strong> للكتابة الإبداعية والشعر والسلام وفن الخطابة والنادي الأدبي والمناظرات، و<strong class='text-champagne'>NOÛS (نوس)</strong> للذكاء الاصطناعي والأمن السيبراني والتقنية والاستثمار والتداول وبناء الهوية الرقمية والعمل عبر الإنترنت، و<strong class='text-champagne'>MUSE (ميوز)</strong> للفنون التشكيلية والموسيقى والمسرح.",
                 hero_btn_join: "احصل على بطاقة العضوية",
+                hero_btn_journal: "اقرأ مجلة دفاتر الأغورا ←",
                 hero_btn_explore: "استكشف ليريا ونوس وميوز",
                 stat_1_val: "3 أقطاب",
                 stat_1: "ليريا • نوس • ميوز",
@@ -2125,7 +2328,16 @@
                 btn_pdf_charter_full: "تحميل القانون الأساسي والنظام الداخلي (PDF)",
                 btn_copy_charter: "نسخ النص الكامل",
                 btn_close: "إغلاق",
-                admin_modal_title: "بوابة المكتب التنفيذي وإدارة سجل الأعضاء"
+                admin_modal_title: "بوابة المكتب التنفيذي وإدارة سجل الأعضاء",
+                footer_journal: "دفاتر الأغورا (المجلة)",
+                footer_profile: "ملفي الشخصي في أغورا",
+                profile_modal_eyebrow: "ملف العضوية الرسمي • المدرسة العليا للأساتذة تيزي وزو",
+                profile_modal_title: "ملفي الشخصي AGORA",
+                profile_lookup_title: "استرجاع ملفي الشخصي وبطاقة أغورا",
+                profile_lookup_desc: "هل أنت مسجل مسبقاً في أغورا؟ أدخل <strong class='text-champagne'>رمز العضوية (#AGORA-XXXX)</strong> أو <strong class='text-champagne'>بريدك الإلكتروني</strong> لتحميل ملفك الرسمي وبطاقتك PDF على هذا الجهاز.",
+                profile_lookup_label: "رمز العضوية (#AGORA-XXXX) أو البريد الإلكتروني *",
+                profile_lookup_btn: "الدخول إلى ملفي الرسمي",
+                profile_not_member_yet: "لست عضواً بعد؟ سجّل مجاناً في أغورا ←"
             }
         };
 
@@ -2629,125 +2841,10 @@
                 renderDedicatedWingModal(activeWing);
             }
             updateHermesLanguageUI();
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            if (menu) menu.classList.toggle('hidden');
-        }
-
-        // ============================================================================
-        // 7. INTERACTIVE THREE WINGS EXPLORER (LYRÉA, NOÛS, MUSE)
-        // ============================================================================
-        function switchWingTab(rawKey) {
-            const wingKey = normalizeWingKey(rawKey);
-            activeWing = wingKey;
-            ['lyrea', 'nous', 'muse'].forEach(k => {
-                const tab = document.getElementById(`tab-${k}`);
-                if (tab) {
-                    if (k === wingKey) {
-                        tab.classList.add('wing-tab-active');
-                    } else {
-                        tab.classList.remove('wing-tab-active');
-                    }
-                }
-            });
-            renderWingContent(wingKey);
-        }
-
-        function renderWingContent(rawKey) {
-            const wingKey = normalizeWingKey(rawKey);
-            const panel = document.getElementById('wingContentPanel');
-            if (!panel || !wingData[wingKey]) return;
-            const data = wingData[wingKey][currentLang] || wingData[wingKey].fr;
-
-            const btnJoinText = currentLang === 'ar'
-                ? `انضم إلى ${data.name} ←`
-                : (currentLang === 'en' ? `Join ${data.name} →` : `Rejoindre ${data.name} →`);
-            const btnSpaceText = currentLang === 'ar'
-                ? `✦ دخول الفضاء الخاص بـ ${data.name}`
-                : (currentLang === 'en' ? `✦ Enter ${data.name} Dedicated Space` : `✦ Explorer l'Espace Dédié ${data.name}`);
-            const deliverableLabel = currentLang === 'ar'
-                ? 'المخرجات والفرص:'
-                : (currentLang === 'en' ? 'Key Deliverable:' : 'Livrable & Opportunité :');
-
-            const pillarsHtml = data.pillars.map(p => `
-                <div class="p-5 rounded-xl bg-obsidian/90 border border-dustyRose/25 hover:border-champagne transition-all">
-                    <div class="w-10 h-10 rounded-lg bg-slateCard border border-champagne/35 flex items-center justify-center text-champagne mb-3">
-                        <i class="fa-solid ${p.icon}"></i>
-                    </div>
-                    <h4 class="font-serif text-xl font-bold text-ivory mb-1.5">${p.title}</h4>
-                    <p class="text-xs text-parchment/85 leading-relaxed">${p.desc}</p>
-                </div>
-            `).join('');
-
-            panel.innerHTML = `
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 mb-6 border-b border-dustyRose/20">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 max-w-3xl">
-                        <div onclick="openWingSpace('${wingKey}')" class="w-24 h-24 rounded-2xl overflow-hidden border-2 border-champagne/60 bg-[#241122] shrink-0 cursor-pointer hover:scale-105 transition-transform shadow-xl">
-                            ${renderLogoElement(wingKey)}
-                        </div>
-                        <div class="space-y-1.5">
-                            <span class="font-mono text-xs uppercase tracking-widest text-dustyRose block">${data.code}</span>
-                            <h3 class="font-serif text-2xl sm:text-4xl font-bold text-ivory">${data.title}</h3>
-                            <p class="font-serif italic text-base sm:text-lg text-champagne">${data.tagline}</p>
-                            <p class="text-sm text-parchment/85 leading-relaxed pt-1">${data.description}</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
-                        <button type="button" onclick="openWingSpace('${wingKey}')" class="px-5 py-3.5 rounded-xl bg-obsidian border border-champagne/60 hover:bg-champagne hover:text-obsidian text-champagne font-mono text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md">
-                            ${btnSpaceText}
-                        </button>
-                        <button type="button" onclick="selectWingInForm('${data.selectValue}')" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:brightness-105 transition-all cursor-pointer">
-                            ${btnJoinText}
-                        </button>
-                    </div>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
-                    ${pillarsHtml}
-                </div>
-                <div class="p-4 rounded-xl bg-obsidian/85 border border-dustyRose/30 flex flex-wrap items-center justify-between gap-3 text-xs">
-                    <div>
-                        <span class="font-mono uppercase text-champagne font-semibold mr-2">${deliverableLabel}</span>
-                        <span class="text-parchment/90">${data.deliverable}</span>
-                    </div>
-                    <span class="font-mono text-[11px] text-dustyRose">✦ AGORA • ENS Tizi Ouzou</span>
-                </div>
-            `;
-        }
-
-        function selectWingAndScroll(rawKey) {
-            const wingKey = normalizeWingKey(rawKey);
-            openWingSpace(wingKey);
-        }
-
-        function selectWingInForm(selectVal) {
-            const wingSelect = document.getElementById('memberWing');
-            if (wingSelect) {
-                wingSelect.value = selectVal;
-                updateLivePassPreview();
-            }
-            const joinEl = document.getElementById('join');
-            if (joinEl) joinEl.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // ============================================================================
-        // 8. DIAGNOSTIC QUIZ ("FIND YOUR WING" -> LYRÉA, NOÛS, MUSE)
-        // ============================================================================
-        function selectQuizAnswer(qNum, rawKey, btnEl) {
-            const wingKey = normalizeWingKey(rawKey);
-            quizAnswers[qNum] = wingKey;
-            document.querySelectorAll(`.quiz-opt-${qNum}`).forEach(b => {
-                b.classList.remove('border-champagne', 'bg-dustyRose/25');
-                b.classList.add('border-white/10', 'bg-slateCard/60');
-            });
-            if (btnEl) {
-                btnEl.classList.remove('border-white/10', 'bg-slateCard/60');
-                btnEl.classList.add('border-champagne', 'bg-dustyRose/25');
-            }
-
-            if (quizAnswers[1] && quizAnswers[2] && quizAnswers[3]) {
-                evaluateQuizResult();
+            updateProfileNavPill();
+            const profileModal = document.getElementById('memberProfileModal');
+            if (profileModal && !profileModal.classList.contains('hidden') && activeUserProfile) {
+                renderMemberProfileDossier();
             }
         }
 
@@ -2840,49 +2937,43 @@
             if (yearPreview && yearVal) yearPreview.textContent = yearVal;
 
             const wingPreview = document.getElementById('passPreviewWing');
-            if (wingPreview && wingVal) wingPreview.textContent = wingVal;
+            // Check if member already exists in local cache or Supabase database by Email, Telegram, Instagram, or Full Name
+            loadLocalMembers();
+            let existingMember = membersCache.find(m => {
+                const sameEmail = email && m.email && m.email.toLowerCase() === email.toLowerCase();
+                const sameTg = telegram && m.telegram && m.telegram.toLowerCase() === telegram.toLowerCase();
+                const sameIg = instagram && m.instagram && m.instagram.toLowerCase() === instagram.toLowerCase();
+                const sameName = full_name && m.full_name && m.full_name.toLowerCase() === full_name.toLowerCase();
+                return sameEmail || sameTg || sameIg || sameName;
+            });
 
-            const candidateTag = document.getElementById('passCandidateTag');
-            if (candidateTag) {
-                if (wantsLeader) {
-                    candidateTag.classList.remove('hidden');
-                } else {
-                    candidateTag.classList.add('hidden');
+            if (!existingMember && supabaseClient) {
+                try {
+                    const filters = [];
+                    if (email) filters.push(`email.ilike.${email}`);
+                    if (telegram) filters.push(`telegram.ilike.${telegram}`);
+                    if (instagram) filters.push(`instagram.ilike.${instagram}`);
+                    if (filters.length > 0) {
+                        const { data: remoteMatches } = await supabaseClient
+                            .from('agora_members')
+                            .select('*')
+                            .or(filters.join(','))
+                            .limit(1);
+                        if (remoteMatches && remoteMatches.length > 0) {
+                            existingMember = remoteMatches[0];
+                        }
+                    }
+                } catch (lookupErr) {
+                    console.warn('Duplicate check remote lookup note:', lookupErr);
                 }
             }
-        }
-
-        async function handleMembershipSubmit(e) {
-            e.preventDefault();
-
-            const full_name = document.getElementById('memberName').value.trim();
-            const email = document.getElementById('memberEmail').value.trim();
-            const telegram = document.getElementById('memberTelegram').value.trim();
-            const instagram = document.getElementById('memberInstagram').value.trim();
-            const department = document.getElementById('memberDept').value;
-            const study_year = document.getElementById('memberYear').value;
-            const primary_wing = document.getElementById('memberWing').value;
-            const wants_higher_rank = document.getElementById('wantsHigherRank').checked;
-            const leadership_pitch = document.getElementById('leadershipPitch').value.trim();
-            const motivation_note = document.getElementById('memberMotivation').value.trim();
-
-            if (!email && !telegram && !instagram) {
-                const errEl = document.getElementById('contactValidationError');
-                if (errEl) errEl.classList.remove('hidden');
-                return;
-            }
-
-            // Check if member already exists in local cache or database by Email or Full Name
-            loadLocalMembers();
-            const existingMember = membersCache.find(m => {
-                const sameEmail = email && m.email && m.email.toLowerCase() === email.toLowerCase();
-                const sameName = full_name && m.full_name && m.full_name.toLowerCase() === full_name.toLowerCase();
-                return sameEmail || sameName;
-            });
 
             if (existingMember) {
                 currentMemberCode = existingMember.member_code;
                 document.getElementById('passIdBadge').textContent = `#${currentMemberCode}`;
+
+                // Persist active member profile for instant recognition in "Mon Profil AGORA"
+                saveActiveUserProfile(existingMember);
 
                 const statusInd = document.getElementById('passStatusIndicator');
                 if (statusInd) {
@@ -2894,10 +2985,10 @@
 
                 const descMsg = document.getElementById('passDatabaseStatusMsg');
                 if (descMsg) {
-                    descMsg.textContent = `Vous êtes déjà enregistré(e) sous le code #${currentMemberCode}. Voici votre carte officielle.`;
+                    descMsg.textContent = `Vous êtes déjà enregistré(e) sous le code #${currentMemberCode}. Voici votre carte officielle et votre profil AGORA est maintenant actif.`;
                 }
 
-                downloadMembershipCardPDF();
+                downloadMembershipCardPDF(existingMember);
                 return;
             }
 
@@ -2930,6 +3021,9 @@
             membersCache.unshift(newRecord);
             saveLocalMembers(membersCache);
 
+            // Auto-save active user profile to localStorage (`agora_user_profile_v1`)
+            saveActiveUserProfile(newRecord);
+
             const submitBtn = document.getElementById('submitMemberBtn');
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Enregistrement...</span>`;
@@ -2950,7 +3044,7 @@
             const successBox = document.getElementById('passSuccessActions');
             if (successBox) successBox.classList.remove('hidden');
 
-            downloadMembershipCardPDF();
+            downloadMembershipCardPDF(newRecord);
         }
 
         // ============================================================================
@@ -2962,31 +3056,34 @@
             return div.innerHTML;
         }
 
-        function downloadMembershipCardPDF() {
+        function downloadMembershipCardPDF(profileOverride = null) {
             if (typeof html2pdf === 'undefined') return;
 
-            const rawName = document.getElementById('memberName')?.value.trim() || (currentLang === 'ar' ? 'عضو أغورا' : 'Membre AGORA');
-            const emailVal = document.getElementById('memberEmail')?.value.trim() || '';
-            const tgVal = document.getElementById('memberTelegram')?.value.trim() || '';
-            const igVal = document.getElementById('memberInstagram')?.value.trim() || '';
+            const src = profileOverride && typeof profileOverride === 'object' ? profileOverride : null;
+            const rawName = (src?.full_name || document.getElementById('memberName')?.value.trim()) || (currentLang === 'ar' ? 'عضو أغورا' : 'Membre AGORA');
+            const emailVal = src ? (src.email || '') : (document.getElementById('memberEmail')?.value.trim() || '');
+            const tgVal = src ? (src.telegram || '') : (document.getElementById('memberTelegram')?.value.trim() || '');
+            const igVal = src ? (src.instagram || '') : (document.getElementById('memberInstagram')?.value.trim() || '');
             const contactLine = [
                 emailVal,
                 tgVal ? `TG: ${tgVal}` : '',
                 igVal ? `IG: ${igVal}` : ''
             ].filter(Boolean).join('  •  ') || '@agora.ens';
 
-            const deptVal = document.getElementById('memberDept')?.value || 'Langue & Littérature Françaises';
-            const yearVal = document.getElementById('memberYear')?.value || '2ème Année';
-            const wingVal = document.getElementById('memberWing')?.value || 'LYRÉA (Écriture, Slam, Éloquence, Cercle Littéraire & Débats)';
-            const wantsLeader = document.getElementById('wantsHigherRank')?.checked || false;
-            const codeBadge = `#${currentMemberCode || 'AGORA-2026'}`;
+            const deptVal = src?.department || document.getElementById('memberDept')?.value || 'Langue & Littérature Françaises';
+            const yearVal = src?.study_year || document.getElementById('memberYear')?.value || '2ème Année';
+            const wingVal = src?.primary_wing || document.getElementById('memberWing')?.value || 'LYRÉA (Écriture, Slam, Éloquence, Cercle Littéraire & Débats)';
+            const roleVal = src?.member_role || 'Membre Actif';
+            const wantsLeader = src ? Boolean(src.wants_higher_rank) : (document.getElementById('wantsHigherRank')?.checked || false);
+            const resolvedCode = (src?.member_code || currentMemberCode || 'AGORA-2026').replace(/^#/, '');
+            const codeBadge = `#${resolvedCode}`;
             const isRtl = currentLang === 'ar';
 
             const holderLbl = isRtl ? 'حامل البطاقة / العضو' : (currentLang === 'en' ? 'CARDHOLDER / MEMBER' : 'TITULAIRE / MEMBER');
             const deptLbl = isRtl ? 'التخصص / القسم' : (currentLang === 'en' ? 'DEPARTMENT' : 'FILIÈRE (ENS)');
             const yearLbl = isRtl ? 'السنة الدراسية' : (currentLang === 'en' ? 'STUDY YEAR' : 'PROMOTION');
             const wingLbl = isRtl ? 'القطب الرئيسي للانتماء' : (currentLang === 'en' ? 'PRIMARY AFFILIATED WING' : 'PÔLE D\'AFFILIATION PRINCIPAL');
-            const roleLbl = isRtl ? 'الصفة: عضو فاعل (Membre Actif)' : (currentLang === 'en' ? 'Status: Active Member (Membre Actif)' : 'Statut : Membre Actif');
+            const roleLbl = isRtl ? `الصفة: ${roleVal}` : (currentLang === 'en' ? `Status: ${roleVal}` : `Statut : ${roleVal}`);
             const leaderBadgeText = isRtl ? '★ مترشح لمنصب مسؤولية' : (currentLang === 'en' ? '★ Leadership Applicant' : '★ Candidat(e) Bureau / Pôle');
 
             const existingTemp = document.getElementById('agoraPdfExportWrapper');
@@ -3095,7 +3192,7 @@
 
             const opt = {
                 margin: [8, 8, 8, 8],
-                filename: `Carte_Membre_AGORA_ENS_${safeName}_${currentMemberCode}.pdf`,
+                filename: `Carte_Membre_AGORA_ENS_${safeName}_${resolvedCode}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
                     scale: 2,
@@ -3853,10 +3950,398 @@
         // ============================================================================
         // 15. INITIALIZE PORTAL ON LOAD
         // ============================================================================
+        // 15. "MON PROFIL AGORA" HUB (LOCALSTORAGE RECOGNITION, SUPABASE LOOKUP & DOSSIER)
+        // ============================================================================
+        function loadActiveUserProfile() {
+            try {
+                const raw = localStorage.getItem(USER_PROFILE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && parsed.member_code && parsed.full_name) {
+                        activeUserProfile = parsed;
+                        currentMemberCode = parsed.member_code;
+                    }
+                }
+            } catch (e) {
+                console.warn('Profile read error:', e);
+            }
+            updateProfileNavPill();
+            return activeUserProfile;
+        }
+
+        function saveActiveUserProfile(record) {
+            if (!record) return;
+            activeUserProfile = {
+                member_code: (record.member_code || 'AGORA-2026').replace(/^#/, ''),
+                full_name: record.full_name || 'Membre AGORA',
+                department: record.department || '',
+                study_year: record.study_year || '',
+                primary_wing: record.primary_wing || '',
+                member_role: record.member_role || 'Membre Actif',
+                wants_higher_rank: Boolean(record.wants_higher_rank),
+                email: record.email || '',
+                telegram: record.telegram || '',
+                instagram: record.instagram || '',
+                created_at: record.created_at || new Date().toISOString()
+            };
+            try {
+                localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(activeUserProfile));
+            } catch (e) {
+                console.warn('Profile write error:', e);
+            }
+            updateProfileNavPill();
+        }
+
+        function updateProfileNavPill() {
+            const deskBtn = document.getElementById('navProfilePillBtn');
+            const deskLbl = document.getElementById('navProfilePillLabel');
+            const mobLbl = document.getElementById('mobileProfilePillLabel');
+
+            if (activeUserProfile && activeUserProfile.member_code) {
+                const codeStr = `#${activeUserProfile.member_code.replace(/^#/, '')}`;
+                const prefix = currentLang === 'ar' ? 'ملفي' : (currentLang === 'en' ? 'My Profile' : 'Mon Profil');
+                if (deskLbl) deskLbl.textContent = `${prefix} • ${codeStr}`;
+                if (mobLbl) mobLbl.textContent = `${prefix} • ${codeStr}`;
+                if (deskBtn) {
+                    deskBtn.classList.remove('border-dustyRose/45');
+                    deskBtn.classList.add('border-champagne', 'bg-slateCard/90', 'shadow-champagne/10');
+                }
+            } else {
+                const guestTxt = currentLang === 'ar' ? 'ملفي / بطاقتي' : (currentLang === 'en' ? 'My Profile / Pass' : 'Mon Profil / Ma Carte');
+                if (deskLbl) deskLbl.textContent = guestTxt;
+                if (mobLbl) mobLbl.textContent = guestTxt;
+                if (deskBtn) {
+                    deskBtn.classList.remove('border-champagne', 'bg-slateCard/90');
+                    deskBtn.classList.add('border-dustyRose/45');
+                }
+            }
+        }
+
+        function openMemberProfileModal() {
+            const modal = document.getElementById('memberProfileModal');
+            if (!modal) return;
+            loadActiveUserProfile();
+
+            const lookupView = document.getElementById('profileLookupView');
+            const dossierView = document.getElementById('profileDossierView');
+            const errEl = document.getElementById('profileLookupError');
+            if (errEl) errEl.classList.add('hidden');
+
+            if (activeUserProfile) {
+                if (lookupView) lookupView.classList.add('hidden');
+                if (dossierView) dossierView.classList.remove('hidden');
+                renderMemberProfileDossier();
+            } else {
+                if (dossierView) dossierView.classList.add('hidden');
+                if (lookupView) lookupView.classList.remove('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMemberProfileModal() {
+            const modal = document.getElementById('memberProfileModal');
+            if (modal) modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        async function handleProfileLookup(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById('profileLookupInput');
+            const errEl = document.getElementById('profileLookupError');
+            const submitBtn = document.getElementById('profileLookupSubmitBtn');
+            if (!inputEl || !errEl) return;
+
+            const rawQuery = inputEl.value.trim();
+            if (!rawQuery) return;
+            errEl.classList.add('hidden');
+
+            const cleanedCode = rawQuery.replace(/^#/, '').toUpperCase();
+            const lowerQuery = rawQuery.toLowerCase();
+
+            const origHtml = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Recherche en cours...</span>`;
+
+            let found = null;
+
+            // 1. Check Supabase `agora_members` first for live official record (including rank updates)
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('agora_members')
+                        .select('*')
+                        .or(`member_code.ilike.${cleanedCode},email.ilike.${rawQuery},telegram.ilike.${rawQuery},instagram.ilike.${rawQuery}`)
+                        .limit(1);
+
+                    if (!error && Array.isArray(data) && data.length > 0) {
+                        found = data[0];
+                    }
+                } catch (err) {
+                    console.warn('Supabase profile lookup fallback:', err);
+                }
+            }
+
+            // 2. Fallback to local members cache
+            if (!found) {
+                loadLocalMembers();
+                found = membersCache.find(m => {
+                    const mCode = (m.member_code || '').replace(/^#/, '').toUpperCase();
+                    const mEmail = (m.email || '').toLowerCase();
+                    const mTg = (m.telegram || '').toLowerCase();
+                    const mIg = (m.instagram || '').toLowerCase();
+                    return mCode === cleanedCode || mEmail === lowerQuery || mTg === lowerQuery || mIg === lowerQuery;
+                }) || null;
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origHtml;
+
+            if (!found) {
+                errEl.textContent = currentLang === 'ar'
+                    ? 'لم يتم العثور على أي عضو بهذا الرمز أو البريد الإلكتروني. تحقق من البيانات أو سجّل مجاناً.'
+                    : (currentLang === 'en'
+                        ? 'No member found matching that Code or Email. Please double-check or register for free.'
+                        : 'Aucun membre trouvé avec ce Code ou cet Email. Vérifiez vos informations ou inscrivez-vous gratuitement.');
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            saveActiveUserProfile(found);
+            document.getElementById('profileLookupView').classList.add('hidden');
+            document.getElementById('profileDossierView').classList.remove('hidden');
+            renderMemberProfileDossier();
+        }
+
+        function detectProfileWingKey(wingStr) {
+            const upper = (wingStr || '').toUpperCase();
+            if (upper.includes('NOÛS') || upper.includes('NOUS') || upper.includes('LAB')) return 'nous';
+            if (upper.includes('MUSE') || upper.includes('STUDIO')) return 'muse';
+            return 'lyrea';
+        }
+
+        function getInitialsMonogram(fullName) {
+            const parts = (fullName || 'AG').trim().split(/\s+/).filter(Boolean);
+            if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+
+        function formatProfileDate(isoStr) {
+            if (!isoStr) return '2026';
+            try {
+                const d = new Date(isoStr);
+                if (isNaN(d.getTime())) return '2026';
+                const locale = currentLang === 'ar' ? 'ar-DZ' : (currentLang === 'en' ? 'en-GB' : 'fr-FR');
+                return d.toLocaleDateString(locale, { day: '2-digit', month: 'long', year: 'numeric' });
+            } catch (e) {
+                return '2026';
+            }
+        }
+
+        function renderMemberProfileDossier() {
+            const container = document.getElementById('profileDossierView');
+            if (!container || !activeUserProfile) return;
+
+            const p = activeUserProfile;
+            const cleanCode = (p.member_code || 'AGORA-2026').replace(/^#/, '');
+            const displayCode = `#${cleanCode}`;
+            const wingKey = detectProfileWingKey(p.primary_wing);
+            const wingShortName = wingKey === 'nous' ? 'NOÛS' : (wingKey === 'muse' ? 'MUSE' : 'LYRÉA');
+            const initials = getInitialsMonogram(p.full_name);
+            const regDate = formatProfileDate(p.created_at);
+
+            const copyBtnLbl = currentLang === 'ar' ? 'نسخ رمز العضوية' : (currentLang === 'en' ? 'Copy Member Code' : 'Copier mon Code Membre');
+            const copyHint = currentLang === 'ar'
+                ? 'استخدم هذا الرمز للتعليق الموثّق على مقالات « دفاتر الأغورا » (/journal).'
+                : (currentLang === 'en' ? 'Paste this code to verify your comments on Les Cahiers de l\'Agora (/journal).' : 'Collez ce code pour signer vos commentaires sur Les Cahiers de l\'Agora (/journal).');
+            const pdfBtnLbl = currentLang === 'ar' ? 'تحميل بطاقتي الرسمية (PDF)' : (currentLang === 'en' ? 'Download My Official Pass (PDF)' : 'Télécharger Ma Carte Officielle (PDF)');
+            const journalCtaLbl = currentLang === 'ar' ? 'القراءة والتعليق في دفاتر الأغورا ←' : (currentLang === 'en' ? 'Comment & Read on Les Cahiers de l\'Agora →' : 'Commenter & Lire sur Les Cahiers de l\'Agora →');
+            const logoutLbl = currentLang === 'ar' ? 'تسجيل الخروج من الملف على هذا الجهاز' : (currentLang === 'en' ? 'Sign out of profile on this device' : 'Se déconnecter du profil sur cet appareil');
+
+            const deptTitle = currentLang === 'ar' ? 'القسم / التخصص' : (currentLang === 'en' ? 'Department' : 'Département / Filière');
+            const yearTitle = currentLang === 'ar' ? 'السنة الدراسية' : (currentLang === 'en' ? 'Study Year' : 'Promotion / Année');
+            const dateTitle = currentLang === 'ar' ? 'تاريخ الانخراط' : (currentLang === 'en' ? 'Registered On' : 'Date d\'Inscription');
+            const contactTitle = currentLang === 'ar' ? 'قنوات التواصل المرتبطة' : (currentLang === 'en' ? 'Linked Contact Channels' : 'Canaux de Contact Liés');
+
+            const contactsHtml = [
+                p.email ? `<div class="flex items-center gap-2 text-xs font-mono text-ivory truncate"><i class="fa-solid fa-envelope text-champagne"></i><span>${escapePdfHtml(p.email)}</span></div>` : '',
+                p.telegram ? `<div class="flex items-center gap-2 text-xs font-mono text-ivory truncate"><i class="fa-brands fa-telegram text-dustyRose"></i><span>${escapePdfHtml(p.telegram)}</span></div>` : '',
+                p.instagram ? `<div class="flex items-center gap-2 text-xs font-mono text-ivory truncate"><i class="fa-brands fa-instagram text-champagne"></i><span>${escapePdfHtml(p.instagram)}</span></div>` : ''
+            ].filter(Boolean).join('') || `<div class="text-xs font-mono text-parchment/60">@agora.ens</div>`;
+
+            const contactSummary = [p.email, p.telegram ? `TG: ${p.telegram}` : '', p.instagram ? `IG: ${p.instagram}` : ''].filter(Boolean).join(' • ') || '@agora.ens';
+
+            container.innerHTML = `
+                <!-- 1. Official Profile Header Banner -->
+                <div class="p-5 sm:p-7 rounded-2xl bg-gradient-to-br from-[#433E5E] via-[#34304A] to-[#242134] border border-champagne/45 shadow-xl">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-5">
+                        <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left rtl:sm:text-right">
+                            <!-- Avatar Monogram Crest -->
+                            <div class="w-20 h-20 rounded-full bg-[#241628] border-2 border-champagne flex items-center justify-center shadow-lg shrink-0 relative">
+                                <span class="font-serif text-3xl font-bold agora-metallic-title tracking-wider">${escapePdfHtml(initials)}</span>
+                                <span class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-[#242134] flex items-center justify-center text-[10px] text-[#242134]">
+                                    <i class="fa-solid fa-check"></i>
+                                </span>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-full bg-champagne/20 border border-champagne/50 font-mono text-[11px] font-bold text-champagne">
+                                        ${escapePdfHtml(p.member_role || 'Membre Actif')}
+                                    </span>
+                                    <span class="px-2.5 py-0.5 rounded-full bg-obsidian border border-dustyRose/45 font-mono text-[11px] font-bold text-dustyRose">
+                                        ${escapePdfHtml(displayCode)}
+                                    </span>
+                                </div>
+                                <h4 class="font-serif text-3xl sm:text-4xl font-bold text-ivory leading-none">${escapePdfHtml(p.full_name)}</h4>
+                                <p class="font-mono text-xs text-parchment/80">AGORA • École Normale Supérieure de Tizi Ouzou</p>
+                            </div>
+                        </div>
+
+                        <!-- Wing Emblem Crest -->
+                        <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-obsidian/85 border border-dustyRose/40 shrink-0">
+                            <div class="w-12 h-12 rounded-xl overflow-hidden border border-champagne/50 bg-[#241122] shrink-0">
+                                ${renderLogoElement(wingKey)}
+                            </div>
+                            <div>
+                                <span class="font-mono text-[10px] uppercase text-dustyRose block">Pôle Affilié</span>
+                                <span class="font-serif text-xl font-bold text-champagne tracking-wider">${wingShortName}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1-Click Copy Member Code Bar -->
+                    <div class="mt-5 pt-4 border-t border-dustyRose/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <p class="text-xs text-parchment/85 flex items-center gap-2">
+                            <i class="fa-solid fa-feather-pointed text-champagne"></i>
+                            <span>${copyHint}</span>
+                        </p>
+                        <button type="button" onclick="copyProfileMemberCode()" class="min-h-[44px] px-4 py-2 rounded-xl bg-champagne text-obsidian font-mono font-bold text-xs uppercase tracking-wider hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer">
+                            <i class="fa-regular fa-copy"></i>
+                            <span id="copyProfileCodeLbl">${copyBtnLbl} (${escapePdfHtml(displayCode)})</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Academic & Contact Dossier Grid -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div class="p-4 rounded-2xl bg-midnight/90 border border-dustyRose/25">
+                        <span class="font-mono text-[10px] uppercase text-dustyRose block mb-1">${deptTitle}</span>
+                        <div class="text-sm font-semibold text-ivory">${escapePdfHtml(p.department || 'ENS Tizi Ouzou')}</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-midnight/90 border border-dustyRose/25">
+                        <span class="font-mono text-[10px] uppercase text-dustyRose block mb-1">${yearTitle}</span>
+                        <div class="text-sm font-semibold text-ivory">${escapePdfHtml(p.study_year || '—')}</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-midnight/90 border border-dustyRose/25">
+                        <span class="font-mono text-[10px] uppercase text-dustyRose block mb-1">${dateTitle}</span>
+                        <div class="text-sm font-semibold text-champagne font-mono">${escapePdfHtml(regDate)}</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-midnight/90 border border-dustyRose/25 space-y-1">
+                        <span class="font-mono text-[10px] uppercase text-dustyRose block mb-1">${contactTitle}</span>
+                        ${contactsHtml}
+                    </div>
+                </div>
+
+                <!-- 3. Interactive Digital Member Pass Preview + PDF Download -->
+                <div class="grid lg:grid-cols-12 gap-5 items-center">
+                    <div class="lg:col-span-7 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#433E5E] via-[#34304A] to-[#242134] border-2 border-champagne/60 shadow-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-dustyRose/30 pb-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-lg bg-[#241628] border border-champagne/50 overflow-hidden shrink-0">
+                                    ${renderLogoElement('main')}
+                                </div>
+                                <div>
+                                    <span class="font-serif text-lg font-bold tracking-widest text-ivory block leading-none">AGORA</span>
+                                    <span class="font-mono text-[9px] text-dustyRose uppercase">ENS Tizi Ouzou • Pass Officiel</span>
+                                </div>
+                            </div>
+                            <span class="font-mono text-xs px-2.5 py-1 rounded-lg bg-obsidian border border-champagne/50 text-champagne font-bold">${escapePdfHtml(displayCode)}</span>
+                        </div>
+                        <div>
+                            <div class="font-serif text-2xl font-bold text-ivory">${escapePdfHtml(p.full_name)}</div>
+                            <div class="font-mono text-[11px] text-champagne mt-0.5 truncate">${escapePdfHtml(contactSummary)}</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-obsidian/80 border border-champagne/35">
+                            <div class="font-serif text-base font-bold text-champagne">${escapePdfHtml(p.primary_wing)}</div>
+                            <div class="font-mono text-[10px] text-ivory/90 mt-0.5">${escapePdfHtml(p.department)} • ${escapePdfHtml(p.study_year)}</div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono text-parchment/75 pt-1">
+                            <span>✦ LYRÉA • NOÛS • MUSE</span>
+                            <span class="text-emerald-300">● Membre Vérifié</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Column -->
+                    <div class="lg:col-span-5 flex flex-col gap-3">
+                        <button type="button" onclick="downloadProfileCardPDF()" class="w-full min-h-[52px] px-5 py-3.5 rounded-2xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer">
+                            <i class="fa-solid fa-file-pdf text-base"></i>
+                            <span>${pdfBtnLbl}</span>
+                        </button>
+
+                        <a href="/journal" class="w-full min-h-[52px] px-5 py-3.5 rounded-2xl bg-slateCard border border-champagne/50 hover:bg-champagne hover:text-obsidian text-champagne font-semibold text-xs sm:text-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 text-center shadow-md">
+                            <i class="fa-solid fa-feather-pointed"></i>
+                            <span>${journalCtaLbl}</span>
+                        </a>
+
+                        <button type="button" onclick="logoutMemberProfile()" class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-obsidian border border-rose-400/35 hover:bg-rose-500/15 text-rose-200 font-mono text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>${logoutLbl}</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function copyProfileMemberCode() {
+            if (!activeUserProfile || !activeUserProfile.member_code) return;
+            const formattedCode = `#${activeUserProfile.member_code.replace(/^#/, '')}`;
+            const temp = document.createElement('textarea');
+            temp.value = formattedCode;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+
+            const lbl = document.getElementById('copyProfileCodeLbl');
+            if (lbl) {
+                const oldText = lbl.textContent;
+                lbl.textContent = currentLang === 'ar'
+                    ? `تم نسخ ${formattedCode} ✓`
+                    : (currentLang === 'en' ? `Copied ${formattedCode} ✓` : `Code ${formattedCode} copié ✓`);
+                setTimeout(() => {
+                    lbl.textContent = oldText;
+                }, 2200);
+            }
+        }
+
+        function downloadProfileCardPDF() {
+            if (!activeUserProfile) return;
+            downloadMembershipCardPDF(activeUserProfile);
+        }
+
+        function logoutMemberProfile() {
+            activeUserProfile = null;
+            try {
+                localStorage.removeItem(USER_PROFILE_KEY);
+            } catch (e) {}
+            updateProfileNavPill();
+            const dossierView = document.getElementById('profileDossierView');
+            const lookupView = document.getElementById('profileLookupView');
+            const lookupInput = document.getElementById('profileLookupInput');
+            if (lookupInput) lookupInput.value = '';
+            if (dossierView) dossierView.classList.add('hidden');
+            if (lookupView) lookupView.classList.remove('hidden');
+        }
+
+        // ============================================================================
+        // 16. INITIALIZE PORTAL ON LOAD
+        // ============================================================================
         window.addEventListener('DOMContentLoaded', () => {
             initBrandLogos();
             initHermesConcierge();
             loadLocalMembers();
+            loadActiveUserProfile();
             renderWingContent('lyrea');
             renderCharterContent();
             updateLivePassPreview();
