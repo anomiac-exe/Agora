@@ -447,6 +447,33 @@
 
     <!-- Hero Section -->
     <section id="heroSection" class="relative bg-grid-pattern pt-12 pb-20 lg:py-24 border-b border-gold/20 overflow-hidden overflow-x-hidden">
+        <!-- Interactive Pointer-Tracking / Breathing Ambient Glow -->
+        <div id="heroAmbientLight" class="hero-ambient-orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] sm:w-[740px] sm:h-[740px] rounded-full pointer-events-none z-0"></div>
+        <!-- Secondary Ambient Radial Glows (#D8B8C8 & #E9D9B7) -->
+        <div class="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[360px] bg-dustyRose/15 blur-[130px] rounded-full pointer-events-none z-0"></div>
+        <div class="absolute bottom-10 right-1/4 w-[480px] h-[300px] bg-champagne/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: Grand Editorial Pitch -->
+                <div class="lg:col-span-7 space-y-6 reveal-on-scroll in-view">
+                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-obsidian/85 border border-dustyRose/45 text-champagne text-xs font-mono uppercase tracking-widest shadow-lg">
+                        <i class="fa-solid fa-sparkles text-dustyRose"></i>
+                        <span data-i18n="hero_badge">Agora - ENS Tizi Ouzou • Société Universitaire Phare</span>
+                    </div>
+
+                    <!-- Monumental Classical Metallic Title + Headline -->
+                    <div class="space-y-3">
+                        <div class="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold tracking-[0.22em] agora-metallic-title leading-none select-none">
+                            AGORA
+                        </div>
+                        <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight pt-1">
+                            <span class="block text-ivory" data-i18n="hero_title_1">L'Éclat des Lettres & des Arts.</span>
+                            <span class="block gold-gradient-text italic" data-i18n="hero_title_2">L'Esprit des Systèmes & du Futur.</span>
+                        </h1>
+                    </div>
+
                     <!-- Sleek Constellation Accent Line Linking Lyréa (Quill), Noûs (Terminal/Spark), and Muse (Masks) -->
                     <div class="flex items-center gap-3 py-1 max-w-xl" aria-hidden="true">
                         <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-obsidian/80 border border-dustyRose/40 text-dustyRose text-[11px] font-mono shadow-sm">
@@ -1421,6 +1448,14 @@
     <div id="hermesWidgetRoot" class="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end">
         <!-- Interactive Chat Modal Interface -->
         <div id="hermesChatModal" dir="ltr" class="hidden opacity-0 scale-95 hermes-modal-enter mb-4 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[490px] max-h-[85vh] rounded-2xl shadow-2xl bg-[#242134] border border-[#E9D9B7]/45 flex flex-col overflow-hidden">
+            
+            <!-- Chat Window Header (Velvet Plum #34304A) -->
+            <div class="bg-[#34304A] border-b border-[#D8B8C8]/30 px-4 py-3 flex items-center justify-between gap-2 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="relative w-11 h-11 rounded-full border-2 border-[#E9D9B7] bg-[#241122] overflow-hidden shrink-0 shadow-md">
+                        <div id="hermesHeaderAvatar" class="w-full h-full"></div>
+                    </div>
+                    <div>
                         <div class="flex items-center gap-2">
                             <h4 class="font-serif text-lg font-bold text-[#FAF6F0] leading-none">Hermes</h4>
                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] font-mono text-emerald-300">
@@ -2848,6 +2883,126 @@
             }
         }
 
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        // ============================================================================
+        // 7. INTERACTIVE THREE WINGS EXPLORER (LYRÉA, NOÛS, MUSE)
+        // ============================================================================
+        function switchWingTab(rawKey) {
+            const wingKey = normalizeWingKey(rawKey);
+            activeWing = wingKey;
+            ['lyrea', 'nous', 'muse'].forEach(k => {
+                const tab = document.getElementById(`tab-${k}`);
+                if (tab) {
+                    if (k === wingKey) {
+                        tab.classList.add('wing-tab-active');
+                    } else {
+                        tab.classList.remove('wing-tab-active');
+                    }
+                }
+            });
+            renderWingContent(wingKey);
+        }
+
+        function renderWingContent(rawKey) {
+            const wingKey = normalizeWingKey(rawKey);
+            const panel = document.getElementById('wingContentPanel');
+            if (!panel || !wingData[wingKey]) return;
+            const data = wingData[wingKey][currentLang] || wingData[wingKey].fr;
+
+            const btnJoinText = currentLang === 'ar'
+                ? `انضم إلى ${data.name} ←`
+                : (currentLang === 'en' ? `Join ${data.name} →` : `Rejoindre ${data.name} →`);
+            const btnSpaceText = currentLang === 'ar'
+                ? `✦ دخول الفضاء الخاص بـ ${data.name}`
+                : (currentLang === 'en' ? `✦ Enter ${data.name} Dedicated Space` : `✦ Explorer l'Espace Dédié ${data.name}`);
+            const deliverableLabel = currentLang === 'ar'
+                ? 'المخرجات والفرص:'
+                : (currentLang === 'en' ? 'Key Deliverable:' : 'Livrable & Opportunité :');
+
+            const pillarsHtml = data.pillars.map(p => `
+                <div class="p-5 rounded-xl bg-obsidian/90 border border-dustyRose/25 hover:border-champagne transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-slateCard border border-champagne/35 flex items-center justify-center text-champagne mb-3">
+                        <i class="fa-solid ${p.icon}"></i>
+                    </div>
+                    <h4 class="font-serif text-xl font-bold text-ivory mb-1.5">${p.title}</h4>
+                    <p class="text-xs text-parchment/85 leading-relaxed">${p.desc}</p>
+                </div>
+            `).join('');
+
+            panel.innerHTML = `
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 mb-6 border-b border-dustyRose/20">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 max-w-3xl">
+                        <div onclick="openWingSpace('${wingKey}')" class="w-24 h-24 rounded-2xl overflow-hidden border-2 border-champagne/60 bg-[#241122] shrink-0 cursor-pointer hover:scale-105 transition-transform shadow-xl">
+                            ${renderLogoElement(wingKey)}
+                        </div>
+                        <div class="space-y-1.5">
+                            <span class="font-mono text-xs uppercase tracking-widest text-dustyRose block">${data.code}</span>
+                            <h3 class="font-serif text-2xl sm:text-4xl font-bold text-ivory">${data.title}</h3>
+                            <p class="font-serif italic text-base sm:text-lg text-champagne">${data.tagline}</p>
+                            <p class="text-sm text-parchment/85 leading-relaxed pt-1">${data.description}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+                        <button type="button" onclick="openWingSpace('${wingKey}')" class="px-5 py-3.5 rounded-xl bg-obsidian border border-champagne/60 hover:bg-champagne hover:text-obsidian text-champagne font-mono text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md">
+                            ${btnSpaceText}
+                        </button>
+                        <button type="button" onclick="selectWingInForm('${data.selectValue}')" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-champagne via-dustyRose to-champagne text-obsidian font-bold text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:brightness-105 transition-all cursor-pointer">
+                            ${btnJoinText}
+                        </button>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+                    ${pillarsHtml}
+                </div>
+                <div class="p-4 rounded-xl bg-obsidian/85 border border-dustyRose/30 flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <div>
+                        <span class="font-mono uppercase text-champagne font-semibold mr-2">${deliverableLabel}</span>
+                        <span class="text-parchment/90">${data.deliverable}</span>
+                    </div>
+                    <span class="font-mono text-[11px] text-dustyRose">✦ AGORA • ENS Tizi Ouzou</span>
+                </div>
+            `;
+        }
+
+        function selectWingAndScroll(rawKey) {
+            const wingKey = normalizeWingKey(rawKey);
+            openWingSpace(wingKey);
+        }
+
+        function selectWingInForm(selectVal) {
+            const wingSelect = document.getElementById('memberWing');
+            if (wingSelect) {
+                wingSelect.value = selectVal;
+                updateLivePassPreview();
+            }
+            const joinEl = document.getElementById('join');
+            if (joinEl) joinEl.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================================================
+        // 8. DIAGNOSTIC QUIZ ("FIND YOUR WING" -> LYRÉA, NOÛS, MUSE)
+        // ============================================================================
+        function selectQuizAnswer(qNum, rawKey, btnEl) {
+            const wingKey = normalizeWingKey(rawKey);
+            quizAnswers[qNum] = wingKey;
+            document.querySelectorAll(`.quiz-opt-${qNum}`).forEach(b => {
+                b.classList.remove('border-champagne', 'bg-dustyRose/25');
+                b.classList.add('border-white/10', 'bg-slateCard/60');
+            });
+            if (btnEl) {
+                btnEl.classList.remove('border-white/10', 'bg-slateCard/60');
+                btnEl.classList.add('border-champagne', 'bg-dustyRose/25');
+            }
+
+            if (quizAnswers[1] && quizAnswers[2] && quizAnswers[3]) {
+                evaluateQuizResult();
+            }
+        }
+
         function evaluateQuizResult() {
             const counts = { lyrea: 0, nous: 0, muse: 0 };
             Object.values(quizAnswers).forEach(w => {
@@ -2937,6 +3092,38 @@
             if (yearPreview && yearVal) yearPreview.textContent = yearVal;
 
             const wingPreview = document.getElementById('passPreviewWing');
+            if (wingPreview && wingVal) wingPreview.textContent = wingVal;
+
+            const candidateTag = document.getElementById('passCandidateTag');
+            if (candidateTag) {
+                if (wantsLeader) {
+                    candidateTag.classList.remove('hidden');
+                } else {
+                    candidateTag.classList.add('hidden');
+                }
+            }
+        }
+
+        async function handleMembershipSubmit(e) {
+            e.preventDefault();
+
+            const full_name = document.getElementById('memberName').value.trim();
+            const email = document.getElementById('memberEmail').value.trim();
+            const telegram = document.getElementById('memberTelegram').value.trim();
+            const instagram = document.getElementById('memberInstagram').value.trim();
+            const department = document.getElementById('memberDept').value;
+            const study_year = document.getElementById('memberYear').value;
+            const primary_wing = document.getElementById('memberWing').value;
+            const wants_higher_rank = document.getElementById('wantsHigherRank').checked;
+            const leadership_pitch = document.getElementById('leadershipPitch').value.trim();
+            const motivation_note = document.getElementById('memberMotivation').value.trim();
+
+            if (!email && !telegram && !instagram) {
+                const errEl = document.getElementById('contactValidationError');
+                if (errEl) errEl.classList.remove('hidden');
+                return;
+            }
+
             // Check if member already exists in local cache or Supabase database by Email, Telegram, Instagram, or Full Name
             loadLocalMembers();
             let existingMember = membersCache.find(m => {
